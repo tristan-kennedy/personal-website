@@ -1,0 +1,14 @@
+---
+import ThemeToggle from "./ThemeToggle";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<nav class="mb-4">
+  <h1 class="text-2xl font-bold">{title}</h1>
+  <ThemeToggle client:load />
+</nav>

@@ -1,22 +1,30 @@
+---
+import Navigation from "../components/Navigation.astro";
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro Basics</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <link rel="stylesheet" href="/src/styles/global.css" />
+    <link rel="icon" href="favicon.svg" type="image/x-icon" />
+    <script is:inline>
+      const theme =
+        localStorage.theme ??
+        (window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    </script>
   </head>
-  <body>
+  <body class="bg-bg">
+    <Navigation title={title} />
     <slot />
   </body>
 </html>
-
-<style>
-  @import "../styles/global.css";
-  html,
-  body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-  }
-</style>
