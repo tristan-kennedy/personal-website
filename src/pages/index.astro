@@ -10,21 +10,34 @@ import Layout from "../layouts/Layout.astro";
       >
         Hello my name is Tristan Kennedy
       </div>
-      <div class="col-span-2 row-span-4 rounded-xl border-2 p-4">Projects</div>
-      <div class="col-span-2 row-span-2 rounded-xl border-2 p-4">Blog</div>
       <a
-        class="col-span-2 row-span-2 rounded-xl border-2 bg-bg p-4"
-        href="/about"
-        transition:name="about-me">About Me</a
+        class="col-span-2 row-span-4 rounded-xl border-2 p-4"
+        href="/projects"
+        transition:name="projects">Projects</a
       >
-      <div class="col-span-1 row-span-1 rounded-xl border-2 p-4">Resume</div>
-      <div class="col-span-1 row-span-1 rounded-xl border-2 p-4">GitHub</div>
-      <div class="col-span-1 row-span-1 rounded-xl border-2 p-4">LinkedIn</div>
-      <div class="col-span-3 row-span-2 rounded-xl border-2 p-4">
-        Experiments
+      <a
+        class="col-span-2 row-span-2 rounded-xl border-2 p-4"
+        href="/blog"
+        transition:name="blog">Blog</a
+      >
+      <a
+        class="col-span-2 row-span-2 rounded-xl border-2 p-4"
+        href="/about"
+        transition:name="about-me"
+        >About Me
+      </a>
+      <div class="col-span-4 row-span-1 rounded-xl border-2 p-4">
+        Resume, GitHub, LinkedIn Carousel
       </div>
       <a
-        class="col-span-5 row-span-2 rounded-xl border-2 bg-bg p-4"
+        class="col-span-3 row-span-2 rounded-xl border-2 p-4"
+        href="/experiments"
+        transition:name="experiments"
+      >
+        Experiments
+      </a>
+      <a
+        class="col-span-5 row-span-2 rounded-xl border-2 p-4"
         href="/contact"
         transition:name="contact-me"
       >
