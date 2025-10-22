@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap");
 @import "tailwindcss";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
@@ -5,17 +6,45 @@
 @theme {
   --color-*: initial;
   --color-bg: #fbf1c7;
+  --color-bg0: #fbf1c7;
+  --color-bg0-h: #f9f5d7;
+  --color-bg0-s: #f2e5bc;
   --color-bg1: #ebdbb2;
   --color-bg2: #d5c4a1;
-  --color-fg: #282828;
-  --color-fg2: #3c3836;
-  --color-red: #9d0006;
-  --color-green: #79740e;
-  --color-yellow: #b57614;
-  --color-blue: #076678;
-  --color-purple: #8f3f71;
-  --color-aqua: #427b58;
-  --color-orange: #af3a03;
+  --color-bg3: #bdae93;
+  --color-bg4: #a89984;
+  --color-fg: #3c3836;
+  --color-fg0: #282828;
+  --color-fg1: #3c3836;
+  --color-fg2: #504945;
+  --color-fg3: #665c54;
+  --color-fg4: #7c6f64;
+  --color-red: #cc241d;
+  --color-red-alt: #9d0006;
+  --color-green: #98971a;
+  --color-green-alt: #79740e;
+  --color-yellow: #d79921;
+  --color-yellow-alt: #b57614;
+  --color-blue: #458588;
+  --color-blue-alt: #076678;
+  --color-purple: #b16286;
+  --color-purple-alt: #8f3f71;
+  --color-aqua: #689d6a;
+  --color-aqua-alt: #427b58;
+  --color-orange: #d65d0e;
+  --color-orange-alt: #af3a03;
+  --color-gray: #7c6f64;
+  --color-gray-alt: #928374;
+
+  --font-fira-code: "Fira Code", monospace;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    @apply transition-colors duration-300 ease-in-out;
+  }
 }
 
 @layer theme {
@@ -23,17 +52,35 @@
   :host {
     @variant dark {
       --color-bg: #282828;
+      --color-bg0: #282828;
+      --color-bg0-h: #1d2021;
+      --color-bg0-s: #32302f;
       --color-bg1: #3c3836;
       --color-bg2: #504945;
+      --color-bg3: #665c54;
+      --color-bg4: #7c6f64;
       --color-fg: #ebdbb2;
+      --color-fg0: #fbf1c7;
+      --color-fg1: #ebdbb2;
       --color-fg2: #d5c4a1;
-      --color-red: #fb4934;
-      --color-green: #b8bb26;
-      --color-yellow: #fabd2f;
-      --color-blue: #83a598;
-      --color-purple: #d3869b;
-      --color-aqua: #8ec07c;
-      --color-orange: #fe8019;
+      --color-fg3: #bdae93;
+      --color-fg4: #a89984;
+      --color-red: #cc241d;
+      --color-red-alt: #fb4934;
+      --color-green: #98971a;
+      --color-green-alt: #b8bb26;
+      --color-yellow: #d79921;
+      --color-yellow-alt: #fabd2f;
+      --color-blue: #458588;
+      --color-blue-alt: #83a598;
+      --color-purple: #b16286;
+      --color-purple-alt: #d3869b;
+      --color-aqua: #689d6a;
+      --color-aqua-alt: #8ec07c;
+      --color-orange: #d65d0e;
+      --color-orange-alt: #fe8019;
+      --color-gray: #a89984;
+      --color-gray-alt: #928374;
     }
   }
 }

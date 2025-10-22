@@ -13,7 +13,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="px-4 py-2 rounded-lg bg-bg2 text-fg border-2 border-fg2 hover:bg-bg1 transition-colors cursor-pointer"
+      className="cursor-pointer rounded-2xl border-2 px-4 py-2 hover:bg-bg1"
       aria-label="Toggle theme"
     >
       <Moon className="dark:hidden" />

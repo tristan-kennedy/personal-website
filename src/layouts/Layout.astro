@@ -1,5 +1,6 @@
 ---
 import Navigation from "../components/Navigation.astro";
+import Head from "../components/Head.astro";
 import "../styles/global.css";
 interface Props {
   title: string;
@@ -9,22 +10,13 @@ const { title } = Astro.props;
 ---
 
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <link rel="icon" href="favicon.svg" type="image/x-icon" />
-    <script is:inline>
-      const theme =
-        localStorage.theme ??
-        (window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light");
-      document.documentElement.setAttribute("data-theme", theme);
-    </script>
-  </head>
-  <body class="bg-bg">
-    <Navigation title={title} />
-    <slot />
+  <Head title={title} />
+  <body
+    class="mx-auto flex h-screen max-w-[1440px] flex-col gap-8 bg-bg py-8 font-fira-code text-fg transition-colors"
+  >
+    <Navigation />
+    <main class="flex flex-1">
+      <slot />
+    </main>
   </body>
 </html>
