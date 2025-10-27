@@ -28,4 +28,24 @@ const { title } = Astro.props;
     setTheme();
     document.addEventListener("astro:after-swap", setTheme);
   </script>
+
+  <script is:inline data-astro-rerun>
+    function setCRT() {
+      const stored = localStorage.getItem("crt");
+      const prefersReduce = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const crtEnabled =
+        stored === "enabled" || (stored == null && prefersReduce);
+
+      if (crtEnabled) {
+        document.documentElement.classList.add("crt");
+      } else {
+        document.documentElement.classList.remove("crt");
+      }
+    }
+
+    setCRT();
+    document.addEventListener("astro:after-swap", setCRT);
+  </script>
 </head>
