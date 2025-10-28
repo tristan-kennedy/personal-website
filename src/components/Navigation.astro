@@ -1,13 +1,16 @@
 ---
+import Logo from "../assets/Logo.svg";
 import ThemeToggle from "./ThemeToggle";
 import CRTToggle from "./CRTToggle";
 ---
 
 <nav>
   <div
-    class="flex items-center justify-between rounded-xl border-2 bg-bg1 p-4 transition-colors"
+    class="flex items-center justify-between rounded-xl border-2 bg-bg1 p-4 shadow-xl transition-colors"
   >
-    <a class="text-2xl" href="/">TRISTAN KENNEDY</a>
+    <a class="text-2xl text-fg transition-colors" href="/"
+      ><Logo width={32} height={32} /></a
+    >
     <div>
       <CRTToggle client:load />
       <ThemeToggle client:load />
