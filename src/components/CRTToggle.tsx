@@ -1,4 +1,4 @@
-import { Tv } from "lucide-react";
+import { Wallpaper } from "lucide-react";
 
 export default function CRTToggle() {
   const toggleCRT = () => {
@@ -17,7 +17,7 @@ export default function CRTToggle() {
       className="cursor-pointer rounded-2xl p-2 transition-colors hover:text-fg3 active:scale-95 active:text-fg4"
       aria-label="Toggle CRT effect"
     >
-      <Tv />
+      <Wallpaper />
     </button>
   );
 }

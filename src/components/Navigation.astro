@@ -2,6 +2,14 @@
 import Logo from "../assets/Logo.svg";
 import ThemeToggle from "./ThemeToggle";
 import CRTToggle from "./CRTToggle";
+import {
+  FlaskConical,
+  FolderCode,
+  Mail,
+  NotebookPen,
+  User,
+  UserCircle,
+} from "lucide-react";
 ---
 
 <nav>
@@ -11,7 +19,37 @@ import CRTToggle from "./CRTToggle";
     <a class="text-2xl text-fg transition-colors" href="/"
       ><Logo width={32} height={32} /></a
     >
-    <div>
+    <div class="flex items-center justify-center gap-4">
+      <a
+        href="/about"
+        class="hover:text-accent p-2 transition-colors hover:text-fg3 active:scale-95 active:text-fg4"
+      >
+        <UserCircle />
+      </a>
+      <a
+        href="/contact"
+        class="hover:text-accent p-2 transition-colors hover:text-fg3 active:scale-95 active:text-fg4"
+      >
+        <Mail />
+      </a>
+      <a
+        href="/blog"
+        class="hover:text-accent p-2 transition-colors hover:text-fg3 active:scale-95 active:text-fg4"
+      >
+        <NotebookPen />
+      </a>
+      <a
+        href="/projects"
+        class="hover:text-accent p-2 transition-colors hover:text-fg3 active:scale-95 active:text-fg4"
+      >
+        <FolderCode />
+      </a>
+      <a
+        href="/experiments"
+        class="hover:text-accent p-2 transition-colors hover:text-fg3 active:scale-95 active:text-fg4"
+      >
+        <FlaskConical />
+      </a>
       <CRTToggle client:load />
       <ThemeToggle client:load />
     </div>
