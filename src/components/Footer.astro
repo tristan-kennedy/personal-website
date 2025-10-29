@@ -1,0 +1,20 @@
+---
+const year = new Date().getFullYear();
+const swatches = [
+  { label: "aqua", cls: "bg-aqua" },
+  { label: "blue", cls: "bg-blue" },
+  { label: "yellow", cls: "bg-yellow" },
+  { label: "red", cls: "bg-red" },
+];
+---
+
+<footer>
+  <div class="flex items-center justify-between transition-colors">
+    <p class="text-sm text-fg4">
+      © {year} Tristan Kennedy. All Rights Reserved.
+    </p>
+    <div class="flex items-center" aria-label="Theme color swatches">
+      {swatches.map((s) => <div class={`h-3 w-14 ${s.cls}`} title={s.label} />)}
+    </div>
+  </div>
+</footer>

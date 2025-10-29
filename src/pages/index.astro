@@ -8,8 +8,8 @@ import BentoBox from "../components/BentoBox.astro";
     <div class="grid h-full grid-cols-8 grid-rows-6 gap-8">
       <div class="col-span-4 row-span-3">
         <BentoBox
-          ><h1 class="text-9xl font-bold text-yellow">HI!</h1>
-          <h2 class="text-5xl">IM TRISTAN KENNEDY</h2>
+          ><h1 class="text-9xl font-bold text-yellow">HELLO!</h1>
+          <h2 class="text-4xl">IM TRISTAN KENNEDY</h2>
         </BentoBox>
       </div>
       <a class="col-span-2 row-span-4" href="/projects">
@@ -20,7 +20,12 @@ import BentoBox from "../components/BentoBox.astro";
       >
 
       <a class="col-span-2 row-span-2" href="/about"
-        ><BentoBox><h1>ABOUT ME</h1></BentoBox></a
+        ><BentoBox
+          ><h1 class="mb-2">ABOUT ME</h1><h2>SLIGHT H2 HERE</h2><p>
+            Here's some random words so I can see how this body font looks.
+            Hello
+          </p></BentoBox
+        ></a
       >
       <div class="col-span-4 row-span-1">
         <BentoBox><h1>CAROUSEL</h1></BentoBox>
@@ -29,8 +34,14 @@ import BentoBox from "../components/BentoBox.astro";
         <BentoBox><h1>EXPERIMENTS</h1></BentoBox>
       </a>
       <a class="col-span-5 row-span-2" href="/contact">
-        <BentoBox><h1>WANNA TALK? SEND ME A MESSAGE</h1></BentoBox>
-      </a>
+        <BentoBox
+          ><div class="flex h-full flex-col justify-between">
+            <h1>WANNA TALK?</h1><h1 class="text-right">
+              SEND <span class="font-bold text-red">ME</span> A MESSAGE
+            </h1>
+          </div>
+        </BentoBox></a
+      >
     </div>
   </nav>
 </Layout>
