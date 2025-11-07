@@ -1,47 +1,60 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import BentoBox from "../components/BentoBox.astro";
+import LogoLoop from "../components/LogoLoop";
+import SoftwareEngineerLogo from "../assets/SoftwareEngineer.svg";
+import Plane from "../assets/Plane.svg";
 ---
 
 <Layout title="Tristan Kennedy">
   <nav class="flex-1">
-    <div class="grid h-full grid-cols-8 grid-rows-6 gap-8">
+    <div class="grid h-full max-h-[1100px] grid-cols-8 grid-rows-6 gap-8">
       <div class="col-span-4 row-span-3">
-        <BentoBox
-          ><h1 class="text-9xl font-bold text-yellow">HELLO!</h1>
-          <h2 class="text-4xl">IM TRISTAN KENNEDY</h2>
+        <BentoBox>
+          <div class="relative flex h-full flex-col">
+            <h2 class="relative z-10 mt-auto">Hello, I'm</h2>
+            <h1 class="relative z-10 text-8xl font-bold">TRISTAN KENNEDY</h1>
+            <SoftwareEngineerLogo
+              class="pointer-events-none absolute top-0 right-0 h-full w-auto object-contain text-bg2 transition-colors"
+            />
+          </div>
         </BentoBox>
       </div>
-      <a class="col-span-2 row-span-4" href="/projects">
-        <BentoBox><h1>PROJECTS</h1></BentoBox>
+      <a class="col-span-2 row-span-4" href="/about">
+        <BentoBox>
+          <h1>ABOUT ME</h1>
+        </BentoBox>
       </a>
-      <a class="col-span-2 row-span-2" href="/blog"
-        ><BentoBox><h1>BLOG</h1></BentoBox></a
-      >
 
-      <a class="col-span-2 row-span-2" href="/about"
-        ><BentoBox
-          ><h1 class="mb-2">ABOUT ME</h1><h2>SLIGHT H2 HERE</h2><p>
-            Here's some random words so I can see how this body font looks.
-            Hello
-          </p></BentoBox
-        ></a
-      >
+      <a class="col-span-2 row-span-2" href="/blog"
+        ><BentoBox>
+          <h1>BLOG</h1>
+        </BentoBox>
+      </a>
+      <a class="col-span-2 row-span-2" href="/projects">
+        <BentoBox>
+          <div class="flex h-full flex-col">
+            <h1 class="mt-auto text-center">PROJECTS</h1>
+          </div>
+        </BentoBox>
+      </a>
       <div class="col-span-4 row-span-1">
-        <BentoBox><h1>CAROUSEL</h1></BentoBox>
+        <LogoLoop client:load />
       </div>
       <a class="col-span-3 row-span-2" href="/experiments">
-        <BentoBox><h1>EXPERIMENTS</h1></BentoBox>
+        <BentoBox><h1 class="text-center">EXPERIMENTS</h1></BentoBox>
       </a>
       <a class="col-span-5 row-span-2" href="/contact">
-        <BentoBox
-          ><div class="flex h-full flex-col justify-between">
-            <h1>WANNA TALK?</h1><h1 class="text-right">
-              SEND <span class="font-bold text-red">ME</span> A MESSAGE
-            </h1>
+        <BentoBox>
+          <div class="relative flex h-full flex-col justify-between">
+            <h1>WANNA TALK?</h1>
+            <h1 class="text-right">SEND ME A MESSAGE.</h1>
+            <Plane
+              class="pointer-events-none absolute top-20 left-10 w-auto object-contain transition-colors"
+            />
           </div>
-        </BentoBox></a
-      >
+        </BentoBox>
+      </a>
     </div>
   </nav>
 </Layout>
