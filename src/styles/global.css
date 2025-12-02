@@ -1,202 +1,52 @@
-@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&family=Hind+Madurai:wght@300;400;500;600;700&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Oswald:wght@200..700&display=block");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=block");
 @import "tailwindcss";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @theme {
   --color-*: initial;
-  --color-bg: #fbf1c7;
-  --color-bg0: #fbf1c7;
-  --color-bg0-h: #f9f5d7;
-  --color-bg0-s: #f2e5bc;
-  --color-bg1: #ebdbb2;
-  --color-bg2: #d5c4a1;
-  --color-bg3: #bdae93;
-  --color-bg4: #a89984;
-  --color-fg: #3c3836;
-  --color-fg0: #282828;
-  --color-fg1: #3c3836;
-  --color-fg2: #504945;
-  --color-fg3: #665c54;
-  --color-fg4: #7c6f64;
-  --color-red: #cc241d;
-  --color-red-alt: #9d0006;
-  --color-green: #98971a;
-  --color-green-alt: #79740e;
-  --color-yellow: #d79921;
-  --color-yellow-alt: #b57614;
-  --color-blue: #458588;
-  --color-blue-alt: #076678;
-  --color-purple: #b16286;
-  --color-purple-alt: #8f3f71;
-  --color-aqua: #689d6a;
-  --color-aqua-alt: #427b58;
-  --color-orange: #d65d0e;
-  --color-orange-alt: #af3a03;
-  --color-gray: #7c6f64;
-  --color-gray-alt: #928374;
+  --color-bg: #f4f3f2;
+  --color-bg-elevated: #ffffff;
+  --color-primary: #222222;
+  --color-secondary: #6c6c6c;
+  --color-subtle: #b0b0b0;
+  --color-black: #000000;
+  --color-accent: #d62828;
 
-  --font-oswald: "Oswald", sans-serif;
-  --font-nunito-sans: "Nunito Sans", sans-serif;
-  --font-hind-madurai: "Hind Madurai", sans-serif;
+  --font-inter:
+    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
 @layer theme {
   :root,
   :host {
     @variant dark {
-      --color-bg: #282828;
-      --color-bg0: #282828;
-      --color-bg0-h: #1d2021;
-      --color-bg0-s: #32302f;
-      --color-bg1: #3c3836;
-      --color-bg2: #504945;
-      --color-bg3: #665c54;
-      --color-bg4: #7c6f64;
-      --color-fg: #ebdbb2;
-      --color-fg0: #fbf1c7;
-      --color-fg1: #ebdbb2;
-      --color-fg2: #d5c4a1;
-      --color-fg3: #bdae93;
-      --color-fg4: #a89984;
-      --color-red: #cc241d;
-      --color-red-alt: #fb4934;
-      --color-green: #98971a;
-      --color-green-alt: #b8bb26;
-      --color-yellow: #d79921;
-      --color-yellow-alt: #fabd2f;
-      --color-blue: #458588;
-      --color-blue-alt: #83a598;
-      --color-purple: #b16286;
-      --color-purple-alt: #d3869b;
-      --color-aqua: #689d6a;
-      --color-aqua-alt: #8ec07c;
-      --color-orange: #d65d0e;
-      --color-orange-alt: #fe8019;
-      --color-gray: #a89984;
-      --color-gray-alt: #928374;
+      --color-bg: #0e0e10;
+      --color-bg-elevated: #1a1a1d;
+      --color-primary: #d4d4d8;
+      --color-secondary: #a5a5a5;
+      --color-subtle: #6c6c6c;
     }
+  }
+}
+
+@layer components {
+  .h2 {
+    @apply text-sm tracking-[0.2rem] text-secondary;
   }
 }
 
 @layer base {
   h1 {
     @apply text-5xl;
-    font-family: var(--font-oswald);
   }
 
   h2 {
-    @apply text-4xl;
-    font-family: var(--font-nunito-sans);
+    @apply text-sm tracking-[0.2rem] text-secondary;
   }
 
-  p {
-    @apply text-base leading-relaxed;
-    font-family: var(--font-hind-madurai);
-  }
-}
-
-@layer utilities {
-  .crt {
-    position: relative;
-    text-shadow: 0 0 5px;
-  }
-
-  .crt::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    display: block;
-    background:
-      linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-      linear-gradient(
-        90deg,
-        rgba(255, 0, 0, 0.06),
-        rgba(0, 255, 0, 0.02),
-        rgba(0, 0, 255, 0.06)
-      );
-    background-size:
-      100% 2px,
-      3px 100%;
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .crt::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    display: block;
-    background: rgba(18, 16, 16, 0.1);
-    opacity: 0;
-    z-index: 2;
-    pointer-events: none;
-    animation: flicker 0.15s infinite;
-  }
-
-  @keyframes flicker {
-    0% {
-      opacity: 0.27861;
-    }
-    5% {
-      opacity: 0.34769;
-    }
-    10% {
-      opacity: 0.23604;
-    }
-    15% {
-      opacity: 0.90626;
-    }
-    20% {
-      opacity: 0.18128;
-    }
-    25% {
-      opacity: 0.83891;
-    }
-    30% {
-      opacity: 0.65583;
-    }
-    35% {
-      opacity: 0.67807;
-    }
-    40% {
-      opacity: 0.26559;
-    }
-    45% {
-      opacity: 0.84693;
-    }
-    50% {
-      opacity: 0.96019;
-    }
-    55% {
-      opacity: 0.08594;
-    }
-    60% {
-      opacity: 0.20313;
-    }
-    65% {
-      opacity: 0.71988;
-    }
-    70% {
-      opacity: 0.53455;
-    }
-    75% {
-      opacity: 0.37288;
-    }
-    80% {
-      opacity: 0.71428;
-    }
-    85% {
-      opacity: 0.70419;
-    }
-    90% {
-      opacity: 0.7003;
-    }
-    95% {
-      opacity: 0.36108;
-    }
-    100% {
-      opacity: 0.24387;
-    }
+  button {
+    @apply cursor-pointer;
   }
 }

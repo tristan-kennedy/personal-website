@@ -1,5 +1,3 @@
-import { LuMoon, LuSun } from "react-icons/lu";
-
 export default function ThemeToggle() {
   const toggleTheme = () => {
     const newTheme =
@@ -13,11 +11,10 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="cursor-pointer rounded-2xl p-2 transition-colors hover:text-fg3 active:scale-95 active:text-fg4"
+      className="group h2 cursor-pointer transition-all duration-200 active:scale-[0.90]"
       aria-label="Toggle theme"
     >
-      <LuMoon className="dark:hidden" size={24} />
-      <LuSun className="hidden dark:block" size={24} />
+      LIGHT / DARK
     </button>
   );
 }
