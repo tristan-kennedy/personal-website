@@ -1,5 +1,4 @@
 ---
-import Navigation from "../components/navigation/Navigation.astro";
 import Footer from "../components/Footer.astro";
 import Head from "../components/Head.astro";
 import "../styles/global.css";
@@ -10,15 +9,13 @@ interface Props {
 const { title } = Astro.props;
 ---
 
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <Head title={title} />
   <body
-    class="mx-auto flex min-h-screen max-w-[1440px] flex-col gap-8 bg-bg p-4 font-oswald text-fg transition-colors"
+    class="mx-auto flex max-w-[1200px] flex-col bg-bg px-8 font-inter text-primary transition-colors"
   >
-    <Navigation />
-    <main class="flex flex-1">
+    <main>
       <slot />
     </main>
-    <Footer />
   </body>
 </html>
