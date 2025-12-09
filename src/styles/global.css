@@ -46,6 +46,10 @@
     @apply text-sm tracking-[0.2rem] text-secondary;
   }
 
+  h3 {
+    @apply text-3xl;
+  }
+
   button {
     @apply cursor-pointer;
   }

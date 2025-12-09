@@ -2,29 +2,50 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="69.999855mm"
-   height="69.999886mm"
-   viewBox="0 0 69.999856 69.999886"
+   width="55.636906mm"
+   height="36.958984mm"
+   viewBox="0 0 55.636906 36.958984"
    version="1.1"
    id="svg1"
+   inkscape:export-filename="logo.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
 
-    <style>
-        path { fill: #282828; }
+   <style>
+        path { fill: #222222; }
         @media (prefers-color-scheme: dark) {
-            path { fill: #fbf1c7; }
+            path { fill: #d4d4d8; }
         }
-    </style>
+   </style>
 
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm">
+    <inkscape:page
+       x="4.4822158e-22"
+       y="0"
+       width="55.636906"
+       height="36.958984"
+       id="page2"
+       margin="0"
+       bleed="0" />
+  </sodipodi:namedview>
   <defs
      id="defs1" />
-  <g
-     id="layer1"
-     transform="translate(-81.427282,-131.67062)">
-    <path
-       id="path1"
-       style="stroke-width:9.0145;paint-order:stroke fill markers"
-       d="m 114.88467,131.70568 a 35.024681,34.999996 0 0 0 -33.45481,35.38957 35.024681,34.999996 0 0 0 34.30488,34.56792 35.024681,34.999996 0 0 0 35.6924,-33.13493 l -0.0553,-4.56355 a 35.024681,34.999996 0 0 0 -36.48717,-32.25901 z m -23.150013,18.13533 h 28.705223 l -3.83594,6.53862 h -6.19084 v 29.56822 h -8.54469 V 156.37963 H 91.734657 Z m 37.666433,0 h 8.96121 l -9.79217,16.53904 10.78229,19.56831 h -9.89965 l -9.92549,-19.27789 z" />
-  </g>
+  <path
+     d="M -2.3809088e-7,3.968742 V -8.058943e-6 H 28.52539 V 3.968742 H 16.519922 V 36.958976 H 12.055078 V 3.968742 Z M 36.83496,27.533196 v -4.98574 h 0.32246 l 12.1791,-11.78223 h 5.45703 l -12.7496,12.40234 h -0.39688 z m -3.94394,9.42578 V -8.058943e-6 h 4.21679 V 36.958976 Z m 17.38808,0 -10.66601,-12.84883 2.97656,-2.92695 13.04726,15.77578 z"
+     id="text1"
+     style="font-size:50.8px;line-height:1.05;font-family:Inter;-inkscape-font-specification:Inter;letter-spacing:0px;stroke-width:0.529167;stroke-dasharray:6.35, 6.35;paint-order:stroke fill markers"
+     aria-label="Tk" />
 </svg>

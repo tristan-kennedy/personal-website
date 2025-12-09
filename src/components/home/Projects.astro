@@ -1,0 +1,55 @@
+---
+interface ProjectFrontmatter {
+  title: string;
+  date: string;
+  description: string;
+  tech?: string[];
+}
+
+export interface ProjectEntry {
+  frontmatter: ProjectFrontmatter;
+  url: string;
+}
+
+interface Props {
+  projects: ProjectEntry[];
+}
+
+const { projects = [] } = Astro.props as Props;
+const featured = projects.slice(0, 2);
+---
+
+<section id="projects" class="grid grid-cols-10 gap-x-6">
+  <h2 class="col-start-1 col-end-3">SELECTED WORK</h2>
+  <h2 class="col-start-9 col-end-11 mb-6 text-right">02 — PROJECTS</h2>
+  <h1 class="col-start-1 col-end-5 mb-6">Recent Projects</h1>
+  <a
+    href="/projects"
+    class="h2 col-start-1 col-end-11 mb-64 transition-colors hover:text-accent"
+    >VIEW ALL WORK →</a
+  >
+
+  <a
+    href={`${featured[0].url}`}
+    class="group transition-size col-start-7 col-end-11 mb-24 block border-r-2 border-transparent pr-4 duration-300 hover:border-accent hover:pr-6"
+  >
+    <div class="flex flex-col gap-y-2 text-right">
+      <h3>{featured[0].frontmatter.title}</h3>
+      <h2>{featured[0].frontmatter.date}</h2>
+      <p class="mb-10">{featured[0].frontmatter.description}</p>
+      <h2>{featured[0].frontmatter.tech?.join(", ")}</h2>
+    </div>
+  </a>
+
+  <a
+    href={`${featured[1].url}`}
+    class="group transition-size col-start-1 col-end-5 mb-96 block border-l-2 border-transparent pl-4 duration-300 hover:border-accent hover:pl-6"
+  >
+    <div class="flex flex-col gap-y-2">
+      <h3>{featured[1].frontmatter.title}</h3>
+      <h2>{featured[1].frontmatter.date}</h2>
+      <p class="mb-10">{featured[1].frontmatter.description}</p>
+      <h2>{featured[1].frontmatter.tech?.join(", ")}</h2>
+    </div>
+  </a>
+</section>

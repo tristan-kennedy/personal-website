@@ -1,14 +1,26 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Hero from "../components/Hero.astro";
-import AboutMe from "../components/AboutMe.astro";
-import Projects from "../components/Projects.astro";
-import ScrollToTop from "../components/ScrollToTop";
+import Hero from "../components/home/Hero.astro";
+import AboutMe from "../components/home/AboutMe.astro";
+import Projects, { type ProjectEntry } from "../components/home/Projects.astro";
+import ScrollToTop from "../components/menu/ScrollToTop";
+
+const toTimestamp = (value: string | undefined) => {
+  const time = value ? new Date(value).getTime() : NaN;
+  return Number.isNaN(time) ? 0 : time;
+};
+
+const allProjects: ProjectEntry[] = Object.values(
+  import.meta.glob("./projects/*.md", { eager: true }),
+);
+const sortedProjects = allProjects.sort(
+  (a, b) => toTimestamp(b.frontmatter.date) - toTimestamp(a.frontmatter.date),
+);
 ---
 
 <Layout title="Tristan Kennedy">
   <ScrollToTop client:load />
   <Hero />
   <AboutMe />
-  <Projects />
+  <Projects projects={sortedProjects} />
 </Layout>

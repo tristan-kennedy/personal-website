@@ -11,10 +11,12 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="group h2 cursor-pointer transition-all duration-200 active:scale-[0.90]"
+      className="group h2 cursor-pointer transition-all hover:scale-[1.1] active:scale-[0.90]"
       aria-label="Toggle theme"
     >
-      LIGHT / DARK
+      <span className="font-bold dark:font-normal">LIGHT</span>
+      <span> / </span>
+      <span className="font-normal dark:font-bold">DARK</span>
     </button>
   );
 }

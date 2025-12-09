@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { CiMenuBurger } from "react-icons/ci";
 import ThemeToggle from "./ThemeToggle";
-import { LuX } from "react-icons/lu";
+import { LuMenu, LuX } from "react-icons/lu";
 
 export default function Menu() {
   const [open, setOpen] = useState(false);
@@ -17,10 +16,10 @@ export default function Menu() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="group cursor-pointer rounded-2xl px-1 py-2 transition-all hover:scale-[1.1] active:scale-[0.90]"
+        className="group cursor-pointer rounded-2xl px-1 py-2 text-secondary transition-all hover:scale-[1.1] active:scale-[0.90]"
         aria-label="Toggle menu open"
       >
-        <CiMenuBurger size={24} />
+        <LuMenu size={24} />
       </button>
 
       <div
@@ -34,7 +33,7 @@ export default function Menu() {
         <div className="grid gap-8">
           <button
             onClick={() => setOpen(false)}
-            className="h2 flex cursor-pointer items-center justify-end gap-2 text-right transition-all hover:opacity-80 active:scale-[0.90]"
+            className="h2 ml-auto flex w-fit cursor-pointer items-center justify-end gap-2 text-center transition-all hover:scale-[1.1] active:scale-[0.90]"
           >
             CLOSE
             <LuX size={16} />
