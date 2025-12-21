@@ -1,55 +1,58 @@
 ---
-interface ProjectFrontmatter {
-  title: string;
-  date: string;
-  description: string;
-  tech?: string[];
-}
+import { Image } from "astro:assets";
+import { getCollection, type CollectionEntry } from "astro:content";
 
-export interface ProjectEntry {
-  frontmatter: ProjectFrontmatter;
-  url: string;
-}
+const baseProjects: CollectionEntry<"projects">[] =
+  await getCollection("projects");
+const projects = baseProjects
+  .map((project) => ({
+    ...project,
+    url: `/projects/${project.slug}/`,
+  }))
+  .sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
+  );
 
-interface Props {
-  projects: ProjectEntry[];
-}
-
-const { projects = [] } = Astro.props as Props;
 const featured = projects.slice(0, 2);
 ---
 
-<section id="projects" class="grid grid-cols-10 gap-x-6">
-  <h2 class="col-start-1 col-end-3">SELECTED WORK</h2>
-  <h2 class="col-start-9 col-end-11 mb-6 text-right">02 — PROJECTS</h2>
-  <h1 class="col-start-1 col-end-5 mb-6">Recent Projects</h1>
+<section id="projects" class="mb-24 grid grid-cols-10 gap-x-6">
+  <hr class="col-span-full mb-24 text-subtle" />
+  <h2 class="col-start-1 col-end-3">02 — PROJECTS</h2>
+  <h2 class="col-start-9 col-end-11 mb-6 text-right">SELECTED WORK</h2>
+  <h1 class="col-start-1 col-end-5 mb-6 text-6xl">Recent Projects</h1>
   <a
     href="/projects"
-    class="h2 col-start-1 col-end-11 mb-64 transition-colors hover:text-accent"
+    class="h2 col-span-full mb-24 transition-colors hover:text-accent"
     >VIEW ALL WORK →</a
   >
+  <div class="col-start-1 col-end-11 grid grid-cols-1 gap-12">
+    {
+      featured.map((project) => {
+        return (
+          <a
+            href={project.url}
+            class={`group grid grid-cols-3 gap-x-8 border-transparent transition-all`}
+          >
+            <div class="col-span-2 mb-6 overflow-hidden">
+              <Image
+                src={project.data.image}
+                alt={`${project.data.title} cover`}
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
 
-  <a
-    href={`${featured[0].url}`}
-    class="group transition-size col-start-7 col-end-11 mb-24 block border-r-2 border-transparent pr-4 duration-300 hover:border-accent hover:pr-6"
-  >
-    <div class="flex flex-col gap-y-2 text-right">
-      <h3>{featured[0].frontmatter.title}</h3>
-      <h2>{featured[0].frontmatter.date}</h2>
-      <p class="mb-10">{featured[0].frontmatter.description}</p>
-      <h2>{featured[0].frontmatter.tech?.join(", ")}</h2>
-    </div>
-  </a>
-
-  <a
-    href={`${featured[1].url}`}
-    class="group transition-size col-start-1 col-end-5 mb-96 block border-l-2 border-transparent pl-4 duration-300 hover:border-accent hover:pl-6"
-  >
-    <div class="flex flex-col gap-y-2">
-      <h3>{featured[1].frontmatter.title}</h3>
-      <h2>{featured[1].frontmatter.date}</h2>
-      <p class="mb-10">{featured[1].frontmatter.description}</p>
-      <h2>{featured[1].frontmatter.tech?.join(", ")}</h2>
-    </div>
-  </a>
+            <div class="my-auto flex flex-col gap-y-2">
+              <h3 class="transition-colors group-hover:text-accent">
+                {project.data.title}
+              </h3>
+              <h2>{project.data.date}</h2>
+              <p class="mb-10">{project.data.description}</p>
+              <h2>{project.data.tech?.join(", ")}</h2>
+            </div>
+          </a>
+        );
+      })
+    }
+  </div>
 </section>

@@ -1,0 +1,34 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const experiments: CollectionEntry<"experiments">[] =
+    await getCollection("experiments");
+  return experiments.map((experiment) => ({
+    params: { slug: experiment.slug },
+    props: { experiment },
+  }));
+}
+
+const { experiment } = Astro.props as {
+  experiment: CollectionEntry<"experiments">;
+};
+const { Content } = await experiment.render();
+---
+
+<Layout title={experiment.data.title}>
+  <article class="prose prose-invert mx-auto max-w-3xl py-16">
+    <p class="text-muted mb-2 text-sm tracking-[0.2em]">EXPERIMENT</p>
+    <h1 class="mb-2 text-4xl font-semibold">{experiment.data.title}</h1>
+    <p class="text-muted mb-6 text-lg">{experiment.data.description}</p>
+    {
+      experiment.data.tech && (
+        <p class="text-muted mb-8 text-sm tracking-[0.2em] uppercase">
+          {experiment.data.tech.join(" / ")}
+        </p>
+      )
+    }
+    <Content />
+  </article>
+</Layout>

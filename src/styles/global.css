@@ -33,7 +33,7 @@
 
 @layer components {
   .h2 {
-    @apply text-sm tracking-[0.2rem] text-secondary;
+    @apply text-xs tracking-[0.2rem] text-secondary;
   }
 }
 
@@ -43,11 +43,11 @@
   }
 
   h2 {
-    @apply text-sm tracking-[0.2rem] text-secondary;
+    @apply text-xs tracking-[0.2rem] text-secondary;
   }
 
   h3 {
-    @apply text-3xl;
+    @apply text-4xl;
   }
 
   button {

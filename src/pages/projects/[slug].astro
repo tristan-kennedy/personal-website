@@ -1,0 +1,32 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const projects: CollectionEntry<"projects">[] =
+    await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props as { project: CollectionEntry<"projects"> };
+const { Content } = await project.render();
+---
+
+<Layout title={project.data.title}>
+  <article class="prose prose-invert mx-auto max-w-3xl py-16">
+    <p class="text-muted mb-2 text-sm tracking-[0.2em]">PROJECT</p>
+    <h1 class="mb-2 text-4xl font-semibold">{project.data.title}</h1>
+    <p class="text-muted mb-6 text-lg">{project.data.description}</p>
+    {
+      project.data.tech && (
+        <p class="text-muted mb-8 text-sm tracking-[0.2em] uppercase">
+          {project.data.tech.join(" / ")}
+        </p>
+      )
+    }
+    <Content />
+  </article>
+</Layout>

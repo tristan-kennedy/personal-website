@@ -1,0 +1,18 @@
+---
+title: "Tuning the Astro content pipeline"
+date: "NOV 2025"
+description: "Notes on keeping Astro content collections fast while scaling to more MDX sources and shared assets. Tips for lean schemas, shared images, and date sorting. Hopefully helpful for anyone building a blog or documentation site with Astro."
+length: "5 MIN. READ"
+image: "../projects/personal-portfolio/test.png"
+---
+
+### Why I wrote this
+
+After wiring up multiple collections, I wanted to keep build times lean and the DX smooth. This post captures
+the tweaks that helped keep preview and prod speedy.
+
+### Key takeaways
+
+- Lean schemas make refactors easier
+- Shared image assets keep bundle sizes down
+- Sorting on ISO-like dates avoids brittle parsing

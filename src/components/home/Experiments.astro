@@ -1,0 +1,43 @@
+---
+import { Image } from "astro:assets";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+const baseExperiments: CollectionEntry<"experiments">[] =
+  await getCollection("experiments");
+const experiments = baseExperiments.map((experiment) => ({
+  ...experiment,
+  url: `/experiments/${experiment.slug}/`,
+}));
+
+const featured = experiments.slice(0, 3);
+---
+
+<section id="experiments" class="mb-40 grid grid-cols-10 gap-x-6">
+  <hr class="col-span-full mb-24 text-subtle" />
+  <h2 class="col-start-1 col-end-3">04 — EXPERIMENTS</h2>
+  <h2 class="col-start-9 col-end-11 mb-6 text-right">LAB</h2>
+  <h1 class="col-start-1 col-end-5 mb-6 text-6xl">Experiments & Ideas</h1>
+  <a
+    href="/experiments"
+    class="h2 col-span-full mb-24 transition-colors hover:text-accent"
+    >EXPLORE MORE →</a
+  >
+  <div class="col-start-1 col-end-11 grid grid-cols-1 gap-10 md:grid-cols-3">
+    {
+      featured.map((experiment) => {
+        return (
+          <a href={experiment.url} class="flex h-full flex-col gap-6">
+            <div class="aspect-square overflow-hidden">
+              <Image
+                src={experiment.data.image}
+                alt={`${experiment.data.title} cover`}
+                class="h-full w-full object-cover"
+              />
+            </div>
+            <h2>{experiment.data.title}</h2>
+          </a>
+        );
+      })
+    }
+  </div>
+</section>

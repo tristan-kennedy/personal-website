@@ -1,0 +1,52 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+type ProjectWithUrl = CollectionEntry<"projects"> & { url: string };
+
+const toTimestamp = (value: string | undefined) => {
+  const time = value ? new Date(value).getTime() : NaN;
+  return Number.isNaN(time) ? 0 : time;
+};
+
+const baseProjects: CollectionEntry<"projects">[] =
+  await getCollection("projects");
+const projects: ProjectWithUrl[] = baseProjects
+  .map((project) => ({
+    ...project,
+    url: `/projects/${project.slug}/`,
+  }))
+  .sort((a, b) => toTimestamp(b.data.date) - toTimestamp(a.data.date));
+---
+
+<Layout title="Projects">
+  <section class="mx-auto max-w-5xl py-16">
+    <p class="text-muted mb-2 text-sm tracking-[0.2em]">PROJECTS</p>
+    <h1 class="mb-8 text-4xl font-semibold">Selected Work</h1>
+    <div class="grid gap-12 md:grid-cols-2">
+      {
+        projects.map((project) => (
+          <a
+            href={project.url}
+            class="group border-muted/30 hover:bg-muted/10 rounded-2xl border p-6 transition hover:-translate-y-1 hover:border-accent/60"
+          >
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-xl font-semibold">{project.data.title}</h3>
+              <span class="text-muted text-xs tracking-[0.2em] uppercase">
+                {project.data.date}
+              </span>
+            </div>
+            <p class="text-muted mt-3">{project.data.description}</p>
+            {project.data.tech && (
+              <p class="text-muted mt-4 text-sm tracking-[0.2em] uppercase">
+                {project.data.tech.join(" / ")}
+              </p>
+            )}
+            <p class="mt-6 text-sm font-semibold text-accent">
+              View case study →'
+            </p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Layout>
