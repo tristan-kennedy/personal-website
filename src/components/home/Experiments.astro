@@ -12,29 +12,30 @@ const experiments = baseExperiments.map((experiment) => ({
 const featured = experiments.slice(0, 3);
 ---
 
-<section id="experiments" class="mb-40 grid grid-cols-10 gap-x-6">
-  <hr class="col-span-full mb-24 text-subtle" />
-  <h2 class="col-start-1 col-end-3">04 — EXPERIMENTS</h2>
-  <h2 class="col-start-9 col-end-11 mb-6 text-right">LAB</h2>
-  <h1 class="col-start-1 col-end-5 mb-6 text-6xl">Experiments & Ideas</h1>
+<section id="experiments" class="mb-48 grid grid-cols-10 gap-x-6">
+  <h1 class="col-start-1 col-end-5 mb-6 text-7xl">Experiments & Ideas</h1>
+  <h2 class="col-start-9 col-end-11 mb-6 text-right">[04]</h2>
   <a
     href="/experiments"
-    class="h2 col-span-full mb-24 transition-colors hover:text-accent"
+    class="h2 col-span-full mb-32 transition-colors hover:text-accent"
     >EXPLORE MORE →</a
   >
   <div class="col-start-1 col-end-11 grid grid-cols-1 gap-10 md:grid-cols-3">
     {
       featured.map((experiment) => {
         return (
-          <a href={experiment.url} class="flex h-full flex-col gap-6">
-            <div class="aspect-square overflow-hidden">
+          <a href={experiment.url} class="group flex h-full flex-col gap-2">
+            <div class="mb-4 aspect-square overflow-hidden">
               <Image
                 src={experiment.data.image}
                 alt={`${experiment.data.title} cover`}
-                class="h-full w-full object-cover"
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
             </div>
-            <h2>{experiment.data.title}</h2>
+            <p class="transition-colors group-hover:text-accent">
+              {experiment.data.title}
+            </p>
+            <h2 class="uppercase">{experiment.data.tech?.join(" / ")}</h2>
           </a>
         );
       })

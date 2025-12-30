@@ -11,44 +11,35 @@ const posts = basePosts
     (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
   );
 
-const featured = posts.slice(0, 2);
+const featured = posts[0];
 ---
 
-<section id="posts" class="mb-24 grid grid-cols-10 gap-x-6">
-  <hr class="col-span-full mb-24 text-subtle" />
-  <h2 class="col-start-1 col-end-3">03 — BLOG</h2>
-  <h2 class="col-start-9 col-end-11 mb-6 text-right">WRITING</h2>
-  <h1 class="col-start-1 col-end-5 mb-6 text-6xl">Latest Thoughts</h1>
+<section id="posts" class="mb-48 grid grid-cols-10 gap-x-6">
+  <h2 class="col-start-1 col-end-2 mb-6">[03]</h2>
+  <h1 class="col-start-5 col-end-11 mb-6 text-right text-7xl">
+    Latest Thought
+  </h1>
   <a
     href="/blog"
-    class="h2 col-span-full mb-24 transition-colors hover:text-accent"
-    >ALL ARTICLES →</a
+    class="h2 col-span-full mb-32 text-right transition-colors hover:text-accent"
+    >ALL POSTS</a
   >
-  <div class="col-start-1 col-end-11 grid grid-cols-1 gap-12">
-    {
-      featured.map((post) => {
-        return (
-          <a
-            href={post.url}
-            class="group grid grid-cols-9 items-start gap-x-8 border border-transparent transition-all duration-300 hover:-translate-y-1"
-          >
-            <div class="col-span-2 flex flex-col gap-y-3">
-              <h2>{post.data.date}</h2>
-              <h2 class="group-hover:text-accent">{post.data.length}</h2>
-            </div>
-
-            <div class="col-span-7 flex flex-col gap-y-6">
-              <h3 class="transition-colors duration-300 group-hover:text-accent">
-                {post.data.title}
-              </h3>
-              <p>{post.data.description}</p>
-              <h2 class="transition-transform group-hover:translate-x-2">
-                READ ARTICLE →
-              </h2>
-            </div>
-          </a>
-        );
-      })
-    }
+  <div class="col-start-2 col-end-9 grid grid-cols-1 gap-12">
+    <a
+      href={featured.url}
+      class="group items-start gap-x-8 border border-transparent transition-all"
+    >
+      <div class="flex flex-col gap-y-6">
+        <h2>{featured.data.date}</h2>
+        <h3 class="transition-colors group-hover:text-accent">
+          {featured.data.title}
+        </h3>
+        <p>{featured.data.description}</p>
+        <h2 class="transition-colors group-hover:text-accent">
+          {featured.data.length} →
+        </h2>
+      </div>
+    </a>
   </div>
+  <h2 class="col-start-10 col-end-11 text-right">FEATURED</h2>
 </section>

@@ -30,6 +30,7 @@ const experiments = defineCollection({
     z.object({
       title: z.string(),
       image: image(),
+      tech: z.array(z.string()).optional(),
     }),
 });
 

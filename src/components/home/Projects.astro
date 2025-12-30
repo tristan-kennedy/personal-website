@@ -16,14 +16,12 @@ const projects = baseProjects
 const featured = projects.slice(0, 2);
 ---
 
-<section id="projects" class="mb-24 grid grid-cols-10 gap-x-6">
-  <hr class="col-span-full mb-24 text-subtle" />
-  <h2 class="col-start-1 col-end-3">02 — PROJECTS</h2>
-  <h2 class="col-start-9 col-end-11 mb-6 text-right">SELECTED WORK</h2>
-  <h1 class="col-start-1 col-end-5 mb-6 text-6xl">Recent Projects</h1>
+<section id="projects" class="mb-48 grid grid-cols-10 gap-x-6">
+  <h1 class="col-start-1 col-end-5 mb-6 text-7xl">Recent Projects</h1>
+  <h2 class="col-start-9 col-end-11 mb-6 text-right">[02]</h2>
   <a
     href="/projects"
-    class="h2 col-span-full mb-24 transition-colors hover:text-accent"
+    class="h2 col-span-full mb-32 transition-colors hover:text-accent"
     >VIEW ALL WORK →</a
   >
   <div class="col-start-1 col-end-11 grid grid-cols-1 gap-12">
@@ -48,7 +46,7 @@ const featured = projects.slice(0, 2);
               </h3>
               <h2>{project.data.date}</h2>
               <p class="mb-10">{project.data.description}</p>
-              <h2>{project.data.tech?.join(", ")}</h2>
+              <h2>{project.data.tech?.join(" / ")}</h2>
             </div>
           </a>
         );

@@ -1,25 +1,56 @@
-<section id="contact" class="mb-24 grid grid-cols-10 gap-x-6">
-  <hr class="col-span-full mb-24 text-subtle" />
-  <h2 class="col-start-1 col-end-3">05 — CONTACT</h2>
-  <h2 class="col-start-9 col-end-11 mb-24 text-right">HI THERE</h2>
-  <h1 class="col-span-full mb-10 text-[12rem]">Get in touch</h1>
-  <div class="col-start-1 col-end-5 flex flex-col gap-3 text-xl font-semibold">
-    <a class="hover:text-accent" href="mailto:hello@tristankennedy.dev">
-      Email — hello@tristankennedy.dev
-    </a>
-    <a class="hover:text-accent" href="https://github.com/tristankennedy">
-      GitHub — @tristankennedy
-    </a>
-  </div>
-  <div class="col-start-6 col-end-11 flex flex-col gap-3 text-xl font-semibold">
-    <a
-      class="hover:text-accent"
-      href="https://www.linkedin.com/in/tristankennedy/"
-    >
-      LinkedIn — /in/tristankennedy
-    </a>
-    <a class="hover:text-accent" href="https://x.com/tristankennedy">
-      X — @tristankennedy
-    </a>
+---
+import { LuArrowUpRight } from "react-icons/lu";
+---
+
+<section id="contact" class="mb-48 grid grid-cols-10 gap-x-6">
+  <h2 class="col-start-1 col-end-2">[05]</h2>
+  <h1 class="col-start-2 col-end-11 mb-32 text-right text-[12rem]">
+    Find me here
+  </h1>
+  <div class="col-start-6 col-end-11 grid grid-cols-2 gap-x-10">
+    <div class="flex flex-col gap-2">
+      <a
+        class="h2 uppercase hover:text-accent"
+        href="https://github.com/tristankennedy"
+        target="_blank"
+        rel="noreferrer"
+      >
+        GitHub <LuArrowUpRight className="inline align-middle" />
+      </a>
+      <a
+        class="h2 uppercase hover:text-accent"
+        href="https://www.linkedin.com/in/tristankennedy/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        LinkedIn <LuArrowUpRight className="inline align-middle" />
+      </a>
+      <a
+        class="h2 uppercase hover:text-accent"
+        href="https://letterboxd.com/tristankennedy/"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Letterboxd <LuArrowUpRight className="inline align-middle" />
+      </a>
+    </div>
+    <div class="flex flex-col gap-2">
+      <a
+        class="h2 uppercase hover:text-accent"
+        href="/resume.pdf"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Resume <LuArrowUpRight className="inline align-middle" />
+      </a>
+      <a
+        class="h2 uppercase hover:text-accent"
+        href="mailto:hello@tristankennedy.dev"
+        target="_blank"
+        rel="noreferrer"
+      >
+        Email <LuArrowUpRight className="inline align-middle" />
+      </a>
+    </div>
   </div>
 </section>
