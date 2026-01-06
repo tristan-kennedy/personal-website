@@ -21,8 +21,8 @@ const featured = posts[0];
   </h1>
   <a
     href="/blog"
-    class="h2 col-span-full mb-32 text-right transition-colors hover:text-accent"
-    >ALL POSTS →</a
+    class="h2 col-span-full mb-32 text-right transition-colors transition-transform hover:-translate-x-2 hover:text-accent"
+    >← ALL POSTS</a
   >
   <div class="col-start-2 col-end-9 grid grid-cols-1 gap-12">
     <a
@@ -35,7 +35,9 @@ const featured = posts[0];
           {featured.data.title}
         </h3>
         <p>{featured.data.description}</p>
-        <h2 class="transition-colors group-hover:text-accent">
+        <h2
+          class="transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent"
+        >
           {featured.data.length} →
         </h2>
       </div>

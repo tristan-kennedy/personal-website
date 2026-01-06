@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import ThemeToggle from "./ThemeToggle";
 import { LuMenu, LuX } from "react-icons/lu";
 
+const NAV_ITEMS = [
+  { label: "Home", href: "/" },
+  { label: "Projects", href: "/projects" },
+  { label: "Posts", href: "/blog" },
+  { label: "Experiments", href: "/experiments" },
+];
+
 export default function Menu() {
   const [open, setOpen] = useState(false);
 
@@ -14,44 +21,63 @@ export default function Menu() {
 
   return (
     <>
+      {/* OPEN BUTTON */}
       <button
         onClick={() => setOpen(true)}
-        className="group cursor-pointer rounded-2xl px-1 py-2 text-secondary transition-all hover:scale-[1.1] active:scale-[0.90]"
-        aria-label="Toggle menu open"
+        className="group rounded-2xl px-1 py-2 text-secondary transition-all hover:scale-[1.1] active:scale-[0.9]"
+        aria-label="Open menu"
       >
         <LuMenu size={24} />
       </button>
 
-      <div
-        className={`fixed inset-0 bg-bg/33 backdrop-blur-sm transition-opacity ${open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"} `}
-        onClick={() => setOpen(false)}
-      />
-
+      {/* FULL PAGE OVERLAY */}
       <aside
-        className={`text-white fixed top-0 right-0 z-50 h-full w-96 transform px-10 py-12 transition-transform ${open ? "translate-x-0" : "translate-x-full"} flex flex-col justify-between`}
+        className={`fixed inset-0 z-[100] bg-accent text-bg transition-opacity duration-300 ${open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"} `}
+        role="dialog"
+        aria-modal="true"
       >
-        <div className="grid gap-8">
-          <button
-            onClick={() => setOpen(false)}
-            className="h2 ml-auto flex w-fit cursor-pointer items-center justify-end gap-2 text-center transition-all hover:scale-[1.1] active:scale-[0.90]"
-          >
-            CLOSE
-            <LuX size={16} />
-          </button>
-          <nav className="mt-4 grid gap-6 text-5xl leading-tight">
-            <a href="/projects" className="transition-colors hover:text-accent">
-              Projects
-            </a>
-            <a href="/blog" className="transition-colors hover:text-accent">
-              Posts
-            </a>
-            <a href="/contact" className="transition-colors hover:text-accent">
-              Experiments
-            </a>
-          </nav>
-        </div>
+        <div className="mx-auto flex h-full max-w-6xl flex-col px-8 py-10">
+          {/* HEADER */}
+          <header className="flex items-center justify-between">
+            <span className="text-sm tracking-wide opacity-70">MENU</span>
+            <button
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 text-sm transition-all hover:scale-[1.1]"
+              aria-label="Close menu"
+            >
+              CLOSE
+              <LuX size={16} />
+            </button>
+          </header>
 
-        <ThemeToggle />
+          {/* NAV */}
+          <nav className="my-auto flex flex-col gap-6">
+            {NAV_ITEMS.map((item) => {
+              const isActive =
+                location.pathname === item.href ||
+                (item.href === "/" && location.pathname === "/");
+
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className={`text-[clamp(3rem,6vw,6rem)] leading-none tracking-tight transition-all hover:translate-x-2 ${
+                    isActive ? "opacity-100" : "opacity-70 hover:opacity-100"
+                  } `}
+                >
+                  {isActive ? "– " : ""}
+                  {item.label}
+                </a>
+              );
+            })}
+          </nav>
+
+          {/* FOOTER */}
+          <footer className="flex items-center justify-between text-sm opacity-70">
+            <span>© {new Date().getFullYear()} Tristan Kennedy</span>
+            <ThemeToggle />
+          </footer>
+        </div>
       </aside>
     </>
   );
