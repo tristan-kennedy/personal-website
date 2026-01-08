@@ -1,24 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getCollection, type CollectionEntry } from "astro:content";
-type ExperimentWithUrl = CollectionEntry<"experiments"> & { url: string };
+import { getExperiments } from "../../lib/content/experiments";
 
-const toTimestamp = (value: string | undefined) => {
-  const time = value ? new Date(value).getTime() : NaN;
-  return Number.isNaN(time) ? 0 : time;
-};
-
-const baseExperiments: CollectionEntry<"experiments">[] =
-  await getCollection("experiments");
-const experiments: ExperimentWithUrl[] = baseExperiments
-  .map((experiment) => ({
-    ...experiment,
-    url: `/experiments/${experiment.slug}/`,
-  }))
-  .sort((a, b) => toTimestamp(b.data.date) - toTimestamp(a.data.date));
+const experiments = await getExperiments();
 ---
 
-<Layout title="Experiments">
+<Layout title="Tristan Kennedy | Experiments">
   <section class="mx-auto max-w-5xl py-16">
     <p class="text-muted mb-2 text-sm tracking-[0.2em]">EXPERIMENTS</p>
     <h1 class="mb-8 text-4xl font-semibold">Lab Notes</h1>

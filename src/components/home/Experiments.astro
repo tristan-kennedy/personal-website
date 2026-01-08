@@ -1,14 +1,8 @@
 ---
 import { Image } from "astro:assets";
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getExperiments } from "../../lib/content/experiments";
 
-const baseExperiments: CollectionEntry<"experiments">[] =
-  await getCollection("experiments");
-const experiments = baseExperiments.map((experiment) => ({
-  ...experiment,
-  url: `/experiments/${experiment.slug}/`,
-}));
-
+const experiments = await getExperiments();
 const featured = experiments.slice(0, 3);
 ---
 

@@ -1,16 +1,7 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getPosts } from "../../lib/content/posts";
 
-const basePosts: CollectionEntry<"posts">[] = await getCollection("posts");
-const posts = basePosts
-  .map((post) => ({
-    ...post,
-    url: `/blog/${post.slug}/`,
-  }))
-  .sort(
-    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-  );
-
+const posts = await getPosts();
 const featured = posts[0];
 ---
 
@@ -20,7 +11,7 @@ const featured = posts[0];
     Latest Thought
   </h1>
   <a
-    href="/blog"
+    href="/posts"
     class="h2 col-span-full mb-32 text-right transition-colors transition-transform hover:-translate-x-2 hover:text-accent"
     >← ALL POSTS</a
   >

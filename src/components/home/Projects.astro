@@ -1,18 +1,8 @@
 ---
 import { Image } from "astro:assets";
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getProjects } from "../../lib/content/projects";
 
-const baseProjects: CollectionEntry<"projects">[] =
-  await getCollection("projects");
-const projects = baseProjects
-  .map((project) => ({
-    ...project,
-    url: `/projects/${project.slug}/`,
-  }))
-  .sort(
-    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
-  );
-
+const projects = await getProjects();
 const featured = projects.slice(0, 2);
 ---
 

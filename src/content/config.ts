@@ -7,7 +7,7 @@ const projects = defineCollection({
       title: z.string(),
       date: z.string(),
       description: z.string(),
-      tech: z.array(z.string()).optional(),
+      tech: z.array(z.string()),
       image: image(),
     }),
 });
@@ -29,8 +29,10 @@ const experiments = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      date: z.string(),
+      description: z.string(),
+      tech: z.array(z.string()),
       image: image(),
-      tech: z.array(z.string()).optional(),
     }),
 });
 

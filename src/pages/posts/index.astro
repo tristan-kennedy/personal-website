@@ -1,23 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { getCollection, type CollectionEntry } from "astro:content";
-type PostWithUrl = CollectionEntry<"posts"> & { url: string };
+import { getPosts } from "../../lib/content/posts";
 
-const toTimestamp = (value: string | undefined) => {
-  const time = value ? new Date(value).getTime() : NaN;
-  return Number.isNaN(time) ? 0 : time;
-};
-
-const basePosts: CollectionEntry<"posts">[] = await getCollection("posts");
-const posts: PostWithUrl[] = basePosts
-  .map((post) => ({
-    ...post,
-    url: `/blog/${post.slug}/`,
-  }))
-  .sort((a, b) => toTimestamp(b.data.date) - toTimestamp(a.data.date));
+const posts = await getPosts();
 ---
 
-<Layout title="Blog">
+<Layout title="Tristan Kennedy | Posts">
   <section class="mx-auto max-w-5xl py-16">
     <p class="text-muted mb-2 text-sm tracking-[0.2em]">POSTS</p>
     <h1 class="mb-8 text-4xl font-semibold">Latest Thoughts</h1>
