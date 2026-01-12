@@ -1,36 +1,38 @@
----
+﻿---
 import Layout from "../../layouts/Layout.astro";
+import Menu from "../../components/menu/Menu";
 import { getProjects } from "../../lib/content/projects";
 
 const projects = await getProjects();
 ---
 
 <Layout title="Tristan Kennedy | Projects">
-  <section class="mx-auto max-w-5xl py-16">
-    <p class="text-muted mb-2 text-sm tracking-[0.2em]">PROJECTS</p>
-    <h1 class="mb-8 text-4xl font-semibold">Selected Work</h1>
-    <div class="grid gap-12 md:grid-cols-2">
+  <section class="mb-48 grid grid-cols-10 gap-x-6 py-8">
+    <h1 class="col-start-1 col-end-5 mb-6 text-7xl">Projects</h1>
+    <header class="col-start-10 col-end-11 mb-6 flex items-center justify-end">
+      <Menu client:only />
+    </header>
+    <h2 class="col-span-full mb-32">STUFF I'VE MADE</h2>
+    <div class="col-start-2 col-end-11 grid grid-cols-1 gap-12">
       {
-        projects.map((project) => (
-          <a
-            href={project.url}
-            class="group border-muted/30 hover:bg-muted/10 rounded-2xl border p-6 transition hover:-translate-y-1 hover:border-accent/60"
-          >
-            <div class="flex items-center justify-between gap-4">
-              <h3 class="text-xl font-semibold">{project.data.title}</h3>
-              <span class="text-muted text-xs tracking-[0.2em] uppercase">
-                {project.data.date}
-              </span>
-            </div>
-            <p class="text-muted mt-3">{project.data.description}</p>
-            {project.data.tech && (
-              <p class="text-muted mt-4 text-sm tracking-[0.2em] uppercase">
-                {project.data.tech.join(" / ")}
-              </p>
-            )}
-            <p class="mt-6 text-sm font-semibold text-accent">
-              View case study →'
-            </p>
+        projects.map((project, index) => (
+          <a href={project.url} class="group grid grid-cols-10 gap-x-6 gap-y-2">
+            <h2 class="col-start-1 col-end-2">
+              [{String(index + 1).padStart(2, "0")}]
+            </h2>
+            <h3 class="col-start-2 col-end-9 transition-colors group-hover:text-accent">
+              {project.data.title}
+            </h3>
+            <h2 class="col-start-9 col-end-11 text-right">
+              {project.data.date}
+            </h2>
+            <p class="col-start-2 col-end-9">{project.data.description}</p>
+            <h2 class="col-start-2 col-end-9 uppercase">
+              {project.data.tech.join(" / ")}
+            </h2>
+            <h2 class="col-start-9 col-end-11 text-right transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent">
+              VIEW DETAILS →
+            </h2>
           </a>
         ))
       }

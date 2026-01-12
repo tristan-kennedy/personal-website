@@ -9,7 +9,6 @@ import { LuArrowDown } from "react-icons/lu";
       <h2 class="text-primary">SOFTWARE ENGINEER</h2>
       <h3 class="text-sm text-secondary">Rogers, AR</h3>
     </div>
-    <Menu client:only />
   </header>
   <div class="my-auto flex flex-col gap-8 py-8">
     <h2>INDEX</h2>
@@ -17,7 +16,7 @@ import { LuArrowDown } from "react-icons/lu";
       TRISTAN<br />KENNEDY
     </h1>
     <div class="flex gap-8">
-      <span data-hero-accent aria-hidden class="h-12 w-12 bg-accent"></span>
+      <Menu client:only />
       <nav data-hero-nav class="h2">
         <ul>
           <li class="transition-transform hover:translate-x-2">
@@ -52,72 +51,8 @@ import { LuArrowDown } from "react-icons/lu";
   <footer class="flex justify-between">
     <h2>© 2025</h2>
     <div class="h2 flex items-center gap-2">
-      <LuArrowDown />
+      <LuArrowDown className="animate-bounce" />
       <h2>SCROLL</h2>
     </div>
   </footer>
 </section>
-
-<script>
-  import gsap from "gsap";
-
-  function runIntro() {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      document.getElementById("intro-overlay")?.remove();
-      return;
-    }
-
-    const overlay = document.getElementById("intro-overlay");
-    const square = document.querySelector("[data-hero-accent]");
-    const title = document.querySelector("[data-hero-title]");
-    const nav = document.querySelector("[data-hero-nav]");
-
-    if (!overlay || !square) return;
-
-    // Lock scroll
-    document.documentElement.classList.add("overflow-hidden");
-    document.body.classList.add("overflow-hidden");
-
-    // Measure where the square ends up
-    const squareRect = square.getBoundingClientRect();
-
-    const tl = gsap.timeline({
-      defaults: { ease: "power4.inOut" },
-      onComplete() {
-        overlay.remove();
-        document.documentElement.classList.remove("overflow-hidden");
-        document.body.classList.remove("overflow-hidden");
-      },
-    });
-
-    // Initial state: overlay fills screen
-    gsap.set(overlay, {
-      clipPath: "inset(0% 0% 0% 0%)",
-    });
-
-    // Animate overlay collapsing INTO the square
-    tl.to(overlay, {
-      clipPath: `inset(
-        ${squareRect.top}px 
-        ${window.innerWidth - squareRect.right}px 
-        ${window.innerHeight - squareRect.bottom}px 
-        ${squareRect.left}px
-      )`,
-      duration: 1.1,
-    });
-
-    // Reveal hero content after collapse begins
-    tl.fromTo(
-      [title, nav],
-      { y: 16, opacity: 0 },
-      { y: 0, opacity: 1, stagger: 0.06, duration: 0.6 },
-      "-=0.4",
-    );
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", runIntro);
-  } else {
-    runIntro();
-  }
-</script>

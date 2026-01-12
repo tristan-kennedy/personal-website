@@ -14,8 +14,56 @@ const { title } = Astro.props;
   <body
     class="mx-auto flex max-w-[1440px] flex-col scroll-smooth bg-bg px-8 font-inter text-primary transition-colors"
   >
+    <div
+      id="page-transition"
+      class="fixed left-0 top-0 z-[9998] h-12 w-12 bg-accent opacity-0 pointer-events-none"
+      style="transform: translate(-50%, -50%) scale(1);"
+      aria-hidden="true"
+    ></div>
     <main>
       <slot />
     </main>
+    <script is:inline>
+      const transitionKey = "menu-transition";
+      if (sessionStorage.getItem(transitionKey)) {
+        sessionStorage.removeItem(transitionKey);
+        const square = document.querySelector("[data-menu-square]");
+        const overlay = document.getElementById("page-transition");
+        if (square && overlay) {
+          const rect = square.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const maxCornerDist = Math.max(
+            Math.hypot(cx, cy),
+            Math.hypot(window.innerWidth - cx, cy),
+            Math.hypot(cx, window.innerHeight - cy),
+            Math.hypot(window.innerWidth - cx, window.innerHeight - cy),
+          );
+          const halfDiagonal = (rect.width * Math.SQRT2) / 2;
+          const scale = halfDiagonal ? maxCornerDist / halfDiagonal : 1;
+          overlay.style.left = `${cx}px`;
+          overlay.style.top = `${cy}px`;
+          overlay.style.width = `${rect.width}px`;
+          overlay.style.height = `${rect.height}px`;
+          overlay.style.opacity = "1";
+          overlay.style.transition =
+            "transform 450ms ease-in-out, opacity 200ms ease-out";
+          overlay.style.transform = `translate(-50%, -50%) scale(${scale})`;
+
+          requestAnimationFrame(() => {
+            overlay.style.transform = "translate(-50%, -50%) scale(1)";
+            overlay.style.opacity = "0";
+          });
+
+          overlay.addEventListener(
+            "transitionend",
+            () => {
+              overlay.remove();
+            },
+            { once: true },
+          );
+        }
+      }
+    </script>
   </body>
 </html>
