@@ -35,6 +35,47 @@
   .h2 {
     @apply text-xs tracking-[0.2rem] text-secondary;
   }
+
+  .mdx {
+    @apply text-primary;
+  }
+
+  .mdx :where(h1, h2, h3, h4) {
+    @apply font-normal tracking-[0.04em] text-primary;
+  }
+
+  .mdx h1 {
+    @apply mb-5 mt-12 text-4xl;
+  }
+
+  .mdx h2 {
+    @apply mb-4 mt-10 text-3xl;
+  }
+
+  .mdx h3 {
+    @apply mb-3 mt-8 text-2xl;
+  }
+
+  .mdx p {
+    @apply leading-7 text-primary;
+  }
+
+  .mdx p + p {
+    @apply mt-4;
+  }
+
+  .mdx ul,
+  .mdx ol {
+    @apply mt-4 list-inside;
+  }
+
+  .mdx li {
+    @apply my-1;
+  }
+
+  .mdx a {
+    @apply underline decoration-subtle underline-offset-4 transition-colors hover:text-accent;
+  }
 }
 
 @layer base {

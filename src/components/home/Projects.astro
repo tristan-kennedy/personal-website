@@ -34,9 +34,9 @@ const featured = projects.slice(0, 2);
               <h3 class="transition-colors group-hover:text-accent">
                 {project.data.title}
               </h3>
-              <h2>{project.data.date}</h2>
-              <p class="mb-10">{project.data.description}</p>
-              <h2>{project.data.tech?.join(" / ")}</h2>
+              <h2 class="uppercase">{project.data.date}</h2>
+              <p class="mb-10">{project.data.description.split(".")[0]}...</p>
+              <h2 class="uppercase">{project.data.tech?.join(" / ")}</h2>
             </div>
           </a>
         );

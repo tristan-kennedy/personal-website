@@ -23,11 +23,15 @@ const posts = await getPosts();
             <h3 class="col-start-2 col-end-9 transition-colors group-hover:text-accent">
               {post.data.title}
             </h3>
-            <h2 class="col-start-9 col-end-11 text-right">{post.data.date}</h2>
-            <p class="col-start-2 col-end-9">{post.data.description}</p>
+            <h2 class="col-start-9 col-end-11 text-right uppercase">
+              {post.data.date}
+            </h2>
+            <p class="col-start-2 col-end-9">
+              {post.data.description.split(".")[0]}...
+            </p>
             <h2 class="col-start-2 col-end-9 uppercase">{post.data.length}</h2>
             <h2 class="col-start-9 col-end-11 text-right transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent">
-              READ ARTICLE →
+              →
             </h2>
           </a>
         ))

@@ -1,5 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import Menu from "../../components/menu/Menu";
+import { Image } from "astro:assets";
 import { getProjects } from "../../lib/content/projects";
 
 export async function getStaticPaths() {
@@ -15,17 +17,48 @@ const { Content } = await project.render();
 ---
 
 <Layout title={project.data.title}>
-  <article class="prose prose-invert mx-auto max-w-3xl py-16">
-    <p class="text-muted mb-2 text-sm tracking-[0.2em]">PROJECT</p>
-    <h1 class="mb-2 text-4xl font-semibold">{project.data.title}</h1>
-    <p class="text-muted mb-6 text-lg">{project.data.description}</p>
-    {
-      project.data.tech && (
-        <p class="text-muted mb-8 text-sm tracking-[0.2em] uppercase">
-          {project.data.tech.join(" / ")}
+  <section class="mb-16 grid grid-cols-10 gap-x-6 py-8">
+    <a
+      class="h2 col-start-1 col-end-5 mb-12 transition-colors transition-transform hover:-translate-x-2 hover:text-accent"
+      href="/projects">← PROJECTS</a
+    >
+    <header class="col-start-10 col-end-11 mb-12 flex items-center justify-end">
+      <Menu client:only />
+    </header>
+    <div class="col-span-full grid grid-cols-10 gap-x-6 gap-y-4">
+      <h1 class="col-start-1 col-end-7 text-7xl">{project.data.title}</h1>
+      <div
+        class="col-start-8 col-end-11 flex flex-col items-end gap-y-4 text-right"
+      >
+        <div>
+          <h2>DATE</h2>
+          <p>{project.data.date}</p>
+        </div>
+        {
+          project.data.tech && (
+            <div>
+              <h2>TECH</h2>
+              <p>{project.data.tech.join(" / ")}</p>
+            </div>
+          )
+        }
+      </div>
+      <div class="col-span-full mt-10 overflow-hidden">
+        <Image
+          src={project.data.image}
+          alt={`${project.data.title} cover`}
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="col-span-full mt-10 grid grid-cols-10 gap-x-6">
+        <h2 class="col-start-1 col-end-3">DESCRIPTION</h2>
+        <p class="col-start-7 col-end-11">
+          {project.data.description}
         </p>
-      )
-    }
+      </div>
+    </div>
+  </section>
+  <article class="mdx pb-24">
     <Content />
   </article>
 </Layout>

@@ -26,15 +26,17 @@ const experiments = await getExperiments();
             <h3 class="col-start-2 col-end-9 transition-colors group-hover:text-accent">
               {experiment.data.title}
             </h3>
-            <h2 class="col-start-9 col-end-11 text-right">
+            <h2 class="col-start-9 col-end-11 text-right uppercase">
               {experiment.data.date}
             </h2>
-            <p class="col-start-2 col-end-9">{experiment.data.description}</p>
+            <p class="col-start-2 col-end-9">
+              {experiment.data.description.split(".")[0]}...
+            </p>
             <h2 class="col-start-2 col-end-9 uppercase">
               {experiment.data.tech.join(" / ")}
             </h2>
             <h2 class="col-start-9 col-end-11 text-right transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent">
-              CHECK IT OUT →
+              →
             </h2>
           </a>
         ))
