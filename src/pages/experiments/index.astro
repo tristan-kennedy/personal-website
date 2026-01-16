@@ -1,4 +1,4 @@
-﻿---
+---
 import Layout from "../../layouts/Layout.astro";
 import Menu from "../../components/menu/Menu";
 import { getExperiments } from "../../lib/content/experiments";
@@ -10,7 +10,7 @@ const experiments = await getExperiments();
   <section class="mb-48 grid grid-cols-10 gap-x-6 py-8">
     <h1 class="col-start-1 col-end-5 mb-6 text-7xl">Experiments</h1>
     <header class="col-start-10 col-end-11 mb-6 flex items-center justify-end">
-      <Menu client:only />
+      <Menu client:load />
     </header>
     <h2 class="col-span-full mb-32">LAB NOTES</h2>
     <div class="col-start-2 col-end-11 grid grid-cols-1 gap-12">

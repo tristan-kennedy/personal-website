@@ -23,7 +23,7 @@ const { Content } = await project.render();
       href="/projects">← PROJECTS</a
     >
     <header class="col-start-10 col-end-11 mb-12 flex items-center justify-end">
-      <Menu client:only />
+      <Menu client:load />
     </header>
     <div class="col-span-full grid grid-cols-10 gap-x-6 gap-y-4">
       <h1 class="col-start-1 col-end-7 text-7xl">{project.data.title}</h1>

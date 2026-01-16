@@ -45,15 +45,15 @@
   }
 
   .mdx h1 {
-    @apply mb-5 mt-12 text-4xl;
+    @apply mt-12 mb-5 text-4xl;
   }
 
   .mdx h2 {
-    @apply mb-4 mt-10 text-3xl;
+    @apply mt-10 mb-4 text-3xl;
   }
 
   .mdx h3 {
-    @apply mb-3 mt-8 text-2xl;
+    @apply mt-8 mb-3 text-2xl;
   }
 
   .mdx p {
@@ -93,5 +93,31 @@
 
   button {
     @apply cursor-pointer;
+  }
+
+  html,
+  body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE / old Edge */
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+
+  ::view-transition-group(menu-transition) {
+    z-index: 9999;
+  }
+
+  ::view-transition-old(menu-transition),
+  ::view-transition-new(menu-transition) {
+    animation: none;
+    border-radius: 0;
   }
 }

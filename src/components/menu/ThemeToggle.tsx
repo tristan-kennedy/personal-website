@@ -21,19 +21,23 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="group h2 flex items-center gap-3 text-bg transition-all hover:scale-[1.1] active:scale-[0.90]"
+      className="group h2 flex items-center gap-2 text-bg transition-colors transition-transform hover:scale-[1.05] active:scale-[0.98]"
       aria-label="Toggle theme"
     >
-      <span className="flex items-center gap-2">
-        <span className={theme === "light" ? "font-bold" : "font-normal"}>
-          LIGHT
-        </span>
+      <span
+        className={`h2 transition-colors ${
+          theme === "light" ? "font-bold text-bg" : "text-bg/70"
+        }`}
+      >
+        LIGHT
       </span>
       <span>/</span>
-      <span className="flex items-center gap-2">
-        <span className={theme === "dark" ? "font-bold" : "font-normal"}>
-          DARK
-        </span>
+      <span
+        className={`h2 transition-colors ${
+          theme === "dark" ? "font-bold text-bg" : "text-bg/70"
+        }`}
+      >
+        DARK
       </span>
     </button>
   );

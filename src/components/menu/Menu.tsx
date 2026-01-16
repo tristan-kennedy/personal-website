@@ -13,16 +13,38 @@ export default function Menu() {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [origin, setOrigin] = useState({ x: 0, y: 0 });
+  const [currentPath, setCurrentPath] = useState("");
+  const transitionName = "menu-transition";
 
-  useLayoutEffect(() => {
-    if (!open) return;
+  const updateOrigin = () => {
     const rect = buttonRef.current?.getBoundingClientRect();
     if (!rect) return;
     setOrigin({
       x: rect.left + rect.width / 2,
       y: rect.top + rect.height / 2,
     });
-  }, [open]);
+  };
+
+  const handleOpen = () => {
+    updateOrigin();
+    requestAnimationFrame(() => setOpen(true));
+  };
+
+  const handleClose = () => {
+    updateOrigin();
+    setOpen(false);
+  };
+
+  useLayoutEffect(() => {
+    updateOrigin();
+    const handleResize = () => updateOrigin();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -33,33 +55,35 @@ export default function Menu() {
 
   return (
     <>
-      {/* OPEN BUTTON */}
       <button
-        onClick={() => setOpen(true)}
+        onClick={handleOpen}
         ref={buttonRef}
         className="group flex items-center gap-3 rounded-2xl px-1 py-2 text-secondary transition-all hover:scale-[1.1] active:scale-[0.9]"
         aria-label="Open menu"
       >
-        <span className="h-12 w-12 bg-accent" aria-hidden="true" />
+        <span
+          className="h-12 w-12 bg-accent"
+          style={{ viewTransitionName: open ? "" : transitionName }}
+          aria-hidden="true"
+        />
       </button>
 
-      {/* FULL PAGE OVERLAY */}
       <aside
         className={`fixed inset-0 z-[100] bg-accent text-bg ${open ? "pointer-events-auto" : "pointer-events-none"} `}
         style={{
           clipPath: `circle(${open ? "150%" : "0%"} at ${origin.x}px ${origin.y}px)`,
           transition: "clip-path 450ms ease-in-out",
+          viewTransitionName: open ? transitionName : "",
         }}
         role="dialog"
         aria-modal="true"
       >
         <div className="mx-auto flex h-full max-w-[1440px] flex-col py-8">
-          {/* HEADER */}
           <header className="flex items-center justify-between">
-            <span className="text-sm tracking-wide opacity-70">MENU</span>
+            <h2 className="text-bg">MENU</h2>
             <button
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-2 text-sm transition-all hover:scale-[1.1]"
+              onClick={handleClose}
+              className="h2 flex items-center gap-2 text-bg transition-all hover:scale-[1.05] active:scale-[0.98]"
               aria-label="Close menu"
             >
               CLOSE
@@ -67,31 +91,35 @@ export default function Menu() {
             </button>
           </header>
 
-          {/* NAV */}
-          <nav className="my-auto flex flex-col gap-6">
-            {NAV_ITEMS.map((item) => {
-              const isActive =
-                location.pathname === item.href ||
-                (item.href === "/" && location.pathname === "/");
+          <nav className="my-auto">
+            <ul className="flex flex-col gap-6">
+              {NAV_ITEMS.map((item) => {
+                const isActive =
+                  currentPath === item.href ||
+                  (item.href === "/" && currentPath === "/");
 
-              return (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className={`text-[clamp(3rem,6vw,6rem)] leading-none tracking-tight transition-all hover:translate-x-2 ${
-                    isActive ? "opacity-100" : "opacity-70 hover:opacity-100"
-                  } `}
-                >
-                  {isActive ? "– " : ""}
-                  {item.label}
-                </a>
-              );
-            })}
+                return (
+                  <li key={item.href} className="group">
+                    <h1 className="text-[clamp(3rem,6vw,6rem)] leading-none tracking-tight">
+                      <a
+                        href={item.href}
+                        className={`block transition-all group-hover:translate-x-2 ${
+                          isActive
+                            ? "opacity-100"
+                            : "opacity-70 group-hover:opacity-100"
+                        }`}
+                      >
+                        {isActive ? "– " : ""}
+                        {item.label}
+                      </a>
+                    </h1>
+                  </li>
+                );
+              })}
+            </ul>
           </nav>
 
-          {/* FOOTER */}
-          <footer className="flex items-center justify-between text-sm opacity-70">
-            <span>© {new Date().getFullYear()} Tristan Kennedy</span>
+          <footer className="flex items-center justify-end">
             <ThemeToggle />
           </footer>
         </div>
