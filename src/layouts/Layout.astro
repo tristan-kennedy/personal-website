@@ -37,9 +37,11 @@ const introLines = [
     >
       <div
         data-intro-text
-        class="absolute inset-0 grid place-items-center px-6 text-bg"
+        class="absolute inset-0 grid place-items-center px-6 text-white"
       >
-        <div class="grid w-full max-w-[1200px] grid-cols-2 gap-x-8 gap-y-6 text-[clamp(2.5rem,7vw,6.5rem)] font-black uppercase leading-none">
+        <div
+          class="grid w-full max-w-[1200px] grid-cols-2 gap-x-8 gap-y-6 text-[clamp(2.5rem,7vw,6.5rem)] leading-none font-black uppercase"
+        >
           {
             introLines.map((line) => (
               <span class="intro-line block opacity-0">{line}</span>
@@ -62,17 +64,20 @@ const introLines = [
       const introOverlay = document.querySelector<HTMLElement>(
         "[data-intro-overlay]",
       );
-      const menuSquare = document.querySelector<HTMLElement>(
-        "[data-menu-square]",
-      );
+      const menuSquare =
+        document.querySelector<HTMLElement>("[data-menu-square]");
       const hasPlayedIntro = sessionStorage.getItem("intro-played") === "true";
 
-      if (introOverlay && menuSquare && !prefersReducedMotion && !hasPlayedIntro) {
+      if (
+        introOverlay &&
+        menuSquare &&
+        !prefersReducedMotion &&
+        !hasPlayedIntro
+      ) {
         sessionStorage.setItem("intro-played", "true");
 
-        const introLines = introOverlay.querySelectorAll<HTMLElement>(
-          ".intro-line",
-        );
+        const introLines =
+          introOverlay.querySelectorAll<HTMLElement>(".intro-line");
         const rect = menuSquare.getBoundingClientRect();
         const scaleX = rect.width / window.innerWidth;
         const scaleY = rect.height / window.innerHeight;
