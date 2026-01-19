@@ -7,26 +7,36 @@ const projects = await getProjects();
 const featured = projects.slice(0, 2);
 ---
 
-<section id="projects" class="mb-48 grid grid-cols-10 gap-x-6">
-  <h1 data-animate class="col-start-1 col-end-5 mb-6 text-7xl">Recent Projects</h1>
+<section id="projects" class="section-shell section-grid">
+  <h1 data-animate class="display-xl md:col-start-1 md:col-end-5 md:mb-6">
+    Recent Projects
+  </h1>
 
-  <h2 data-animate class="col-start-9 col-end-11 mb-6 text-right">[02]</h2>
+  <h2
+    data-animate
+    class="hidden md:block md:col-start-9 md:col-end-11 md:mb-6 md:text-right"
+  >
+    [02]
+  </h2>
   <a
     data-animate
     href="/projects"
-    class="h2 col-span-full mb-32 transition-colors transition-transform hover:translate-x-2 hover:text-accent"
+    class="h2 md:col-span-full md:mb-32 transition-colors transition-transform hover:translate-x-2 hover:text-accent"
     >VIEW ALL WORK →</a
   >
-  <div data-animate-group class="col-start-1 col-end-11 grid grid-cols-1 gap-12">
+  <div data-animate-group class="md:col-start-1 md:col-end-11 grid grid-cols-1 gap-12">
     {
       featured.map((project) => {
         return (
-          <div data-animate-item class="grid grid-cols-3 gap-x-8">
-            <a href={project.url} class="group col-span-full grid grid-cols-3 gap-x-8">
+          <div data-animate-item class="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-x-8">
+            <a
+              href={project.url}
+              class="group col-span-full grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-x-8"
+            >
               <Tooltip
                 client:load
                 label={"READ MORE"}
-                className="col-span-2 mb-6"
+                className="md:col-span-2 md:mb-6"
               >
                 <div class="overflow-hidden">
                   <Image
@@ -42,7 +52,9 @@ const featured = projects.slice(0, 2);
                   {project.data.title}
                 </h3>
                 <h2 class="uppercase">{project.data.date}</h2>
-                <p class="mb-10">{project.data.description.split(".")[0]}...</p>
+                <p class="mb-6 md:mb-10">
+                  {project.data.description.split(".")[0]}...
+                </p>
                 <h2 class="uppercase">{project.data.tech?.join(" / ")}</h2>
               </div>
             </a>

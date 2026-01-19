@@ -7,30 +7,37 @@ const posts = await getPosts();
 ---
 
 <Layout title="Tristan Kennedy | Posts">
-  <section class="mb-48 grid grid-cols-10 gap-x-6 py-8">
-    <h1 class="col-start-1 col-end-5 mb-6 text-7xl">Posts</h1>
-    <header class="col-start-10 col-end-11 mb-6 flex items-center justify-end">
-      <Menu client:load />
-    </header>
-    <h2 class="col-span-full mb-32">SOME THOUGHTS</h2>
-    <div class="col-start-2 col-end-11 grid grid-cols-1 gap-12">
+  <section class="section-shell section-grid py-8">
+    <div class="flex items-start justify-between md:col-span-full">
+      <h1 class="display-xl">Posts</h1>
+      <header class="flex items-center justify-end">
+        <Menu client:load />
+      </header>
+    </div>
+    <h2 class="md:col-span-full md:mb-32">SOME THOUGHTS</h2>
+    <div class="md:col-start-2 md:col-end-11 grid grid-cols-1 gap-10 md:gap-12">
       {
         posts.map((post, index) => (
-          <a href={post.url} class="group grid grid-cols-10 gap-x-6 gap-y-2">
-            <h2 class="col-start-1 col-end-2">
+          <a
+            href={post.url}
+            class="group grid grid-cols-1 gap-2 md:grid-cols-10 md:gap-x-6"
+          >
+            <h2 class="md:col-start-1 md:col-end-2">
               [{String(index + 1).padStart(2, "0")}]
             </h2>
-            <h3 class="col-start-2 col-end-9 transition-colors group-hover:text-accent">
+            <h3 class="md:col-start-2 md:col-end-9 transition-colors group-hover:text-accent">
               {post.data.title}
             </h3>
-            <h2 class="col-start-9 col-end-11 text-right uppercase">
+            <h2 class="md:col-start-9 md:col-end-11 md:text-right uppercase">
               {post.data.date}
             </h2>
-            <p class="col-start-2 col-end-9">
+            <p class="md:col-start-2 md:col-end-9">
               {post.data.description.split(".")[0]}...
             </p>
-            <h2 class="col-start-2 col-end-9 uppercase">{post.data.length}</h2>
-            <h2 class="col-start-9 col-end-11 text-right transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent">
+            <h2 class="md:col-start-2 md:col-end-9 uppercase">
+              {post.data.length}
+            </h2>
+            <h2 class="md:col-start-9 md:col-end-11 md:text-right transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent">
               →
             </h2>
           </a>

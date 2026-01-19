@@ -7,17 +7,47 @@ interface Props {
 }
 
 const { title, bodyClass = "", ...bodyProps } = Astro.props;
+
+const introLines = [
+  "HELLO",
+  "HELLO WORLD",
+  "HEY THERE",
+  "NICE TO MEET YOU",
+  "HELLO WORLD",
+  "HELLO",
+  "HEY THERE",
+  "HELLO WORLD",
+];
 ---
 
 <html lang="en">
   <Head title={title} />
   <body
     {...bodyProps}
-    class={`${bodyClass} mx-auto flex max-w-[1440px] flex-col scroll-smooth bg-bg px-8 font-inter text-primary transition-colors`}
+    class={`${bodyClass} mx-auto flex max-w-[1440px] flex-col scroll-smooth bg-bg px-4 font-inter text-primary transition-colors sm:px-6 lg:px-8`}
   >
     <main>
       <slot />
     </main>
+
+    <div
+      data-intro-overlay
+      class="pointer-events-none fixed inset-0 z-[120] bg-accent opacity-0"
+      aria-hidden="true"
+    >
+      <div
+        data-intro-text
+        class="absolute inset-0 grid place-items-center px-6 text-bg"
+      >
+        <div class="grid w-full max-w-[1200px] grid-cols-2 gap-x-8 gap-y-6 text-[clamp(2.5rem,7vw,6.5rem)] font-black uppercase leading-none">
+          {
+            introLines.map((line) => (
+              <span class="intro-line block opacity-0">{line}</span>
+            ))
+          }
+        </div>
+      </div>
+    </div>
 
     <script>
       import { gsap } from "gsap";
@@ -28,6 +58,69 @@ const { title, bodyClass = "", ...bodyProps } = Astro.props;
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)",
       ).matches;
+
+      const introOverlay = document.querySelector<HTMLElement>(
+        "[data-intro-overlay]",
+      );
+      const menuSquare = document.querySelector<HTMLElement>(
+        "[data-menu-square]",
+      );
+      const hasPlayedIntro = sessionStorage.getItem("intro-played") === "true";
+
+      if (introOverlay && menuSquare && !prefersReducedMotion && !hasPlayedIntro) {
+        sessionStorage.setItem("intro-played", "true");
+
+        const introLines = introOverlay.querySelectorAll<HTMLElement>(
+          ".intro-line",
+        );
+        const rect = menuSquare.getBoundingClientRect();
+        const scaleX = rect.width / window.innerWidth;
+        const scaleY = rect.height / window.innerHeight;
+
+        document.body.style.overflow = "hidden";
+
+        const introTimeline = gsap.timeline({
+          defaults: { ease: "power3.inOut" },
+          onComplete: () => {
+            introOverlay.style.opacity = "0";
+            introOverlay.style.transform = "";
+            document.body.style.overflow = "";
+          },
+        });
+
+        introTimeline
+          .set(introOverlay, {
+            autoAlpha: 1,
+            x: 0,
+            y: 0,
+            scaleX: 1,
+            scaleY: 1,
+            transformOrigin: "top left",
+          })
+          .to(introLines, {
+            autoAlpha: 1,
+            stagger: 0.06,
+            duration: 0.2,
+            ease: "power2.out",
+          })
+          .to(
+            introLines,
+            {
+              autoAlpha: 0,
+              stagger: 0.04,
+              duration: 0.15,
+              ease: "power2.in",
+            },
+            "+=0.2",
+          )
+          .to(introOverlay, {
+            duration: 1.1,
+            x: rect.left,
+            y: rect.top,
+            scaleX,
+            scaleY,
+          });
+      }
 
       if (!prefersReducedMotion) {
         const animateElements =

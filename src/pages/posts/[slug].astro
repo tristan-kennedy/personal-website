@@ -17,18 +17,20 @@ const { Content } = await post.render();
 ---
 
 <Layout title={post.data.title}>
-  <section class="mb-16 grid grid-cols-10 gap-x-6 py-8">
-    <a
-      class="h2 col-start-1 col-end-5 mb-24 transition-colors transition-transform hover:-translate-x-2 hover:text-accent"
-      href="/posts">← POSTS</a
-    >
-    <header class="col-start-10 col-end-11 mb-24 flex items-center justify-end">
-      <Menu client:load />
-    </header>
-    <div class="col-span-full grid grid-cols-10 gap-x-6 gap-y-4">
-      <h1 class="col-start-1 col-end-7 text-7xl">{post.data.title}</h1>
+  <section class="section-grid mb-16 py-8">
+    <div class="flex flex-col gap-4 md:col-span-full md:flex-row md:items-center md:justify-between">
+      <a
+        class="h2 transition-colors transition-transform hover:-translate-x-2 hover:text-accent"
+        href="/posts">← POSTS</a
+      >
+      <header class="flex items-center justify-end">
+        <Menu client:load />
+      </header>
+    </div>
+    <div class="md:col-span-full grid grid-cols-1 gap-8 md:grid-cols-10 md:gap-x-6">
+      <h1 class="display-xl md:col-start-1 md:col-end-7">{post.data.title}</h1>
       <div
-        class="col-start-8 col-end-11 flex flex-col items-end gap-y-4 text-right"
+        class="md:col-start-8 md:col-end-11 flex flex-col gap-y-4 md:items-end md:text-right"
       >
         <div>
           <h2>DATE</h2>
@@ -39,22 +41,22 @@ const { Content } = await post.render();
           <p>{post.data.length}</p>
         </div>
       </div>
-      <div class="col-span-full mt-10 overflow-hidden">
+      <div class="md:col-span-full mt-6 overflow-hidden md:mt-10">
         <Image
           src={post.data.image}
           alt={`${post.data.title} cover`}
           class="h-full w-full object-cover"
         />
       </div>
-      <div class="col-span-full mt-10 grid grid-cols-10 gap-x-6">
-        <h2 class="col-start-1 col-end-3">DESCRIPTION</h2>
-        <p class="col-start-7 col-end-11">
+      <div class="md:col-span-full mt-6 grid grid-cols-1 gap-4 md:mt-10 md:grid-cols-10 md:gap-x-6">
+        <h2 class="md:col-start-1 md:col-end-3">DESCRIPTION</h2>
+        <p class="md:col-start-7 md:col-end-11">
           {post.data.description}
         </p>
       </div>
     </div>
   </section>
-  <article class="mdx pb-24">
+  <article class="mdx pb-16 md:pb-24">
     <Content />
   </article>
 </Layout>

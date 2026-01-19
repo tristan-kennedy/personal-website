@@ -25,7 +25,9 @@ export default function Menu() {
       >
         <span
           data-menu-square
-          className={`h-12 w-12 bg-accent ${shouldPulse ? "animate-bounce" : ""}`}
+          className={`h-10 w-10 bg-accent md:h-12 md:w-12 ${
+            shouldPulse ? "animate-pulse" : ""
+          }`}
           aria-hidden="true"
           style={{ viewTransitionName: "menu-transition" }}
         />

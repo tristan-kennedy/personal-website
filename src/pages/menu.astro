@@ -18,7 +18,9 @@ const navItems = [
   <section
     class="mx-auto flex min-h-screen max-w-[1440px] flex-col py-8 text-white"
   >
-    <header class="flex items-center justify-between">
+    <header
+      class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+    >
       <h2 class="text-white">MENU</h2>
       <a
         href="/"
@@ -32,11 +34,11 @@ const navItems = [
     </header>
 
     <nav class="my-auto">
-      <ul class="flex flex-col gap-6">
+      <ul class="flex flex-col gap-4 md:gap-6">
         {
           navItems.map((item) => (
             <li class="group">
-              <h1 class="text-[clamp(3rem,6vw,6rem)] leading-none tracking-tight">
+              <h1 class="display-xl">
                 <a
                   href={item.href}
                   class="block opacity-70 transition-all group-hover:translate-x-2 group-hover:opacity-100"

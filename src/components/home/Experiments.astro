@@ -7,16 +7,26 @@ const experiments = await getExperiments();
 const featured = experiments.slice(0, 3);
 ---
 
-<section id="experiments" class="mb-48 grid grid-cols-10 gap-x-6">
-  <h1 data-animate class="col-start-1 col-end-5 mb-6 text-7xl">Experiments & Ideas</h1>
-  <h2 data-animate class="col-start-9 col-end-11 mb-6 text-right">[04]</h2>
+<section id="experiments" class="section-shell section-grid">
+  <h1 data-animate class="display-xl md:col-start-1 md:col-end-5 md:mb-6">
+    Experiments & Ideas
+  </h1>
+  <h2
+    data-animate
+    class="hidden md:block md:col-start-9 md:col-end-11 md:mb-6 md:text-right"
+  >
+    [04]
+  </h2>
   <a
     data-animate
     href="/experiments"
-    class="h2 col-span-full mb-32 transition-colors transition-transform hover:translate-x-2 hover:text-accent"
+    class="h2 md:col-span-full md:mb-32 transition-colors transition-transform hover:translate-x-2 hover:text-accent"
     >EXPLORE MORE →</a
   >
-  <div data-animate-group class="col-start-1 col-end-11 grid grid-cols-1 gap-10 md:grid-cols-3">
+  <div
+    data-animate-group
+    class="md:col-start-1 md:col-end-11 grid grid-cols-1 gap-10 md:grid-cols-3"
+  >
     {
       featured.map((experiment) => {
         return (

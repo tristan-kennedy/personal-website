@@ -3,23 +3,32 @@ import Menu from "../menu/Menu";
 import { LuArrowDown } from "react-icons/lu";
 ---
 
-<section data-hero id="hero" class="mb-40 flex min-h-screen flex-col py-8">
-  <header data-animate class="flex items-center justify-end gap-2">
-    <div class="text-end">
+<section
+  data-hero
+  id="hero"
+  class="section-shell flex min-h-[85vh] flex-col py-8 md:min-h-screen"
+>
+  <header data-animate class="flex items-center justify-end gap-2 text-right">
+    <div>
       <h2 class="text-primary">SOFTWARE ENGINEER</h2>
       <h3 class="text-sm text-secondary">Rogers, AR</h3>
     </div>
   </header>
-  <div class="my-auto flex flex-col gap-8 py-8">
+  <div class="my-auto flex flex-col gap-6 py-6 md:gap-8">
     <h2 data-animate data-animate-delay="0.05">INDEX</h2>
-    <h1 data-animate data-animate-delay="0.1" data-hero-title class="text-[12rem] font-black">
+    <h1
+      data-animate
+      data-animate-delay="0.1"
+      data-hero-title
+      class="display-hero font-black"
+    >
       TRISTAN<br />KENNEDY
     </h1>
-    <div class="flex gap-8">
+    <div class="flex flex-col gap-6 md:flex-row md:gap-8">
       <Menu client:load />
 
       <nav data-animate data-animate-delay="0.2" data-hero-nav class="h2">
-        <ul>
+        <ul class="space-y-1">
           <li class="transition-transform hover:translate-x-2">
             <a href="#about" class="transition-colors hover:text-accent"
               >01/ ABOUT ME</a
@@ -49,7 +58,13 @@ import { LuArrowDown } from "react-icons/lu";
       </nav>
     </div>
   </div>
-  <footer data-animate data-animate-delay="0.25" class="flex justify-between">
+  <footer
+    data-animate
+    data-animate-delay="0.5"
+    data-animate-offset="8"
+    data-animate-start="top 100%"
+    class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
+  >
     <h2>© 2025</h2>
     <div class="h2 flex items-center gap-2">
       <LuArrowDown className="animate-bounce" />
@@ -57,4 +72,3 @@ import { LuArrowDown } from "react-icons/lu";
     </div>
   </footer>
 </section>
-
