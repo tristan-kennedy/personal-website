@@ -8,13 +8,13 @@ const featured = projects.slice(0, 2);
 ---
 
 <section id="projects" class="section-shell section-grid">
-  <h1 data-animate class="display-xl md:col-start-1 md:col-end-5 md:mb-6">
+  <h1 data-animate class="display-xl md:col-start-1 md:col-end-5 md:mb-14 lg:mb-16">
     Recent Projects
   </h1>
 
   <h2
     data-animate
-    class="hidden md:block md:col-start-9 md:col-end-11 md:mb-6 md:text-right"
+    class="hidden md:block md:col-start-9 md:col-end-11 md:mb-14 lg:mb-16 md:text-right"
   >
     [02]
   </h2>
@@ -22,7 +22,7 @@ const featured = projects.slice(0, 2);
     data-animate
     href="/projects"
     class="h2 md:col-span-full md:mb-32 transition-colors transition-transform hover:translate-x-2 hover:text-accent"
-    >VIEW ALL WORK →</a
+    >VIEW ALL WORK <span class="hidden md:inline">→</span></a
   >
   <div data-animate-group class="md:col-start-1 md:col-end-11 grid grid-cols-1 gap-12">
     {

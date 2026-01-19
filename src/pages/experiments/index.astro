@@ -14,7 +14,7 @@ const experiments = await getExperiments();
         <Menu client:load />
       </header>
     </div>
-    <h2 class="md:col-span-full md:mb-32">LAB NOTES</h2>
+    <h2 class="hidden md:block md:col-span-full md:mb-32">LAB NOTES</h2>
     <div class="md:col-start-2 md:col-end-11 grid grid-cols-1 gap-10 md:gap-12">
       {
         experiments.map((experiment, index) => (
@@ -22,7 +22,7 @@ const experiments = await getExperiments();
             href={experiment.url}
             class="group grid grid-cols-1 gap-2 md:grid-cols-10 md:gap-x-6"
           >
-            <h2 class="md:col-start-1 md:col-end-2">
+            <h2 class="hidden md:block md:col-start-1 md:col-end-2">
               [{String(index + 1).padStart(2, "0")}]
             </h2>
             <h3 class="md:col-start-2 md:col-end-9 transition-colors group-hover:text-accent">
@@ -37,7 +37,7 @@ const experiments = await getExperiments();
             <h2 class="md:col-start-2 md:col-end-9 uppercase">
               {experiment.data.tech.join(" / ")}
             </h2>
-            <h2 class="md:col-start-9 md:col-end-11 md:text-right transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent">
+            <h2 class="hidden md:block md:col-start-9 md:col-end-11 md:text-right transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent">
               →
             </h2>
           </a>
