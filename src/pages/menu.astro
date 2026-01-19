@@ -1,0 +1,57 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ThemeToggle from "../components/menu/ThemeToggle";
+
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Projects", href: "/projects" },
+  { label: "Posts", href: "/posts" },
+  { label: "Experiments", href: "/experiments" },
+];
+---
+
+<Layout
+  title="Menu"
+  bodyClass="!bg-accent !text-white"
+  transition:name="menu-transition"
+>
+  <section
+    class="mx-auto flex min-h-screen max-w-[1440px] flex-col py-8 text-white"
+  >
+    <header class="flex items-center justify-between">
+      <h2 class="text-white">MENU</h2>
+      <a
+        href="/"
+        data-menu-back
+        class="h2 flex items-center gap-2 text-white transition-all hover:translate-x-1"
+        aria-label="Back to previous page"
+        onclick="event.preventDefault(); window.history.back();"
+      >
+        – BACK
+      </a>
+    </header>
+
+    <nav class="my-auto">
+      <ul class="flex flex-col gap-6">
+        {
+          navItems.map((item) => (
+            <li class="group">
+              <h1 class="text-[clamp(3rem,6vw,6rem)] leading-none tracking-tight">
+                <a
+                  href={item.href}
+                  class="block opacity-70 transition-all group-hover:translate-x-2 group-hover:opacity-100"
+                >
+                  {item.label}
+                </a>
+              </h1>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <footer class="flex items-center justify-end">
+      <ThemeToggle client:load />
+    </footer>
+  </section>
+</Layout>

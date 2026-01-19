@@ -1,31 +1,35 @@
 ---
 import { Image } from "astro:assets";
 import { getExperiments } from "../../lib/content/experiments";
+import Tooltip from "../Tooltip";
 
 const experiments = await getExperiments();
 const featured = experiments.slice(0, 3);
 ---
 
 <section id="experiments" class="mb-48 grid grid-cols-10 gap-x-6">
-  <h1 class="col-start-1 col-end-5 mb-6 text-7xl">Experiments & Ideas</h1>
-  <h2 class="col-start-9 col-end-11 mb-6 text-right">[04]</h2>
+  <h1 data-animate class="col-start-1 col-end-5 mb-6 text-7xl">Experiments & Ideas</h1>
+  <h2 data-animate class="col-start-9 col-end-11 mb-6 text-right">[04]</h2>
   <a
+    data-animate
     href="/experiments"
     class="h2 col-span-full mb-32 transition-colors transition-transform hover:translate-x-2 hover:text-accent"
     >EXPLORE MORE →</a
   >
-  <div class="col-start-1 col-end-11 grid grid-cols-1 gap-10 md:grid-cols-3">
+  <div data-animate-group class="col-start-1 col-end-11 grid grid-cols-1 gap-10 md:grid-cols-3">
     {
       featured.map((experiment) => {
         return (
-          <a href={experiment.url} class="group flex h-full flex-col gap-2">
-            <div class="mb-4 aspect-square overflow-hidden">
-              <Image
-                src={experiment.data.image}
-                alt={`${experiment.data.title} cover`}
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
+          <a data-animate-item href={experiment.url} class="group flex h-full flex-col gap-2">
+            <Tooltip client:load label={"READ MORE"} className="mb-4">
+              <div class="aspect-square overflow-hidden">
+                <Image
+                  src={experiment.data.image}
+                  alt={`${experiment.data.title} cover`}
+                  class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+            </Tooltip>
             <p class="transition-colors group-hover:text-accent">
               {experiment.data.title}
             </p>

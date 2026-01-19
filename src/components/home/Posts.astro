@@ -6,16 +6,17 @@ const featured = posts[0];
 ---
 
 <section id="posts" class="mb-48 grid grid-cols-10 gap-x-6">
-  <h2 class="col-start-1 col-end-2 mb-6">[03]</h2>
-  <h1 class="col-start-5 col-end-11 mb-6 text-right text-7xl">
+  <h2 data-animate class="col-start-1 col-end-2 mb-6">[03]</h2>
+  <h1 data-animate class="col-start-5 col-end-11 mb-6 text-right text-7xl">
     Latest Thought
   </h1>
   <a
+    data-animate
     href="/posts"
     class="h2 col-span-full mb-32 text-right transition-colors transition-transform hover:-translate-x-2 hover:text-accent"
     >← ALL POSTS</a
   >
-  <div class="col-start-2 col-end-9 grid grid-cols-1 gap-12">
+  <div data-animate class="col-start-2 col-end-9 grid grid-cols-1 gap-12">
     <a
       href={featured.url}
       class="group items-start gap-x-8 border border-transparent transition-all"
@@ -34,5 +35,6 @@ const featured = posts[0];
       </div>
     </a>
   </div>
-  <h2 class="col-start-10 col-end-11 text-right">FEATURED</h2>
+  <h2 data-animate class="col-start-10 col-end-11 text-right">FEATURED</h2>
 </section>
+

@@ -3,13 +3,19 @@ import { LuArrowUpRight } from "react-icons/lu";
 ---
 
 <section id="contact" class="mb-48 grid grid-cols-10 gap-x-6">
-  <h2 class="col-start-1 col-end-2">[05]</h2>
-  <h1 class="col-start-2 col-end-11 mb-32 text-right text-[12rem]">
+  <h2 data-animate class="col-start-1 col-end-2">[05]</h2>
+  <h1 data-animate class="col-start-2 col-end-11 mb-32 text-right text-[12rem]">
     Find me here
   </h1>
-  <div class="col-start-6 col-end-11 grid grid-cols-2 gap-x-10">
+  <div
+    data-animate-group
+    data-animate-offset="8"
+    data-animate-start="top 92%"
+    class="col-start-6 col-end-11 grid grid-cols-2 gap-x-10"
+  >
     <div class="flex flex-col gap-2">
       <a
+        data-animate-item
         class="h2 uppercase transition-colors transition-transform hover:translate-x-2 hover:text-accent"
         href="https://github.com/tristan-kennedy"
         target="_blank"
@@ -18,6 +24,7 @@ import { LuArrowUpRight } from "react-icons/lu";
         GitHub <LuArrowUpRight className="inline align-middle" />
       </a>
       <a
+        data-animate-item
         class="h2 uppercase transition-colors transition-transform hover:translate-x-2 hover:text-accent"
         href="https://www.linkedin.com/in/tristandkennedy/"
         target="_blank"
@@ -26,6 +33,7 @@ import { LuArrowUpRight } from "react-icons/lu";
         LinkedIn <LuArrowUpRight className="inline align-middle" />
       </a>
       <a
+        data-animate-item
         class="h2 uppercase transition-colors transition-transform hover:translate-x-2 hover:text-accent"
         href="https://letterboxd.com/tdouglaskennedy/"
         target="_blank"
@@ -36,6 +44,7 @@ import { LuArrowUpRight } from "react-icons/lu";
     </div>
     <div class="flex flex-col gap-2">
       <a
+        data-animate-item
         class="h2 uppercase transition-colors transition-transform hover:translate-x-2 hover:text-accent"
         href="/resume.pdf"
         target="_blank"
@@ -44,6 +53,7 @@ import { LuArrowUpRight } from "react-icons/lu";
         Resume <LuArrowUpRight className="inline align-middle" />
       </a>
       <a
+        data-animate-item
         class="h2 uppercase transition-colors transition-transform hover:translate-x-2 hover:text-accent"
         href="mailto:tdouglaskennedy@gmail.com"
         target="_blank"
@@ -54,3 +64,4 @@ import { LuArrowUpRight } from "react-icons/lu";
     </div>
   </div>
 </section>
+

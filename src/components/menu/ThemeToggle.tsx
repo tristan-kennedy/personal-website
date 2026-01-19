@@ -21,12 +21,12 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="group h2 flex items-center gap-2 text-bg transition-colors transition-transform hover:scale-[1.05] active:scale-[0.98]"
+      className="group h2 flex items-center gap-2 text-white transition-colors transition-transform hover:scale-[1.05] active:scale-[0.98]"
       aria-label="Toggle theme"
     >
       <span
         className={`h2 transition-colors ${
-          theme === "light" ? "font-bold text-bg" : "text-bg/70"
+          theme === "light" ? "font-bold text-white" : "text-white/70"
         }`}
       >
         LIGHT
@@ -34,7 +34,7 @@ export default function ThemeToggle() {
       <span>/</span>
       <span
         className={`h2 transition-colors ${
-          theme === "dark" ? "font-bold text-bg" : "text-bg/70"
+          theme === "dark" ? "font-bold text-white" : "text-white/70"
         }`}
       >
         DARK

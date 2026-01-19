@@ -4,21 +4,21 @@ import { LuArrowDown } from "react-icons/lu";
 ---
 
 <section data-hero id="hero" class="mb-40 flex min-h-screen flex-col py-8">
-  <header class="flex items-center justify-end gap-2">
+  <header data-animate class="flex items-center justify-end gap-2">
     <div class="text-end">
       <h2 class="text-primary">SOFTWARE ENGINEER</h2>
       <h3 class="text-sm text-secondary">Rogers, AR</h3>
     </div>
   </header>
   <div class="my-auto flex flex-col gap-8 py-8">
-    <h2>INDEX</h2>
-    <h1 data-hero-title class="text-[12rem] font-black">
+    <h2 data-animate data-animate-delay="0.05">INDEX</h2>
+    <h1 data-animate data-animate-delay="0.1" data-hero-title class="text-[12rem] font-black">
       TRISTAN<br />KENNEDY
     </h1>
     <div class="flex gap-8">
       <Menu client:load />
 
-      <nav data-hero-nav class="h2">
+      <nav data-animate data-animate-delay="0.2" data-hero-nav class="h2">
         <ul>
           <li class="transition-transform hover:translate-x-2">
             <a href="#about" class="transition-colors hover:text-accent"
@@ -49,7 +49,7 @@ import { LuArrowDown } from "react-icons/lu";
       </nav>
     </div>
   </div>
-  <footer class="flex justify-between">
+  <footer data-animate data-animate-delay="0.25" class="flex justify-between">
     <h2>© 2025</h2>
     <div class="h2 flex items-center gap-2">
       <LuArrowDown className="animate-bounce" />
@@ -57,3 +57,4 @@ import { LuArrowDown } from "react-icons/lu";
     </div>
   </footer>
 </section>
+

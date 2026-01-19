@@ -1,68 +1,108 @@
 ---
-import Footer from "../components/Footer.astro";
 import Head from "../components/Head.astro";
 import "../styles/global.css";
 interface Props {
   title: string;
+  bodyClass?: string;
 }
 
-const { title } = Astro.props;
+const { title, bodyClass = "", ...bodyProps } = Astro.props;
 ---
 
-<html lang="en" class="scroll-smooth">
+<html lang="en">
   <Head title={title} />
   <body
-    class="mx-auto flex max-w-[1440px] flex-col scroll-smooth bg-bg px-8 font-inter text-primary transition-colors"
+    {...bodyProps}
+    class={`${bodyClass} mx-auto flex max-w-[1440px] flex-col scroll-smooth bg-bg px-8 font-inter text-primary transition-colors`}
   >
-    <div
-      id="page-transition"
-      class="fixed left-0 top-0 z-[9998] h-12 w-12 bg-accent opacity-0 pointer-events-none"
-      style="transform: translate(-50%, -50%) scale(1);"
-      aria-hidden="true"
-    ></div>
     <main>
       <slot />
     </main>
-    <script is:inline>
-      const transitionKey = "menu-transition";
-      if (sessionStorage.getItem(transitionKey)) {
-        sessionStorage.removeItem(transitionKey);
-        const square = document.querySelector("[data-menu-square]");
-        const overlay = document.getElementById("page-transition");
-        if (square && overlay) {
-          const rect = square.getBoundingClientRect();
-          const cx = rect.left + rect.width / 2;
-          const cy = rect.top + rect.height / 2;
-          const maxCornerDist = Math.max(
-            Math.hypot(cx, cy),
-            Math.hypot(window.innerWidth - cx, cy),
-            Math.hypot(cx, window.innerHeight - cy),
-            Math.hypot(window.innerWidth - cx, window.innerHeight - cy),
-          );
-          const halfDiagonal = (rect.width * Math.SQRT2) / 2;
-          const scale = halfDiagonal ? maxCornerDist / halfDiagonal : 1;
-          overlay.style.left = `${cx}px`;
-          overlay.style.top = `${cy}px`;
-          overlay.style.width = `${rect.width}px`;
-          overlay.style.height = `${rect.height}px`;
-          overlay.style.opacity = "1";
-          overlay.style.transition =
-            "transform 450ms ease-in-out, opacity 200ms ease-out";
-          overlay.style.transform = `translate(-50%, -50%) scale(${scale})`;
 
-          requestAnimationFrame(() => {
-            overlay.style.transform = "translate(-50%, -50%) scale(1)";
-            overlay.style.opacity = "0";
+    <script>
+      import { gsap } from "gsap";
+      import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      if (!prefersReducedMotion) {
+        const animateElements =
+          document.querySelectorAll<HTMLElement>("[data-animate]");
+
+        animateElements.forEach((element) => {
+          if (element.closest("[data-animate-group]")) {
+            return;
+          }
+
+          const type = element.dataset.animate ?? "fade-up";
+          const delay = Number.parseFloat(element.dataset.animateDelay ?? "0");
+          const offset = Number.parseFloat(
+            element.dataset.animateOffset ?? "24",
+          );
+          const start = element.dataset.animateStart ?? "top 85%";
+          const from = {
+            autoAlpha: 0,
+            x:
+              type === "fade-left"
+                ? -offset
+                : type === "fade-right"
+                  ? offset
+                  : 0,
+            y: type === "fade-up" ? offset : 0,
+          };
+
+          gsap.from(element, {
+            ...from,
+            duration: 0.8,
+            ease: "power2.out",
+            delay,
+            clearProps: "transform",
+            scrollTrigger: {
+              trigger: element,
+              start,
+              toggleActions: "play none none none",
+            },
+          });
+        });
+
+        document
+          .querySelectorAll<HTMLElement>("[data-animate-group]")
+          .forEach((group) => {
+            const items = group.querySelectorAll<HTMLElement>(
+              "[data-animate-item]",
+            );
+
+            if (!items.length) {
+              return;
+            }
+
+            const groupOffset = Number.parseFloat(
+              group.dataset.animateOffset ?? "18",
+            );
+            const groupStart = group.dataset.animateStart ?? "top 80%";
+
+            gsap.from(items, {
+              autoAlpha: 0,
+              y: groupOffset,
+              duration: 0.7,
+              ease: "power2.out",
+              stagger: 0.08,
+              clearProps: "transform",
+              scrollTrigger: {
+                trigger: group,
+                start: groupStart,
+                toggleActions: "play none none none",
+              },
+            });
           });
 
-          overlay.addEventListener(
-            "transitionend",
-            () => {
-              overlay.remove();
-            },
-            { once: true },
-          );
-        }
+        window.addEventListener("load", () => {
+          ScrollTrigger.refresh();
+        });
       }
     </script>
   </body>

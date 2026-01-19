@@ -1,44 +1,52 @@
 ---
 import { Image } from "astro:assets";
 import { getProjects } from "../../lib/content/projects";
+import Tooltip from "../Tooltip";
 
 const projects = await getProjects();
 const featured = projects.slice(0, 2);
 ---
 
 <section id="projects" class="mb-48 grid grid-cols-10 gap-x-6">
-  <h1 class="col-start-1 col-end-5 mb-6 text-7xl">Recent Projects</h1>
-  <h2 class="col-start-9 col-end-11 mb-6 text-right">[02]</h2>
+  <h1 data-animate class="col-start-1 col-end-5 mb-6 text-7xl">Recent Projects</h1>
+
+  <h2 data-animate class="col-start-9 col-end-11 mb-6 text-right">[02]</h2>
   <a
+    data-animate
     href="/projects"
     class="h2 col-span-full mb-32 transition-colors transition-transform hover:translate-x-2 hover:text-accent"
     >VIEW ALL WORK →</a
   >
-  <div class="col-start-1 col-end-11 grid grid-cols-1 gap-12">
+  <div data-animate-group class="col-start-1 col-end-11 grid grid-cols-1 gap-12">
     {
       featured.map((project) => {
         return (
-          <a
-            href={project.url}
-            class={`group grid grid-cols-3 gap-x-8 border-transparent transition-all`}
-          >
-            <div class="col-span-2 mb-6 overflow-hidden">
-              <Image
-                src={project.data.image}
-                alt={`${project.data.title} cover`}
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
+          <div data-animate-item class="grid grid-cols-3 gap-x-8">
+            <a href={project.url} class="group col-span-full grid grid-cols-3 gap-x-8">
+              <Tooltip
+                client:load
+                label={"READ MORE"}
+                className="col-span-2 mb-6"
+              >
+                <div class="overflow-hidden">
+                  <Image
+                    src={project.data.image}
+                    alt={`${project.data.title} cover`}
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+              </Tooltip>
 
-            <div class="my-auto flex flex-col gap-y-2">
-              <h3 class="transition-colors group-hover:text-accent">
-                {project.data.title}
-              </h3>
-              <h2 class="uppercase">{project.data.date}</h2>
-              <p class="mb-10">{project.data.description.split(".")[0]}...</p>
-              <h2 class="uppercase">{project.data.tech?.join(" / ")}</h2>
-            </div>
-          </a>
+              <div class="my-auto flex flex-col gap-y-2">
+                <h3 class="transition-colors group-hover:text-accent">
+                  {project.data.title}
+                </h3>
+                <h2 class="uppercase">{project.data.date}</h2>
+                <p class="mb-10">{project.data.description.split(".")[0]}...</p>
+                <h2 class="uppercase">{project.data.tech?.join(" / ")}</h2>
+              </div>
+            </a>
+          </div>
         );
       })
     }
