@@ -8,27 +8,33 @@ const featured = projects.slice(0, 2);
 ---
 
 <section id="projects" class="section-shell section-grid">
-  <h1 data-animate class="display-xl md:col-start-1 md:col-end-5 md:mb-14 lg:mb-16">
+  <h1 data-animate class="display-xl mb-4 md:col-start-1 md:col-end-5">
     Recent Projects
   </h1>
 
   <h2
     data-animate
-    class="hidden md:block md:col-start-9 md:col-end-11 md:mb-14 lg:mb-16 md:text-right"
+    class="mb-4 hidden md:col-start-9 md:col-end-11 md:block md:text-right"
   >
     [02]
   </h2>
   <a
     data-animate
     href="/projects"
-    class="h2 md:col-span-full md:mb-32 transition-colors transition-transform hover:translate-x-2 hover:text-accent"
+    class="h2 transition-colors transition-transform hover:translate-x-2 hover:text-accent md:col-span-full md:mb-32"
     >VIEW ALL WORK <span class="hidden md:inline">→</span></a
   >
-  <div data-animate-group class="md:col-start-1 md:col-end-11 grid grid-cols-1 gap-12">
+  <div
+    data-animate-group
+    class="grid grid-cols-1 gap-12 md:col-start-1 md:col-end-11"
+  >
     {
       featured.map((project) => {
         return (
-          <div data-animate-item class="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-x-8">
+          <div
+            data-animate-item
+            class="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-x-8"
+          >
             <a
               href={project.url}
               class="group col-span-full grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-x-8"

@@ -18,7 +18,9 @@ const { Content } = await post.render();
 
 <Layout title={post.data.title}>
   <section class="section-grid mb-16 py-8">
-    <div class="flex flex-col gap-4 md:col-span-full md:flex-row md:items-center md:justify-between">
+    <div
+      class="mb-6 flex flex-col gap-4 md:col-span-full md:flex-row md:items-center md:justify-between"
+    >
       <a
         class="h2 transition-colors transition-transform hover:-translate-x-2 hover:text-accent"
         href="/posts">← POSTS</a
@@ -27,10 +29,12 @@ const { Content } = await post.render();
         <Menu client:load />
       </header>
     </div>
-    <div class="md:col-span-full grid grid-cols-1 gap-8 md:grid-cols-10 md:gap-x-6">
+    <div
+      class="grid grid-cols-1 gap-8 md:col-span-full md:grid-cols-10 md:gap-x-6"
+    >
       <h1 class="display-xl md:col-start-1 md:col-end-7">{post.data.title}</h1>
       <div
-        class="md:col-start-8 md:col-end-11 flex flex-col gap-y-4 md:items-end md:text-right"
+        class="flex flex-col gap-y-4 md:col-start-8 md:col-end-11 md:items-end md:text-right"
       >
         <div>
           <h2>DATE</h2>
@@ -41,14 +45,16 @@ const { Content } = await post.render();
           <p>{post.data.length}</p>
         </div>
       </div>
-      <div class="md:col-span-full mt-6 overflow-hidden md:mt-10">
+      <div class="mt-6 overflow-hidden md:col-span-full md:mt-10">
         <Image
           src={post.data.image}
           alt={`${post.data.title} cover`}
           class="h-full w-full object-cover"
         />
       </div>
-      <div class="md:col-span-full mt-6 grid grid-cols-1 gap-4 md:mt-10 md:grid-cols-10 md:gap-x-6">
+      <div
+        class="mt-6 grid grid-cols-1 gap-4 md:col-span-full md:mt-10 md:grid-cols-10 md:gap-x-6"
+      >
         <h2 class="md:col-start-1 md:col-end-3">DESCRIPTION</h2>
         <p class="md:col-start-7 md:col-end-11">
           {post.data.description}

@@ -6,22 +6,22 @@ const featured = posts[0];
 ---
 
 <section id="posts" class="section-shell section-grid">
-  <h2 data-animate class="hidden md:block md:col-start-1 md:col-end-2 md:mb-14 lg:mb-16">
+  <h2 data-animate class="mb-4 hidden md:col-start-1 md:col-end-2 md:block">
     [03]
   </h2>
   <h1
     data-animate
-    class="display-xl md:col-start-5 md:col-end-11 md:mb-14 lg:mb-16 md:text-right"
+    class="display-xl mb-4 md:col-start-5 md:col-end-11 md:text-right"
   >
     Latest Thought
   </h1>
   <a
     data-animate
     href="/posts"
-    class="h2 md:col-span-full md:mb-32 md:text-right transition-colors transition-transform hover:-translate-x-2 hover:text-accent"
+    class="h2 transition-colors transition-transform hover:-translate-x-2 hover:text-accent md:col-span-full md:mb-32 md:text-right"
     >← ALL POSTS</a
   >
-  <div data-animate class="md:col-start-2 md:col-end-9 grid grid-cols-1 gap-12">
+  <div data-animate class="grid grid-cols-1 gap-12 md:col-start-2 md:col-end-9">
     <a
       href={featured.url}
       class="group items-start gap-x-8 border border-transparent transition-all"
@@ -40,8 +40,10 @@ const featured = posts[0];
       </div>
     </a>
   </div>
-  <h2 data-animate class="hidden md:block md:col-start-10 md:col-end-11 md:text-right">
+  <h2
+    data-animate
+    class="hidden md:col-start-10 md:col-end-11 md:block md:text-right"
+  >
     FEATURED
   </h2>
 </section>
-
