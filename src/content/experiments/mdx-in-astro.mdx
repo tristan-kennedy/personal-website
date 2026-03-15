@@ -1,0 +1,223 @@
+---
+title: "MDX in Astro: Why This Is So Powerful"
+date: "Dec, 2025"
+description: "A practical deep dive into MDX as an authoring/runtime layer in Astro, with live React islands, TypeScript-powered components, and an under-the-hood view of MDX -> page rendering."
+tech:
+  - MDX
+  - Astro
+  - React
+  - TypeScript
+image: "./mdx-in-astro/cover.png"
+---
+
+import MdxFeatureDemo from "../../components/experiments/MdxFeatureDemo";
+
+This experiment is about one thing: **MDX is way more than markdown with syntax highlighting**. In Astro, MDX is a content format that can also act like a composition layer for real components, interactive islands, and typed utilities.
+
+I can write long-form documentation and then drop live TypeScript + React behavior directly into the same file where the explanation lives. That is a very different workflow from maintaining separate docs, examples, and demo pages.
+
+If you have only used markdown for static text, this is the moment where it gets fun.
+
+## The short version: what makes MDX cool
+
+At a practical level, MDX gives me all of this in one surface:
+
+- Normal markdown for narrative writing.
+- Code fences for readable snippets.
+- JSX component usage inline with prose.
+- Client hydration directives for interactive islands.
+- Reuse of typed `.tsx` components in content files.
+
+That means one file can teach a concept and prove the concept at the same time.
+
+## The smallest useful MDX + React pattern
+
+Here is the baseline pattern I keep repeating:
+
+1. Build a typed React component in `src/components/...`.
+2. Import it into an MDX entry.
+3. Render it with a hydration directive.
+
+```mdx
+import MyDemo from "../../components/experiments/MyDemo";
+
+## Interactive section
+
+<MyDemo client:load />
+```
+
+The important part is not just embedding a component. It is that the component can hold real behavior (`useState`, `useMemo`, typed props) while the rest of the article remains static content.
+
+## Demo 01: React state right inside MDX
+
+This first block is a tiny stateful island rendered from MDX. It is a normal React component with typed props and local state.
+
+<MdxFeatureDemo mode="counter" client:load />
+
+That component is not special because it is complex. It is special because it sits inside an article and still behaves like app UI.
+
+Typical use cases:
+
+- Interactive API examples.
+- Sandboxed UI controls.
+- "Try it here" sections in technical writeups.
+- Guided onboarding docs for your own codebase.
+
+## Demo 02: TypeScript transforms embedded in content
+
+MDX becomes really compelling when your examples are not fake. This block runs typed transformation logic in real time.
+
+<MdxFeatureDemo mode="transform" client:load />
+
+In docs, this is huge: instead of describing how a function behaves, you can let readers experiment with inputs and observe outputs immediately.
+
+The transform idea is simple:
+
+```ts
+const toSlug = (value: string) =>
+  value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+```
+
+Small utility, big teaching value when paired with a live input box.
+
+## Demo 03: component registries from typed keys
+
+This pattern shows one of my favorite MDX workflows: map string keys to component variants so content can switch behavior without rewriting UI code.
+
+<MdxFeatureDemo mode="registry" client:load />
+
+This can scale to things like:
+
+- Callout systems (`note`, `warning`, `success`, `danger`).
+- Embedded media cards.
+- Documentation-specific widgets.
+- Product-tour blocks based on frontmatter options.
+
+A typed map keeps it safe:
+
+```ts
+type Tone = "note" | "warning" | "success";
+
+const TONE_COPY: Record<Tone, { title: string; body: string }> = {
+  note: { title: "Implementation Note", body: "..." },
+  warning: { title: "Typed Guardrail", body: "..." },
+  success: { title: "Composable Win", body: "..." },
+};
+```
+
+Now content can select variants while TypeScript still protects the registry.
+
+## What this unlocks in real projects
+
+MDX + Astro is not only for blog posts. It works as a content runtime for many surfaces:
+
+- Engineering docs with executable UI examples.
+- Case studies with real product components.
+- Learning modules where each section includes a mini lab.
+- Internal handbooks with interactive checklists/tools.
+- Experiment logs where text and behavior stay synchronized.
+
+The key benefit is **co-location of explanation and execution**.
+
+When docs drift from implementation, they lose value quickly. MDX helps reduce drift because the page itself imports and renders the same component code you maintain elsewhere.
+
+## Under the hood in Astro: MDX -> page
+
+At a high level, this is what happens in this repo:
+
+1. Content collections discover `.mdx` files with a loader.
+2. Each entry is validated against a frontmatter schema.
+3. Route files generate slugs with `getStaticPaths()`.
+4. Astro calls `render(entry)` and gets a `Content` component.
+5. The page template renders `<Content />` in the article region.
+
+Collection config is the first gate:
+
+```ts
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
+
+const experiments = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/experiments" }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.string(),
+      description: z.string(),
+      tech: z.array(z.string()),
+      image: image(),
+    }),
+});
+```
+
+Then the slug page composes the entry:
+
+```astro
+---
+import { render } from "astro:content";
+import { getExperiments } from "../../lib/content/experiments";
+
+export async function getStaticPaths() {
+  const experiments = await getExperiments();
+  return experiments.map((experiment) => ({
+    params: { slug: experiment.id },
+    props: { experiment },
+  }));
+}
+
+const { experiment } = Astro.props;
+const { Content } = await render(experiment);
+---
+
+<article class="mdx">
+  <Content />
+</article>
+```
+
+That is the pipeline: **MDX becomes a renderable Astro component**, then the page shell handles layout, metadata, and consistent design.
+
+## Why islands matter here
+
+Because this is Astro, I do not need to hydrate the whole page just because one section is interactive.
+
+For example:
+
+```mdx
+<MdxFeatureDemo mode="counter" client:load />
+```
+
+Everything else in the page is static HTML by default. Only that specific island loads client JavaScript. This keeps performance predictable while still letting docs be interactive.
+
+You can also choose different hydration timing strategies (`client:visible`, `client:idle`) depending on UX needs.
+
+## Common mistakes and how to avoid them
+
+A few things I ran into while building this style of page:
+
+- **Schema mismatch**: frontmatter fields missing from `content.config.ts` break builds.
+- **Wrong asset path**: `image` in frontmatter must resolve relative to the MDX file.
+- **Hydration overuse**: avoid making every section interactive; use islands where they add learning value.
+- **Weak component boundaries**: keep demo components in `src/components` so they remain reusable outside one article.
+
+In short: keep content declarative, keep behavior modular, keep hydration intentional.
+
+## Final takeaways
+
+The "cool" part of MDX is not that it can render JSX. The cool part is that it turns a document into a **composable product surface**:
+
+- writing,
+- examples,
+- interactivity,
+- and reusable engineering primitives,
+
+all in one place.
+
+In Astro specifically, that model is even stronger because static-first rendering + selective hydration gives you a clear performance baseline. You can teach, demonstrate, and ship rich pages without turning your entire site into a client-heavy app.
+
+For content-driven engineering teams, that is a serious capability.

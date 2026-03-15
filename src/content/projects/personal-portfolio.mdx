@@ -1,23 +1,145 @@
 ---
 title: "Personal Portfolio"
-date: "Dec, 2025"
-description: "My personal website built as a long-term home for writing, experiments, and project case studies. It is designed to evolve with new sections, content pipelines, and visual refreshes without a rebuild, and it doubles as a sandbox for performance and UX ideas."
+date: "Mar, 2026"
+description: "This website is my long-term portfolio system: a fast, content-first space for project case studies, writing, and experiments with a Swiss-inspired visual direction."
 tech:
   - Astro
   - React
-  - Typescript
+  - TypeScript
   - Tailwind
-image: "./personal-portfolio/test.png"
+  - MDX
+image: "./personal-portfolio/cover.jpg"
 ---
 
-### What I built
+This portfolio is a living product, not a one-off landing page. I designed it to work as a long-term system where I can publish projects, experiments, and writing quickly while keeping performance, readability, and visual consistency high.
 
-This was a top-to-bottom refresh of my portfolio focused on fast loads, legible typography,
-and subtle motion cues. Everything is tuned for accessibility and SEO while keeping the
-experience lightweight.
+## Product vision and decision framework
 
-### Highlights
+The best way to describe this project is "a publishing platform disguised as a portfolio." I did not want to build a static homepage that looks great once and then becomes painful to maintain. I wanted a system that I can continue to use for years as my work changes, my writing gets deeper, and new sections are added. That framing changed almost every technical decision in the codebase.
 
-- Image optimization and responsive typography
-- Reusable layout primitives for future case studies
-- Micro-interactions that stay under 60fps
+I used a simple decision framework while building:
+
+1. Does this decision make publishing new content easier six months from now?
+2. Does it keep page speed high by default instead of as an afterthought?
+3. Does it preserve a strong visual identity without making the UI fragile?
+4. Does it help me explain work clearly to both technical and non-technical readers?
+
+Those questions pushed the project toward static rendering, typed content, and reusable layout primitives. They also helped me avoid over-building. I intentionally kept the site narrow in scope: clear structure, strong typography, and small interactive touches only where they add clarity.
+
+From a product perspective, the website serves three jobs at once:
+
+- Portfolio surface for project case studies and shipped work.
+- Writing surface for notes, technical breakdowns, and thought process.
+- Experiment surface for trying ideas quickly without polluting production patterns.
+
+Keeping those jobs in one codebase gives me two advantages: consistency for readers and compounding development speed for me. Every time I improve content modeling, typography, motion, or metadata handling, all three surfaces improve at the same time.
+
+## Architecture and technology choices
+
+Astro is the right center of gravity for this project because most pages are content-first. The site benefits from shipping HTML immediately and hydrating only small interactive islands. That gives me a performance baseline that is hard to regress accidentally.
+
+I use React, but only where interaction is actually needed (menu behavior, tooltip-style interactions, small client-side controls). This keeps JavaScript payloads lean and avoids turning a mostly static site into an unnecessary client app.
+
+I also structured the project so that responsibilities are easy to reason about:
+
+```txt
+src/
+  pages/        // route entrypoints and page-level composition
+  layouts/      // shared shell, metadata, and framing
+  components/   // reusable UI building blocks
+  content/      // MDX content files
+  lib/content/  // content fetch + sort helpers
+```
+
+That structure reflects how the project evolves in real life. Content changes frequently, components evolve gradually, and layout conventions stay stable unless there is a deliberate design shift.
+
+The stack choices and why each one exists:
+
+- Astro for static-first rendering, route ergonomics, and content integration.
+- MDX for case studies that combine narrative writing with code snippets.
+- Tailwind for fast, consistent layout implementation tied to design tokens.
+- TypeScript for predictable refactors and safer content-driven rendering.
+
+One of the biggest architecture wins is centralizing content sorting and URL mapping into helpers. Instead of repeating logic across pages, every route consumes already-prepared content objects.
+
+```ts
+export async function getProjects() {
+  const projects = await getCollection("projects");
+
+  return projects
+    .map((project) => ({
+      ...project,
+      url: `/projects/${project.id}`,
+    }))
+    .sort((a, b) => toTimestamp(b.data.date) - toTimestamp(a.data.date));
+}
+```
+
+This sounds small, but it keeps page templates cleaner, reduces duplication, and makes migrations easier when upstream APIs change.
+
+## Content model, authoring workflow, and quality control
+
+I modeled content as typed collections because this site is built around durable publishing. Untyped frontmatter would move faster on day one, but it creates silent inconsistencies over time. I prefer stricter structure up front because it protects page quality and makes refactoring safer.
+
+The core collection definition captures the fields that every project card and project page depend on:
+
+```ts
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z } from "astro/zod";
+
+const projects = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/projects" }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      date: z.string(),
+      description: z.string(),
+      tech: z.array(z.string()),
+      image: image(),
+    }),
+});
+```
+
+That decision creates a healthier authoring loop:
+
+1. Create or update an MDX file.
+2. Let schema validation catch missing metadata immediately.
+3. Render with shared templates so cards and detail pages stay consistent.
+4. Run a build and trust that route generation and assets are deterministic.
+
+I also like MDX here because technical writing often needs mixed mediums: plain-language explanation, structured lists, and code examples in one place. That lets each project page explain both implementation details and broader product decisions without context switching.
+
+For content quality, I optimize around a few practical principles:
+
+- Every entry should explain intent, not only implementation.
+- Metadata should be complete enough to support list pages without fallback hacks.
+- Code snippets should illustrate real decisions, not generic placeholder examples.
+- Narrative should move from strategy to architecture to execution to outcomes.
+
+## Design principles, performance strategy, and bigger picture
+
+The visual direction is Swiss-influenced and typography-led: strong hierarchy, deliberate spacing, minimal ornamentation, and color used with restraint. I avoid decorative borders and heavy chrome because they add noise faster than they add clarity. Most of the visual system is built around proportion, rhythm, and consistent spacing rather than extra UI elements.
+
+Interaction design follows the same rule set: subtle motion, directional cues, and emphasis only where it supports navigation or comprehension. For example, hover shifts and accent transitions are used to signal action, not to decorate static content.
+
+The performance strategy is intentionally conservative and reliable:
+
+- Prerender pages statically whenever possible.
+- Hydrate only interactive islands.
+- Use `astro:assets` image optimization to avoid shipping oversized media.
+- Keep content and rendering logic predictable so build output stays stable.
+
+```astro
+<Tooltip client:load label="READ MORE">
+  <Image
+    src={project.data.image}
+    alt={`${project.data.title} cover`}
+    class="h-full w-full object-cover"
+  />
+</Tooltip>
+```
+
+Accessibility and maintainability are treated as baseline quality, not post-launch tasks. Semantic structure, contrast-safe tokens, and typed content boundaries reduce future cleanup work and make the site easier to evolve responsibly.
+
+At the highest level, this project is about building a system that scales with my career narrative. The immediate output is a portfolio website, but the long-term asset is a reliable platform for communicating how I think, how I build, and why I make certain technical and design decisions. That big-picture goal is why I treat this repo as a product with standards, not just a page with sections.

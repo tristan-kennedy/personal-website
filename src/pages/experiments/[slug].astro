@@ -1,9 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import Menu from "../../components/menu/Menu";
+import Footer from "../../components/Footer.astro";
 import { Image } from "astro:assets";
 import { render } from "astro:content";
 import { getExperiments } from "../../lib/content/experiments";
+import ScrollToTop from "../../components/menu/ScrollToTop";
 
 export async function getStaticPaths() {
   const experiments = await getExperiments();
@@ -18,26 +20,28 @@ const { Content } = await render(experiment);
 ---
 
 <Layout title={experiment.data.title}>
+  <ScrollToTop client:load />
   <section class="section-grid mb-16 py-8">
-    <div
-      class="mb-6 flex flex-col gap-4 md:col-span-full md:flex-row md:items-center md:justify-between"
-    >
+    <div class="mb-16 flex items-center justify-between gap-4 md:col-span-full">
       <a
-        class="h2 transition-colors transition-transform hover:-translate-x-2 hover:text-accent"
+        class="h2 whitespace-nowrap transition-colors transition-transform md:hover:-translate-x-2 md:hover:text-accent"
         href="/experiments">← EXPERIMENTS</a
       >
-      <header class="flex items-center justify-end">
+      <header class="shrink-0">
         <Menu client:load />
       </header>
     </div>
     <div
-      class="grid grid-cols-1 gap-8 md:col-span-full md:grid-cols-10 md:gap-x-6"
+      class="grid grid-cols-1 gap-y-6 md:col-span-full md:grid-cols-10 md:gap-x-6 md:gap-y-8"
     >
       <h1 class="display-xl md:col-start-1 md:col-end-7">
         {experiment.data.title}
       </h1>
+      <p class="max-w-prose md:col-start-1 md:col-end-7">
+        {experiment.data.description}
+      </p>
       <div
-        class="flex flex-col gap-y-4 md:col-start-8 md:col-end-11 md:items-end md:text-right"
+        class="flex flex-col gap-y-4 md:col-start-8 md:col-end-11 md:row-start-1 md:row-end-3 md:items-end md:self-start md:text-right"
       >
         <div>
           <h2>DATE</h2>
@@ -52,24 +56,17 @@ const { Content } = await render(experiment);
           )
         }
       </div>
-      <div class="mt-6 overflow-hidden md:col-span-full md:mt-10">
+      <div class="overflow-hidden md:col-span-full">
         <Image
           src={experiment.data.image}
           alt={`${experiment.data.title} cover`}
-          class="h-full w-full object-cover"
+          class="h-[clamp(24rem,55vw,42rem)] w-full object-cover"
         />
-      </div>
-      <div
-        class="mt-6 grid grid-cols-1 gap-4 md:col-span-full md:mt-10 md:grid-cols-10 md:gap-x-6"
-      >
-        <h2 class="md:col-start-1 md:col-end-3">DESCRIPTION</h2>
-        <p class="md:col-start-7 md:col-end-11">
-          {experiment.data.description}
-        </p>
       </div>
     </div>
   </section>
   <article class="mdx pb-16 md:pb-24">
     <Content />
   </article>
+  <Footer />
 </Layout>

@@ -1,0 +1,273 @@
+---
+title: "Matter.js Surface Dive"
+date: "Feb, 2026"
+description: "A practical, surface-level walkthrough of Matter.js: engine setup, bodies, collisions, constraints, and interaction patterns with live scenes and code snippets."
+tech:
+  - Matter.js
+  - TypeScript
+  - Canvas
+image: "./matter-js-surface-dive/cover.png"
+---
+
+import MatterDemo from "../../components/experiments/MatterDemo";
+
+This experiment is intentionally technical and intentionally practical. I am not exploring visual polish here. I am using Matter.js as a lightweight physics sandbox so I can understand how the core pieces fit together and what a real integration looks like inside an Astro + React setup.
+
+The goal is not to become a physics expert in one pass. The goal is to build a working mental model:
+
+- What the `Engine` is actually responsible for.
+- How `Bodies` are created and added to a `World`.
+- Where collisions come from.
+- How `Constraints` create connected systems.
+- How interaction works with `MouseConstraint`.
+
+If you have never used a physics engine before, this is a good first pass. If you have used one before, this is a quick refresher with some code you can reuse.
+
+## The mental model in one minute
+
+At a surface level, Matter.js is a simulation loop with a few important objects:
+
+1. `Engine`: advances simulation state each tick.
+2. `World` (inside the engine): stores bodies and constraints.
+3. `Bodies`: rigid objects like circles and rectangles.
+4. `Runner`: drives update timing.
+5. `Render`: draws simulation output to a canvas.
+
+When you call `Runner.run(runner, engine)`, Matter repeatedly integrates forces and resolves collisions. If a renderer is attached, you get continuous visual output.
+
+```ts
+import Matter from "matter-js";
+
+const { Engine, Render, Runner } = Matter;
+
+const engine = Engine.create();
+const render = Render.create({
+  element: mountNode,
+  engine,
+  options: { width: 900, height: 360, wireframes: false },
+});
+const runner = Runner.create();
+
+Render.run(render);
+Runner.run(runner, engine);
+```
+
+That is the core bootstrap. Everything else is world setup and behavior.
+
+## Scene 01: gravity + rigid bodies
+
+The fastest way to understand Matter is to spawn a bunch of bodies and watch gravity do its job.
+
+In this first scene:
+
+- Gravity pulls dynamic bodies downward.
+- Bodies differ in shape and restitution.
+- The floor and walls are static bodies.
+- New bodies are spawned over time so the simulation stays active.
+
+<MatterDemo scenario="gravity" client:load />
+
+The smallest useful pattern is: create bodies, add static bounds, then call `Composite.add`.
+
+```ts
+import Matter from "matter-js";
+
+const { Bodies, Composite } = Matter;
+
+const floor = Bodies.rectangle(width / 2, height + 40, width + 120, 80, {
+  isStatic: true,
+});
+
+const box = Bodies.rectangle(200, 30, 50, 50, {
+  restitution: 0.4,
+  friction: 0.15,
+});
+
+const ball = Bodies.circle(320, 30, 24, {
+  restitution: 0.85,
+  friction: 0.02,
+});
+
+Composite.add(engine.world, [floor, box, ball]);
+```
+
+Two properties are worth learning early:
+
+- `restitution`: how bouncy the body is.
+- `friction` / `frictionAir`: how quickly motion decays due to contact/air drag.
+
+Changing only those values gives you very different motion profiles.
+
+## Scene 02: collision stacks and impulses
+
+Single-body drops are useful, but collisions become more interesting with structure. In this scene, a stack of boxes gets hit by a moving projectile.
+
+<MatterDemo scenario="collisions" client:load />
+
+This demonstrates a few mechanics at once:
+
+- Broad phase collision pruning (candidate pairs).
+- Narrow phase contact generation (actual collisions).
+- Impulse resolution and post-collision velocity changes.
+
+The setup pattern uses `Composites.stack` plus a delayed launch.
+
+```ts
+import Matter from "matter-js";
+
+const { Body, Bodies, Composite, Composites } = Matter;
+
+const stack = Composites.stack(420, 20, 6, 6, 4, 4, (x, y) =>
+  Bodies.rectangle(x, y, 36, 36, {
+    restitution: 0.1,
+    friction: 0.7,
+    density: 0.001,
+  }),
+);
+
+const projectile = Bodies.circle(120, 120, 26, {
+  restitution: 0.88,
+  friction: 0.01,
+  density: 0.003,
+});
+
+Composite.add(engine.world, [stack, projectile]);
+window.setTimeout(() => {
+  Body.setVelocity(projectile, { x: 18, y: 2 });
+}, 500);
+```
+
+The key idea is that Matter handles collision resolution for you; your work is mostly around initial conditions and body parameters.
+
+## Scene 03: constraints and connected systems
+
+Rigid bodies alone are only half the story. Constraints let you build ropes, bridges, pendulums, and spring-like systems.
+
+In this scene, bridge segments are chained together and pinned at both ends.
+
+<MatterDemo scenario="constraints" client:load />
+
+This setup uses three pieces:
+
+1. A row of bodies for the bridge segments.
+2. `Composites.chain` to connect adjacent segments.
+3. Anchor constraints to static bodies at the edges.
+
+```ts
+import Matter from "matter-js";
+
+const { Body, Bodies, Composite, Composites, Constraint } = Matter;
+
+const group = Body.nextGroup(true);
+
+const bridge = Composites.stack(180, 150, 9, 1, 0, 0, (x, y) =>
+  Bodies.rectangle(x, y, 62, 20, {
+    collisionFilter: { group },
+    density: 0.0025,
+    frictionAir: 0.03,
+  }),
+);
+
+Composites.chain(bridge, 0.3, 0, -0.3, 0, {
+  stiffness: 0.95,
+  length: 2,
+});
+
+const leftAnchor = Bodies.rectangle(120, 150, 24, 24, { isStatic: true });
+const rightAnchor = Bodies.rectangle(780, 150, 24, 24, { isStatic: true });
+
+Composite.add(engine.world, [
+  bridge,
+  leftAnchor,
+  rightAnchor,
+  Constraint.create({ bodyA: leftAnchor, bodyB: bridge.bodies[0] }),
+  Constraint.create({
+    bodyA: rightAnchor,
+    bodyB: bridge.bodies[bridge.bodies.length - 1],
+  }),
+]);
+```
+
+If you drag these bodies around in the live scene, you can feel exactly what the `stiffness` value is doing.
+
+## Interaction: dragging bodies with MouseConstraint
+
+Making a scene draggable gives you immediate feedback while tuning parameters.
+
+```ts
+import Matter from "matter-js";
+
+const { Composite, Mouse, MouseConstraint } = Matter;
+
+const mouse = Mouse.create(render.canvas);
+
+const mouseConstraint = MouseConstraint.create(engine, {
+  mouse,
+  constraint: {
+    stiffness: 0.24,
+    render: { visible: false },
+  },
+});
+
+Composite.add(engine.world, mouseConstraint);
+render.mouse = mouse;
+```
+
+This is one of the highest-leverage additions you can make while prototyping. You can inspect balance problems, stuck shapes, and weird collision behavior by manually perturbing the system.
+
+## Event hooks and observability
+
+Even in a surface-level experiment, event hooks are useful because they let you observe what the simulation is doing instead of guessing.
+
+```ts
+import Matter from "matter-js";
+
+const { Events } = Matter;
+
+Events.on(engine, "collisionStart", (event) => {
+  for (const pair of event.pairs) {
+    const a = pair.bodyA.label;
+    const b = pair.bodyB.label;
+    console.log(`collision: ${a} <-> ${b}`);
+  }
+});
+```
+
+You can use this for simple analytics too: count impacts, trigger sounds, or increment score values in game-like prototypes.
+
+## Practical integration notes
+
+In this project, Matter runs inside a React component that is rendered from MDX with `client:load`. That keeps the rest of the page static while hydrating only the interactive demo blocks.
+
+A few practical patterns made integration cleaner:
+
+- Keep one setup/teardown effect per scene.
+- On cleanup: stop render, stop runner, clear world, clear engine, remove canvas.
+- Use `ResizeObserver` so the canvas adapts to layout width.
+- Keep simulation code modular by scene type.
+
+A cleanup block is important, especially when navigating between routes:
+
+```ts
+return () => {
+  Render.stop(render);
+  Runner.stop(runner);
+  Composite.clear(engine.world, false);
+  Engine.clear(engine);
+  render.canvas.remove();
+  render.textures = {};
+};
+```
+
+Without this, you can easily leak animation loops or leave detached canvases in memory.
+
+## What this experiment proved
+
+For me, this pass answered the important beginner-to-intermediate questions:
+
+- Matter.js is quick to bootstrap and great for interactive prototypes.
+- Most behavior changes come from body properties and initial conditions.
+- Constraints are approachable once you see one connected system in motion.
+- The engine fits naturally into an island architecture (Astro page + client React component).
+
+This is still a surface-level dive, but it is enough to move from curiosity to implementation. The next step is building something concrete on top of it: maybe a tiny puzzle scene, a collision-based interaction toy, or a small game loop with scoring and level resets.

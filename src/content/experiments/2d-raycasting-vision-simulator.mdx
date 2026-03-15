@@ -1,0 +1,135 @@
+---
+title: "2D Raycasting Vision Simulator"
+date: "Mar, 2026"
+description: "An advanced interactive experiment showing 360-degree raycasting, segment intersections, and visibility polygon generation for 2D game vision and line-of-sight systems."
+tech:
+  - Raycasting
+  - Computational Geometry
+  - React
+  - TypeScript
+  - Canvas
+image: "./2d-raycasting-vision-simulator/cover.jpg"
+---
+
+import RaycastingVisionDemo from "../../components/experiments/RaycastingVisionDemo";
+
+This experiment is a real-time 2D raycasting simulator designed to make line-of-sight mechanics feel concrete. The light source emits rays in every direction, each ray stops at the nearest wall intersection, and all hit points are connected into a filled polygon that represents the visible area. You can move the light and obstacles directly in the scene, then watch the geometry update instantly.
+
+## Live simulator
+
+The canvas behaves like a game-engine debug view. The background stays dark so edges are easy to read, wall segments are drawn as thin lines, rays are faint, and the final visibility region is rendered as a soft translucent polygon. You can drag the light source, drag interior wall segments, change ray density from `50` to `2000`, toggle raw rays on and off, and reset the layout at any time.
+
+<RaycastingVisionDemo client:load />
+
+The simulator is intentionally interactive because raycasting becomes much easier to understand when you can disturb the scene and observe the result frame by frame.
+
+## Core algorithm
+
+At the data level, the scene is just points and line segments. The light is one point, walls are segment pairs, and boundary segments keep casts enclosed.
+
+```ts
+type Point = { x: number; y: number };
+
+type Segment = {
+  id: string;
+  a: Point;
+  b: Point;
+  draggable: boolean;
+};
+```
+
+For each ray direction, the algorithm tests that ray against every segment and keeps only the closest valid hit. Intersection is solved with 2D cross products, which avoids special-casing most orientations.
+
+```ts
+const subtract = (a: Point, b: Point): Point => ({
+  x: a.x - b.x,
+  y: a.y - b.y,
+});
+
+const cross = (a: Point, b: Point) => a.x * b.y - a.y * b.x;
+
+function intersectRayWithSegment(
+  origin: Point,
+  direction: Point,
+  segment: Segment,
+): Point | null {
+  const rayToSeg = subtract(segment.a, origin);
+  const segDir = subtract(segment.b, segment.a);
+  const denom = cross(direction, segDir);
+
+  if (Math.abs(denom) < 1e-9) return null;
+
+  const tRay = cross(rayToSeg, segDir) / denom;
+  const tSeg = cross(rayToSeg, direction) / denom;
+
+  if (tRay < 0 || tSeg < 0 || tSeg > 1) return null;
+
+  return {
+    x: origin.x + direction.x * tRay,
+    y: origin.y + direction.y * tRay,
+  };
+}
+```
+
+Rays are cast across a full `360` degrees by sweeping angle space at fixed increments. The resulting hit points are already angle-ordered, which means they can be rendered directly as a visibility shell.
+
+```ts
+function castRays(origin: Point, segments: Segment[], rayCount: number) {
+  const hits: Point[] = [];
+  const maxDistance = 5000;
+
+  for (let i = 0; i < rayCount; i += 1) {
+    const angle = (i / rayCount) * Math.PI * 2;
+    const dir = { x: Math.cos(angle), y: Math.sin(angle) };
+
+    let closest = {
+      x: origin.x + dir.x * maxDistance,
+      y: origin.y + dir.y * maxDistance,
+    };
+    let bestDistSq = maxDistance * maxDistance;
+
+    for (const segment of segments) {
+      const hit = intersectRayWithSegment(origin, dir, segment);
+      if (!hit) continue;
+
+      const dx = hit.x - origin.x;
+      const dy = hit.y - origin.y;
+      const distSq = dx * dx + dy * dy;
+
+      if (distSq < bestDistSq) {
+        bestDistSq = distSq;
+        closest = hit;
+      }
+    }
+
+    hits.push(closest);
+  }
+
+  return hits;
+}
+```
+
+## Rendering and interaction loop
+
+After casting, the renderer draws the visible region by connecting hit points in order and filling the resulting polygon. If ray visualization is enabled, it also draws each line from light origin to hit point so the underlying cast process is visible.
+
+```ts
+ctx.beginPath();
+ctx.moveTo(hits[0].x, hits[0].y);
+
+for (let i = 1; i < hits.length; i += 1) {
+  ctx.lineTo(hits[i].x, hits[i].y);
+}
+
+ctx.closePath();
+ctx.fillStyle = "rgba(100, 220, 255, 0.22)";
+ctx.fill();
+```
+
+Dragging uses pointer capture so motion stays stable even when the cursor moves quickly. Moving a wall applies pointer delta to both endpoints, then clamps the segment inside the scene bounds. Moving the light does the same for a single point. Every pointer update triggers a new cast pass, which keeps the feedback immediate and makes occlusion behavior easy to read.
+
+## Performance and real-world use
+
+The ray-count slider makes the core tradeoff obvious in practice. Lower counts compute quickly but produce faceted edges, while higher counts smooth the polygon at greater cost. In an actual game, that same decision scales with the number of active lights and AI agents sharing frame budget.
+
+This exact pattern maps well to enemy vision, flashlight systems, tactical fog-of-war, and sensor simulation. Production implementations often add endpoint-biased casts, spatial partitioning, or angular cones, but the foundation is the same as this demo: cast directions, keep nearest intersections, and render the resulting visibility region.

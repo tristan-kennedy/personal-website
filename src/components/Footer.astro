@@ -1,13 +1,15 @@
 ---
-const year = new Date().getFullYear();
+import { Image } from "astro:assets";
+import barcode from "../assets/barcode.png";
 ---
 
-<footer>
-  <div class="mt-auto flex flex-col gap-2 text-sm transition-colors md:flex-row md:items-center md:justify-between">
-    <div>
-      © {year} Tristan Kennedy. All Rights Reserved.
-    </div>
-    <div class="flex items-center">This could be a bar code some day.</div>
+<footer class="section-grid pb-4">
+  <div class="flex items-center justify-between gap-4 md:col-span-full">
+    <h2>© 2025 Tristan Kennedy.</h2>
+    <Image
+      src={barcode}
+      alt="Barcode mark"
+      class="hidden h-6 w-auto opacity-80 sm:block"
+    />
   </div>
 </footer>
-
