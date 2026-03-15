@@ -21,29 +21,33 @@ const featured = posts.slice(0, 1);
     class="h2 transition-colors transition-transform hover:-translate-x-2 hover:text-accent md:col-span-full md:mb-32 md:text-right"
     >← ALL POSTS</a
   >
-  <div data-animate class="grid grid-cols-1 gap-12 md:col-start-2 md:col-end-9">
-    {
-      featured.map((featured) => (
-        <a
-          href={featured.url}
-          class="group items-start gap-x-8 border border-transparent transition-all"
-        >
-          <div class="flex flex-col gap-y-6">
-            <h2 class="uppercase">{featured.data.date}</h2>
-            <h3 class="transition-colors group-hover:text-accent">
-              {featured.data.title}
-            </h3>
-            <p>{featured.data.description.split(".")[0]}...</p>
-            <h2 class="uppercase transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent">
-              {featured.data.length} →
-            </h2>
-          </div>
-        </a>
-      ))
-    }
+  <div
+    data-animate
+    class="grid grid-cols-1 gap-8 md:col-start-2 md:col-end-11 md:grid-cols-10 md:gap-x-6"
+  >
+    <div class="md:col-start-1 md:col-end-8">
+      {
+        featured.map((featured) => (
+          <a href={featured.url} class="group block border border-transparent">
+            <div class="flex flex-col gap-y-6">
+              <h2 class="uppercase">{featured.data.date}</h2>
+              <h3 class="transition-colors group-hover:text-accent">
+                {featured.data.title}
+              </h3>
+              <p class="max-w-prose">
+                {featured.data.description.split(".")[0]}...
+              </p>
+              <h2 class="uppercase transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent">
+                {featured.data.length} →
+              </h2>
+            </div>
+          </a>
+        ))
+      }
+    </div>
     <h2
       data-animate
-      class="hidden md:col-start-10 md:col-end-11 md:block md:text-right"
+      class="hidden md:col-start-9 md:col-end-11 md:block md:text-right"
     >
       FEATURED
     </h2>
