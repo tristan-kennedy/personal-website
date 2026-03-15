@@ -2,18 +2,19 @@
 import Layout from "../../layouts/Layout.astro";
 import Menu from "../../components/menu/Menu";
 import { Image } from "astro:assets";
+import { render } from "astro:content";
 import { getExperiments } from "../../lib/content/experiments";
 
 export async function getStaticPaths() {
   const experiments = await getExperiments();
   return experiments.map((experiment) => ({
-    params: { slug: experiment.slug },
+    params: { slug: experiment.id },
     props: { experiment },
   }));
 }
 
 const { experiment } = Astro.props;
-const { Content } = await experiment.render();
+const { Content } = await render(experiment);
 ---
 
 <Layout title={experiment.data.title}>

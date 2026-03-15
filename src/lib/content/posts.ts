@@ -6,7 +6,7 @@ export async function getPosts() {
   return posts
     .map((post) => ({
       ...post,
-      url: `/posts/${post.slug}`,
+      url: `/posts/${post.id}`,
     }))
     .sort((a, b) => toTimestamp(b.data.date) - toTimestamp(a.data.date));
 }

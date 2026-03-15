@@ -9,7 +9,7 @@
 
 - Astro for pages/layouts (`.astro`) and content collections.
 - TypeScript for utilities and React (`.tsx`) components.
-- Tailwind CSS with custom theme tokens in `src/styles/global.css`.
+- Tailwind CSS with custom theme tokens in `src/global.css`.
 
 ## Repository structure
 

@@ -2,18 +2,19 @@
 import Layout from "../../layouts/Layout.astro";
 import Menu from "../../components/menu/Menu";
 import { Image } from "astro:assets";
+import { render } from "astro:content";
 import { getPosts } from "../../lib/content/posts";
 
 export async function getStaticPaths() {
   const posts = await getPosts();
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 ---
 
 <Layout title={post.data.title}>

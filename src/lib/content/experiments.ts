@@ -6,7 +6,7 @@ export async function getExperiments() {
   return experiments
     .map((experiment) => ({
       ...experiment,
-      url: `/experiments/${experiment.slug}`,
+      url: `/experiments/${experiment.id}`,
     }))
     .sort((a, b) => toTimestamp(b.data.date) - toTimestamp(a.data.date));
 }

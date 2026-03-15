@@ -1,5 +1,5 @@
 ---
-import "../styles/global.css";
+import "../global.css";
 import ValentineEnvelope from "../components/ValentineEnvelope";
 
 const title = "Valentines 2026";
@@ -103,7 +103,8 @@ const title = "Valentines 2026";
     clip-path: polygon(0 0, 50% 64%, 100% 0, 100% 100%, 0 100%);
   }
 
-  :global(.valentine-envelope-shell.is-open) :global(.valentine-envelope-front) {
+  :global(.valentine-envelope-shell.is-open)
+    :global(.valentine-envelope-front) {
     clip-path: polygon(0 18%, 50% 70%, 100% 18%, 100% 100%, 0 100%);
   }
 
@@ -132,7 +133,9 @@ const title = "Valentines 2026";
     text-transform: uppercase;
     letter-spacing: 0.3em;
     font-size: 0.6rem;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
   }
 
   :global(.valentine-seal::before) {
@@ -246,7 +249,9 @@ const title = "Valentines 2026";
     border-radius: 999px;
     transform: translate(-50%, -50%) scale(0.75);
     opacity: 0;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
     z-index: -1;
     pointer-events: none;
   }

@@ -6,7 +6,7 @@ export async function getProjects() {
   return projects
     .map((project) => ({
       ...project,
-      url: `/projects/${project.slug}`,
+      url: `/projects/${project.id}`,
     }))
     .sort((a, b) => toTimestamp(b.data.date) - toTimestamp(a.data.date));
 }
