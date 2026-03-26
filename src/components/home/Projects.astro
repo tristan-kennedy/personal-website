@@ -48,6 +48,7 @@ const featured = projects.slice(0, 2);
                   <Image
                     src={project.data.image}
                     alt={`${project.data.title} cover`}
+                    loading="eager"
                     class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>

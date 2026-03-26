@@ -8,17 +8,31 @@ import { LuArrowDown } from "react-icons/lu";
   id="hero"
   class="section-shell flex min-h-screen flex-col py-8"
 >
-  <header data-animate class="flex items-center justify-end gap-2 text-right">
+  <header
+    data-animate="fade"
+    data-animate-immediate
+    data-animate-offset="0"
+    class="flex items-center justify-end gap-2 text-right"
+  >
     <div>
       <h2 class="text-primary">SOFTWARE ENGINEER</h2>
       <h3 class="text-sm text-secondary">Rogers, AR</h3>
     </div>
   </header>
   <div class="my-auto flex flex-col gap-6 py-6 md:gap-8">
-    <h2 data-animate data-animate-delay="0.05">INDEX</h2>
+    <h2
+      data-animate="fade"
+      data-animate-immediate
+      data-animate-delay="0.05"
+      data-animate-offset="0"
+    >
+      INDEX
+    </h2>
     <h1
-      data-animate
+      data-animate="fade"
+      data-animate-immediate
       data-animate-delay="0.1"
+      data-animate-offset="0"
       data-hero-title
       class="display-hero font-black"
     >
@@ -27,41 +41,59 @@ import { LuArrowDown } from "react-icons/lu";
     <div class="flex flex-row gap-6">
       <Menu client:load />
 
-      <nav data-animate data-animate-delay="0.2" data-hero-nav class="h2">
-        <ul class="space-y-1">
-          <li class="transition-transform hover:translate-x-2">
-            <a href="#about" class="transition-colors hover:text-accent"
-              >01/ ABOUT ME</a
-            >
-          </li>
-          <li class="transition-transform hover:translate-x-2">
-            <a href="#projects" class="transition-colors hover:text-accent"
-              >02/ PROJECTS</a
-            >
-          </li>
-          <li class="transition-transform hover:translate-x-2">
-            <a href="#posts" class="transition-colors hover:text-accent"
-              >03/ POSTS</a
-            >
-          </li>
-          <li class="transition-transform hover:translate-x-2">
-            <a href="#experiments" class="transition-colors hover:text-accent"
-              >04/ EXPERIMENTS</a
-            >
-          </li>
-          <li class="transition-transform hover:translate-x-2">
-            <a href="#contact" class="transition-colors hover:text-accent"
-              >05/ CONTACT</a
-            >
-          </li>
-        </ul>
-      </nav>
+      <div
+        data-animate="fade"
+        data-animate-immediate
+        data-animate-delay="0.2"
+        data-animate-offset="0"
+      >
+        <nav data-hero-nav class="h2">
+          <ul class="space-y-1">
+            <li>
+              <a
+                href="#about"
+                class="inline-block transition-colors transition-transform hover:translate-x-2 hover:text-accent"
+                >01/ ABOUT ME</a
+              >
+            </li>
+            <li>
+              <a
+                href="#projects"
+                class="inline-block transition-colors transition-transform hover:translate-x-2 hover:text-accent"
+                >02/ PROJECTS</a
+              >
+            </li>
+            <li>
+              <a
+                href="#posts"
+                class="inline-block transition-colors transition-transform hover:translate-x-2 hover:text-accent"
+                >03/ POSTS</a
+              >
+            </li>
+            <li>
+              <a
+                href="#experiments"
+                class="inline-block transition-colors transition-transform hover:translate-x-2 hover:text-accent"
+                >04/ EXPERIMENTS</a
+              >
+            </li>
+            <li>
+              <a
+                href="#contact"
+                class="inline-block transition-colors transition-transform hover:translate-x-2 hover:text-accent"
+                >05/ CONTACT</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
   <footer
-    data-animate
+    data-animate="fade"
+    data-animate-immediate
     data-animate-delay="0.5"
-    data-animate-offset="8"
+    data-animate-offset="0"
     data-animate-start="top 100%"
     class="flex flex-row items-center justify-between gap-3"
   >

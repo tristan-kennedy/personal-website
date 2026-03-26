@@ -142,6 +142,8 @@ const introLines = [
             element.dataset.animateOffset ?? "24",
           );
           const start = element.dataset.animateStart ?? "top 85%";
+          const clearProps = "opacity,visibility,transform";
+          const isImmediate = element.hasAttribute("data-animate-immediate");
           const from = {
             autoAlpha: 0,
             x:
@@ -153,16 +155,28 @@ const introLines = [
             y: type === "fade-up" ? offset : 0,
           };
 
+          if (isImmediate) {
+            gsap.from(element, {
+              ...from,
+              duration: 0.8,
+              ease: "power2.out",
+              delay,
+              clearProps,
+            });
+
+            return;
+          }
+
           gsap.from(element, {
             ...from,
             duration: 0.8,
             ease: "power2.out",
             delay,
-            clearProps: "transform",
+            clearProps,
             scrollTrigger: {
               trigger: element,
               start,
-              toggleActions: "play none none none",
+              once: true,
             },
           });
         });
@@ -189,11 +203,11 @@ const introLines = [
               duration: 0.7,
               ease: "power2.out",
               stagger: 0.08,
-              clearProps: "transform",
+              clearProps: "opacity,visibility,transform",
               scrollTrigger: {
                 trigger: group,
                 start: groupStart,
-                toggleActions: "play none none none",
+                once: true,
               },
             });
           });
