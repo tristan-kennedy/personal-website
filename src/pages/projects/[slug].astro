@@ -6,6 +6,7 @@ import { Image } from "astro:assets";
 import { render } from "astro:content";
 import { getProjects } from "../../lib/content/projects";
 import ScrollToTop from "../../components/menu/ScrollToTop";
+import { LuArrowUpRight } from "react-icons/lu";
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -52,6 +53,22 @@ const { Content } = await render(project);
             <div>
               <h2>TECH</h2>
               <p>{project.data.tech.join(" / ")}</p>
+            </div>
+          )
+        }
+        {
+          project.data.github && (
+            <div>
+              <h2>REPO</h2>
+              <a
+                href={project.data.github}
+                target="_blank"
+                rel="noreferrer"
+                class="inline-flex items-center gap-2 transition-colors hover:text-accent"
+              >
+                View on GitHub
+                <LuArrowUpRight className="inline align-middle" />
+              </a>
             </div>
           )
         }
