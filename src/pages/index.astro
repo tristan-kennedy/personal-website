@@ -1,22 +1,362 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
-import Hero from "../components/home/Hero.astro";
-import AboutMe from "../components/home/AboutMe.astro";
-import Projects from "../components/home/Projects.astro";
-import Posts from "../components/home/Posts.astro";
-import ScrollToTop from "../components/menu/ScrollToTop";
-import Experiments from "../components/home/Experiments.astro";
-import Contact from "../components/home/Contact.astro";
+import Tooltip from "../components/Tooltip";
+import { getProjects } from "../lib/content/projects";
+import { getPosts } from "../lib/content/posts";
+import { getExperiments } from "../lib/content/experiments";
+
+const heroNavItems = [
+  { href: "#about", index: "01/", label: "ABOUT ME" },
+  { href: "#projects", index: "02/", label: "PROJECTS" },
+  { href: "#posts", index: "03/", label: "POSTS" },
+  { href: "#experiments", index: "04/", label: "EXPERIMENTS" },
+  { href: "#contact", index: "05/", label: "CONTACT" },
+];
+
+const aboutExpertiseItems = [
+  "JavaScript / TypeScript",
+  "React / Astro / Node.js",
+  "Python / Django / Flask",
+  "SQL / NoSQL Databases",
+  "RESTful APIs & GraphQL",
+  "Cloud Services (AWS, Azure)",
+  "CI/CD & DevOps",
+];
+
+const contactItems = [
+  {
+    index: "01",
+    label: "Email",
+    href: "mailto:tdouglaskennedy@gmail.com",
+    subtitle: "tdouglaskennedy@gmail.com",
+  },
+  {
+    index: "02",
+    label: "GitHub",
+    href: "https://github.com/tristan-kennedy",
+    subtitle: "github.com/tristan-kennedy",
+  },
+  {
+    index: "03",
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/tristandkennedy/",
+    subtitle: "linkedin.com/in/tristandkennedy",
+  },
+  {
+    index: "04",
+    label: "Letterboxd",
+    href: "https://letterboxd.com/tdouglaskennedy/",
+    subtitle: "letterboxd.com/tdouglaskennedy",
+  },
+  {
+    index: "05",
+    label: "Resume",
+    href: "/resume.pdf",
+    subtitle: "PDF / resume",
+  },
+];
+
+const projects = await getProjects();
+const posts = await getPosts();
+const experiments = await getExperiments();
+
+const featuredProjects = projects.slice(0, 2);
+const featuredPosts = posts.slice(0, 1);
+const featuredExperiments = experiments.slice(0, 3);
 ---
 
 <Layout title="Tristan Kennedy">
-  <ScrollToTop client:load />
   <div class="flex flex-col gap-16 md:gap-24 lg:gap-32">
-    <Hero />
-    <AboutMe />
-    <Projects />
-    <Posts />
-    <Experiments />
-    <Contact />
+    <section id="hero" class="flex min-h-[calc(100dvh-64px)] flex-col py-8">
+      <header class="flex items-center justify-end gap-2 text-right">
+        <div>
+          <h2>SOFTWARE ENGINEER</h2>
+          <h3 class="text-sm text-subtle">Rogers, AR</h3>
+        </div>
+      </header>
+      <div class="my-auto flex flex-col gap-6 py-6 md:gap-8">
+        <h1 class="display-hero font-black">
+          TRISTAN<br />KENNEDY
+        </h1>
+      </div>
+      <footer class="flex items-end justify-end md:justify-between">
+        <nav class="hidden w-full md:block md:flex-1">
+          <ul class="flex flex-row gap-8">
+            {
+              heroNavItems.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    class="group inline-flex flex-col items-center gap-1 text-center"
+                  >
+                    <span class="h2 text-subtle">{item.index}</span>
+                    <span class="h2 text-secondary transition-colors group-hover:text-accent">
+                      {item.label}
+                    </span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+        <h2 class="shrink-0">© 2025</h2>
+      </footer>
+    </section>
+
+    <section id="about" class="">
+      <div class="border-y border-divider py-6 md:py-8">
+        <div class="mb-10 flex items-center gap-4">
+          <span class="h2 text-subtle">01 /</span>
+          <span class="h2 text-secondary">ABOUT ME</span>
+        </div>
+
+        <div class="flex flex-col items-start gap-12 md:flex-row md:gap-16">
+          <div class="max-w-[32rem]">
+            <h1 class="mb-8 text-4xl font-light md:mb-10">
+              I build products that are both functional and beautiful.
+            </h1>
+            <div class="max-w-prose space-y-6 text-secondary">
+              <p>
+                I'm a software engineer passionate about creating elegant
+                solutions that matter. With a focus on full-stack development
+                and creative engineering, I build products that are both
+                functional and beautiful.
+              </p>
+              <p>
+                My approach combines technical precision with design thinking,
+                ensuring every project delivers exceptional user experiences
+                backed by robust, scalable code.
+              </p>
+            </div>
+          </div>
+
+          <div class="w-full max-w-[28rem]">
+            <h2 class="mb-6">EXPERTISE</h2>
+            <ul class="list-none p-0">
+              {
+                aboutExpertiseItems.map((item) => (
+                  <li class="border-t border-divider py-3 first:border-t">
+                    <span class="text-sm text-secondary">{item}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="">
+      <div class="border-t border-divider pt-6 md:pt-8">
+        <div class="mb-4 flex items-center justify-between gap-6 pb-6">
+          <div class="flex items-center gap-4">
+            <span class="h2 text-subtle">02 /</span>
+            <span class="h2 text-secondary">PROJECTS</span>
+          </div>
+          <a
+            href="/projects"
+            class="h2 whitespace-nowrap text-subtle transition-colors hover:text-accent"
+          >
+            VIEW ALL <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="border-t border-divider">
+          {
+            featuredProjects.map((project, index) => (
+              <a
+                href={project.url}
+                class="group block border-b border-divider px-2 py-6 transition-colors hover:bg-accent/4 md:px-3 md:py-8"
+              >
+                <div class="flex flex-col gap-5 md:flex-row md:items-start md:gap-8">
+                  <div class="h2 hidden shrink-0 text-subtle md:block md:w-12">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+
+                  <div class="max-w-[44rem]">
+                    <h2 class="mb-4 text-4xl font-light tracking-tight text-primary transition-colors group-hover:text-accent">
+                      {project.data.title}
+                    </h2>
+                    <p class="max-w-[42rem] text-secondary">
+                      {project.data.description}
+                    </p>
+                    <div class="mt-5 hidden flex-wrap gap-x-4 gap-y-2 text-xs tracking-[0.18rem] text-subtle uppercase md:flex">
+                      {project.data.tech?.map((item) => (
+                        <span>{item}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-4 md:ml-auto md:min-h-full md:min-w-32 md:flex-col md:items-end">
+                    <span class="h2 text-subtle uppercase">
+                      {project.data.date}
+                    </span>
+                    <span
+                      class="h2 text-subtle transition-colors group-hover:text-accent"
+                      aria-hidden="true"
+                    >
+                      →
+                    </span>
+                  </div>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="posts" class="">
+      <div class="border-t border-divider pt-6 md:pt-8">
+        <div class="mb-4 flex items-center justify-between gap-6 pb-6">
+          <div class="flex items-center gap-4">
+            <span class="h2 text-subtle">03 /</span>
+            <span class="h2 text-secondary">POSTS</span>
+          </div>
+          <a
+            href="/posts"
+            class="h2 whitespace-nowrap text-subtle transition-colors hover:text-accent"
+          >
+            ALL POSTS <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div class="border-t border-divider">
+          {
+            featuredPosts.map((post, index) => (
+              <a
+                href={post.url}
+                class="group block border-b border-divider px-2 py-6 transition-colors hover:bg-accent/4 md:px-3 md:py-8"
+              >
+                <div class="flex flex-col gap-5 md:flex-row md:items-start md:gap-8">
+                  <div class="h2 hidden shrink-0 text-subtle md:block md:w-12">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+
+                  <div class="max-w-[44rem]">
+                    <h2 class="mb-4 text-4xl font-light tracking-tight text-primary transition-colors group-hover:text-accent">
+                      {post.data.title}
+                    </h2>
+                    <p class="max-w-[42rem] text-secondary">
+                      {post.data.description}
+                    </p>
+                    <p class="mt-5 hidden text-xs tracking-[0.18rem] text-subtle uppercase md:block">
+                      {post.data.length}
+                    </p>
+                  </div>
+
+                  <div class="flex items-end justify-between gap-4 md:ml-auto md:min-w-36 md:flex-col md:items-end">
+                    <span class="h2 text-subtle uppercase">
+                      {post.data.date}
+                    </span>
+                    <span
+                      class="h2 text-subtle transition-colors group-hover:text-accent"
+                      aria-hidden="true"
+                    >
+                      →
+                    </span>
+                  </div>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="experiments" class="">
+      <div class="border-t border-divider pt-6 md:pt-8">
+        <div class="mb-4 flex items-center justify-between gap-6 pb-6">
+          <div class="flex items-center gap-4">
+            <span class="h2 text-subtle">04 /</span>
+            <span class="h2 text-secondary">EXPERIMENTS</span>
+          </div>
+          <a
+            href="/experiments"
+            class="h2 whitespace-nowrap text-subtle transition-colors hover:text-accent"
+          >
+            EXPLORE MORE <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <div
+          class="flex flex-col gap-10 border-t border-divider pt-6 md:flex-row md:flex-wrap md:gap-6 md:pt-8 xl:flex-nowrap xl:gap-8"
+        >
+          {
+            featuredExperiments.map((experiment) => {
+              return (
+                <a
+                  href={experiment.url}
+                  class="group flex w-full flex-col gap-2 md:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
+                >
+                  <Tooltip client:load label={"READ MORE"} className="mb-4">
+                    <div class="aspect-[1.25/1] overflow-hidden">
+                      <Image
+                        src={experiment.data.image}
+                        alt={`${experiment.data.title} cover`}
+                        loading="eager"
+                        class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  </Tooltip>
+                  <p class="font-light transition-colors group-hover:text-accent">
+                    {experiment.data.title}
+                  </p>
+                  <div class="flex flex-wrap gap-x-4 gap-y-2 text-xs tracking-[0.18rem] text-subtle uppercase">
+                    {experiment.data.tech?.map((item) => (
+                      <span>{item}</span>
+                    ))}
+                  </div>
+                </a>
+              );
+            })
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="pb-24">
+      <div class="border-t border-divider pt-6 md:pt-8">
+        <div class="mb-6 flex items-center gap-4 pb-4 md:mb-8">
+          <span class="h2 text-subtle">05 /</span>
+          <span class="h2 text-secondary">CONTACT</span>
+        </div>
+
+        <div
+          class="grid grid-cols-1 border-t border-divider sm:grid-cols-2 xl:grid-cols-5"
+        >
+          {
+            contactItems.map((item) => (
+              <a
+                href={item.href}
+                class="group block min-h-36 border-b border-divider px-6 py-5 transition-colors hover:bg-accent/4"
+                target={"_blank"}
+                rel={"noreferrer"}
+              >
+                <div class="flex h-full flex-col">
+                  <div class="mb-auto flex items-start justify-between gap-4">
+                    <span class="h2 text-subtle">{item.index}</span>
+                    <span
+                      class="h2 text-subtle transition-colors group-hover:text-accent"
+                      aria-hidden="true"
+                    >
+                      ↗
+                    </span>
+                  </div>
+
+                  <div class="pt-4">
+                    <p class="font-light text-primary transition-colors group-hover:text-accent">
+                      {item.label}
+                    </p>
+                    <p class="mt-1 text-sm text-secondary">{item.subtitle}</p>
+                  </div>
+                </div>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </section>
   </div>
 </Layout>

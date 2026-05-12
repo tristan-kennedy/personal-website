@@ -10,6 +10,7 @@
   --color-primary: #222222;
   --color-secondary: #6c6c6c;
   --color-subtle: #b0b0b0;
+  --color-divider: #ddd9d4;
   --color-black: #000000;
   --color-white: #f4f3f2;
   --color-accent: #d62828;
@@ -28,6 +29,7 @@
       --color-primary: #d4d4d8;
       --color-secondary: #a5a5a5;
       --color-subtle: #6c6c6c;
+      --color-divider: #2a2a2e;
     }
   }
 }
@@ -37,16 +39,8 @@
     @apply text-xs tracking-[0.2rem] text-secondary;
   }
 
-  .section-shell {
-    @apply mb-24 md:mb-32 lg:mb-48;
-  }
-
-  .section-grid {
-    @apply grid grid-cols-1 gap-y-6 md:grid-cols-10 md:gap-x-6 md:gap-y-0;
-  }
-
   .display-hero {
-    font-size: clamp(4.25rem, 11vw, 12rem);
+    font-size: clamp(5.5rem, 14.5vw, 16rem);
     line-height: 0.9;
     letter-spacing: -0.02em;
   }
@@ -138,6 +132,10 @@
 
   h3 {
     @apply text-3xl md:text-4xl;
+  }
+
+  hr {
+    @apply border-divider;
   }
 
   button {

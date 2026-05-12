@@ -1,11 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import Menu from "../../components/menu/Menu";
-import Footer from "../../components/Footer.astro";
 import { Image } from "astro:assets";
 import { render } from "astro:content";
 import { getExperiments } from "../../lib/content/experiments";
-import ScrollToTop from "../../components/menu/ScrollToTop";
 
 export async function getStaticPaths() {
   const experiments = await getExperiments();
@@ -20,16 +17,12 @@ const { Content } = await render(experiment);
 ---
 
 <Layout title={experiment.data.title}>
-  <ScrollToTop client:load />
-  <section class="section-grid mb-16 py-8">
-    <div class="mb-16 flex items-center justify-between gap-4 md:col-span-full">
+  <section class="mb-16 py-8">
+    <div class="mb-16 md:col-span-full">
       <a
         class="h2 whitespace-nowrap transition-colors transition-transform md:hover:-translate-x-2 md:hover:text-accent"
         href="/experiments">← EXPERIMENTS</a
       >
-      <header class="shrink-0">
-        <Menu client:load />
-      </header>
     </div>
     <div
       class="grid grid-cols-1 gap-y-6 md:col-span-full md:grid-cols-10 md:gap-x-6 md:gap-y-8"
@@ -68,5 +61,4 @@ const { Content } = await render(experiment);
   <article class="mdx pb-16 md:pb-24">
     <Content />
   </article>
-  <Footer />
 </Layout>

@@ -1,0 +1,38 @@
+---
+import Logo from "../assets/logo.svg";
+---
+
+<nav class="sticky top-0 z-50 -mx-8 border-b border-divider bg-bg px-4 py-4">
+  <div class="mx-auto flex items-center justify-between gap-6">
+    <a
+      href="/"
+      class="group flex items-center gap-3 text-secondary"
+      aria-label="Go to home page"
+    >
+      <span
+        class="flex h-8 w-8 items-center justify-center border transition-colors transition-transform group-hover:rotate-45 group-hover:text-accent"
+      >
+        <Logo class="h-4 w-4" aria-hidden="true" />
+      </span>
+      <span
+        class="h2 hidden transition-colors group-hover:text-accent md:block"
+      >
+        TRISTAN KENNEDY
+      </span>
+    </a>
+    <a
+      href="/menu"
+      class="group flex items-center gap-3 transition-colors"
+      aria-label="Open menu"
+    >
+      <span
+        class="h2 hidden group-hover:text-accent md:block"
+        transition:name="menu-transition">MENU</span
+      >
+
+      <span
+        class="size-8 bg-accent transition-transform group-hover:rotate-45"
+        aria-hidden="true"></span>
+    </a>
+  </div>
+</nav>

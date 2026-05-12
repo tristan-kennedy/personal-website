@@ -14,17 +14,13 @@ const navItems = [
   title="Menu"
   bodyClass="!bg-accent !text-white"
   transition:name="menu-transition"
+  showChrome={false}
 >
-  <section
-    class="mx-auto flex min-h-screen max-w-[1440px] flex-col py-8 text-white"
-  >
-    <header
-      class="flex items-center justify-between"
-    >
+  <section class="mx-auto flex min-h-screen flex-col py-8 text-white">
+    <header class="flex items-center justify-between">
       <h2 class="text-white">MENU</h2>
       <a
         href="/"
-        data-menu-back
         class="h2 flex items-center gap-2 text-white transition-all hover:translate-x-1"
         aria-label="Back to previous page"
         onclick="event.preventDefault(); window.history.back();"
