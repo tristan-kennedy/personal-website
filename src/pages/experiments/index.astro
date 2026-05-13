@@ -12,9 +12,8 @@ const experiments = await getExperiments();
     title="Experiments"
     backHref="/"
     backLabel="BACK"
-    breadcrumb="INDEX / EXPERIMENTS"
     count={experiments.length}
-    countLabel="EXPERIMENTS"
+    countLabel="RANDOM IDEAS"
   >
     {
       experiments.map((experiment, index) => (

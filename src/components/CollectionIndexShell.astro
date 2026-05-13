@@ -3,14 +3,11 @@ interface Props {
   title: string;
   backHref: string;
   backLabel: string;
-  breadcrumb: string;
   count: number;
   countLabel: string;
 }
 
-const { title, backHref, backLabel, breadcrumb, count, countLabel } =
-  Astro.props;
-
+const { title, backHref, backLabel, count, countLabel } = Astro.props;
 const displayCount = String(count).padStart(2, "0");
 ---
 
