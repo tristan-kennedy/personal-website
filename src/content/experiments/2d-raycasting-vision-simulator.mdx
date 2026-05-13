@@ -12,6 +12,8 @@ import RaycastingVisionDemo from "./2d-raycasting-vision-simulator/RaycastingVis
 
 This experiment is a real-time 2D raycasting simulator designed to make line-of-sight mechanics feel concrete. The light source emits rays in every direction, each ray stops at the nearest wall intersection, and all hit points are connected into a filled polygon that represents the visible area. You can move the light and obstacles directly in the scene, then watch the geometry update instantly.
 
+<hr />
+
 ## Live simulator
 
 The canvas behaves like a game-engine debug view. The background stays dark so edges are easy to read, wall segments are drawn as thin lines, rays are faint, and the final visibility region is rendered as a soft translucent polygon. You can drag the light source, drag interior wall segments, change ray density from `50` to `2000`, toggle raw rays on and off, and reset the layout at any time.
@@ -19,6 +21,8 @@ The canvas behaves like a game-engine debug view. The background stays dark so e
 <RaycastingVisionDemo client:load />
 
 The simulator is intentionally interactive because raycasting becomes much easier to understand when you can disturb the scene and observe the result frame by frame.
+
+<hr />
 
 ## Core algorithm
 
@@ -106,6 +110,8 @@ function castRays(origin: Point, segments: Segment[], rayCount: number) {
 }
 ```
 
+<hr />
+
 ## Rendering and interaction loop
 
 After casting, the renderer draws the visible region by connecting hit points in order and filling the resulting polygon. If ray visualization is enabled, it also draws each line from light origin to hit point so the underlying cast process is visible.
@@ -124,6 +130,8 @@ ctx.fill();
 ```
 
 Dragging uses pointer capture so motion stays stable even when the cursor moves quickly. Moving a wall applies pointer delta to both endpoints, then clamps the segment inside the scene bounds. Moving the light does the same for a single point. Every pointer update triggers a new cast pass, which keeps the feedback immediate and makes occlusion behavior easy to read.
+
+<hr />
 
 ## Performance and real-world use
 

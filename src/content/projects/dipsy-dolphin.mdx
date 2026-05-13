@@ -10,7 +10,7 @@ tech:
   - Pytest
   - Inno Setup
 image: "./dipsy-dolphin/cover.png"
-github: "https://github.com/tristan-kennedy/virtual-desktop-assistant"
+link: "https://github.com/tristan-kennedy/virtual-desktop-assistant"
 ---
 
 import { Image } from "astro:assets";
@@ -24,6 +24,8 @@ The deeper reason I built it was to find out what local LLMs could actually do w
 That question shaped the entire project. Dipsy is not just "an AI character" for novelty. It is a testbed for local inference, structured responses, constrained actions, and desktop UX. I wanted to see whether a local model could drive a companion that felt lively enough to be fun, coherent enough to be believable, and bounded enough to trust.
 
 What makes the project especially interesting to me is the tension between charm and control. Dipsy is meant to feel expressive, impulsive, and character-driven, but the actual system has to stay legible. That tension shaped almost every design decision: local model inference instead of a remote black box, structured output instead of freeform execution, explicit runtime interfaces instead of hidden side effects, and a UI layer that stays separate from the controller and action system.
+
+<hr />
 
 ## Product vision and design constraints
 
@@ -55,6 +57,8 @@ Those rules show up all through the repo. The product brief defines Dipsy as "al
     box.
   </figcaption>
 </figure>
+
+<hr />
 
 ## Architecture and runtime flow
 
@@ -129,6 +133,8 @@ That controller shape also gave me a better way to evaluate the local model itse
 
 The result is a runtime that feels intentionally staged and surprisingly close to something I could plausibly ship as a niche desktop product. The UI owns presentation. The controller owns orchestration. The provider owns inference. The parser owns normalization. The action layer owns execution. That clean split is what lets a whimsical character project stay understandable as it becomes more capable, and it is the reason the repo reads more like a product codebase than a pile of experiments.
 
+<hr />
+
 ## Structured output and safe action handling
 
 The local model is not trusted to produce execution-ready text. It is asked for JSON, and then that JSON is normalized into a strongly constrained assistant turn. That gives Dipsy room to feel expressive while keeping the runtime boundary explicit.
@@ -192,6 +198,8 @@ That structure also supports the product goal. A character app should feel surpr
 
 That is the difference between a fun demo and a releasable feature. A demo can get away with implying capability. A product has to define capability. In Dipsy, the local model does not get to invent arbitrary tools or emit vague "I searched for that" language and hope the system sorts it out later. It has to stay inside a known contract, and the runtime has to either honor that request safely or reject it cleanly. That makes the system feel much more honest.
 
+<hr />
+
 ## Rendering, packaging, and release readiness
 
 I also wanted the project to feel like a real Windows application, not just a local script that happened to open a window. That meant committing to a packaging path, a release flow, and a visual direction that could support a polished desktop presence over time.
@@ -238,6 +246,8 @@ That tooling matters because Dipsy is the kind of project that benefits from bei
 I also think release readiness is part of the actual research value of the project. It is easy to overestimate what local LLMs can do when everything is running inside a hand-tuned dev environment. It is much more revealing to package the app, define the runtime expectations, bundle the model path, and make the install story explicit. Once you do that, you stop thinking in terms of impressive one-off outputs and start thinking in terms of repeatable behavior.
 
 That shift in thinking is probably the biggest lesson from the project as a whole. The interesting question is not whether a local model can say something entertaining or useful once. The interesting question is whether it can support a whole product loop: startup, onboarding, memory, idle presence, user prompts, constrained actions, visual feedback, and packaging expectations. Dipsy is my attempt to answer that question with an actual system instead of a concept deck.
+
+<hr />
 
 ## Testing, constraints, and why the project matters
 

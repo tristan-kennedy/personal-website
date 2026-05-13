@@ -11,7 +11,7 @@ const projects = defineCollection({
       description: z.string(),
       tech: z.array(z.string()),
       image: image(),
-      github: z.url().optional(),
+      link: z.url().optional(),
     }),
 });
 
@@ -24,6 +24,7 @@ const posts = defineCollection({
       description: z.string(),
       length: z.string(),
       image: image(),
+      link: z.url().optional(),
     }),
 });
 
@@ -36,6 +37,7 @@ const experiments = defineCollection({
       description: z.string(),
       tech: z.array(z.string()),
       image: image(),
+      link: z.url().optional(),
     }),
 });
 

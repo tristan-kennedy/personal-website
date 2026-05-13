@@ -23,6 +23,8 @@ The goal is not to become a physics expert in one pass. The goal is to build a w
 
 If you have never used a physics engine before, this is a good first pass. If you have used one before, this is a quick refresher with some code you can reuse.
 
+<hr />
+
 ## The mental model in one minute
 
 At a surface level, Matter.js is a simulation loop with a few important objects:
@@ -53,6 +55,8 @@ Runner.run(runner, engine);
 ```
 
 That is the core bootstrap. Everything else is world setup and behavior.
+
+<hr />
 
 ## Scene 01: gravity + rigid bodies
 
@@ -235,6 +239,8 @@ Events.on(engine, "collisionStart", (event) => {
 
 You can use this for simple analytics too: count impacts, trigger sounds, or increment score values in game-like prototypes.
 
+<hr />
+
 ## Practical integration notes
 
 In this project, Matter runs inside a React component that is rendered from MDX with `client:load`. That keeps the rest of the page static while hydrating only the interactive demo blocks.
@@ -260,6 +266,8 @@ return () => {
 ```
 
 Without this, you can easily leak animation loops or leave detached canvases in memory.
+
+<hr />
 
 ## What this experiment proved
 

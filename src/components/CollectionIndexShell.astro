@@ -1,0 +1,48 @@
+---
+interface Props {
+  title: string;
+  backHref: string;
+  backLabel: string;
+  breadcrumb: string;
+  count: number;
+  countLabel: string;
+}
+
+const { title, backHref, backLabel, breadcrumb, count, countLabel } =
+  Astro.props;
+
+const displayCount = String(count).padStart(2, "0");
+---
+
+<section class="min-h-[calc(100dvh-64px)] py-8 md:py-10">
+  <header class="pb-8 md:pb-12">
+    <div class="mb-10 flex items-center justify-between gap-6 md:mb-14">
+      <a
+        href={backHref}
+        class="h2 flex items-center gap-2 text-subtle transition-colors md:hover:text-accent"
+      >
+        <span aria-hidden="true">&larr;</span>
+        <span>{backLabel}</span>
+      </a>
+    </div>
+
+    <div
+      class="flex items-end justify-between gap-8 border-t border-divider pt-8"
+    >
+      <h1 class="display-collection font-black uppercase">{title}</h1>
+
+      <div class="hidden shrink-0 text-right md:block">
+        <p
+          class="text-[clamp(3rem,6vw,5rem)] leading-none font-black text-accent"
+        >
+          {displayCount}
+        </p>
+        <p class="h2 mt-3 text-subtle">{countLabel}</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="mt-6 border-t border-divider">
+    <slot />
+  </div>
+</section>

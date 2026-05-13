@@ -1,4 +1,6 @@
-﻿---
+---
+import CollectionIndexShell from "../../components/CollectionIndexShell.astro";
+import SelectableRow from "../../components/SelectableRow.astro";
 import Layout from "../../layouts/Layout.astro";
 import { getProjects } from "../../lib/content/projects";
 
@@ -6,39 +8,26 @@ const projects = await getProjects();
 ---
 
 <Layout title="Tristan Kennedy | Projects">
-  <section class="py-8">
-    <div class="mb-2 md:col-span-full">
-      <h1 class="display-xl">Projects</h1>
-    </div>
-    <h2 class="hidden md:col-span-full md:mb-32 md:block">STUFF I'VE MADE</h2>
-    <div class="grid grid-cols-1 gap-10 md:col-start-2 md:col-end-11 md:gap-12">
-      {
-        projects.map((project, index) => (
-          <a
-            href={project.url}
-            class="group grid grid-cols-1 gap-2 md:grid-cols-10 md:gap-x-6"
-          >
-            <h2 class="hidden md:col-start-1 md:col-end-2 md:block">
-              [{String(index + 1).padStart(2, "0")}]
-            </h2>
-            <h3 class="transition-colors group-hover:text-accent md:col-start-2 md:col-end-9">
-              {project.data.title}
-            </h3>
-            <h2 class="uppercase md:col-start-9 md:col-end-11 md:text-right">
-              {project.data.date}
-            </h2>
-            <p class="md:col-start-2 md:col-end-9">
-              {project.data.description.split(".")[0]}...
-            </p>
-            <h2 class="uppercase md:col-start-2 md:col-end-9">
-              {project.data.tech.join(" / ")}
-            </h2>
-            <h2 class="hidden transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent md:col-start-9 md:col-end-11 md:block md:text-right">
-              →
-            </h2>
-          </a>
-        ))
-      }
-    </div>
-  </section>
+  <CollectionIndexShell
+    title="Projects"
+    backHref="/"
+    backLabel="BACK"
+    breadcrumb="INDEX / PROJECTS"
+    count={projects.length}
+    countLabel="PROJECTS"
+  >
+    {
+      projects.map((project, index) => (
+        <SelectableRow
+          href={project.url}
+          index={index + 1}
+          title={project.data.title}
+          description={project.data.description}
+          date={project.data.date}
+          meta={project.data.tech}
+          metaType="tags"
+        />
+      ))
+    }
+  </CollectionIndexShell>
 </Layout>

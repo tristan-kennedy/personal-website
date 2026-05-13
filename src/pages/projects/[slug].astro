@@ -1,9 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { Image } from "astro:assets";
+import SlugHero from "../../components/SlugHero.astro";
 import { render } from "astro:content";
 import { getProjects } from "../../lib/content/projects";
-import { LuArrowUpRight } from "react-icons/lu";
 
 export async function getStaticPaths() {
   const projects = await getProjects();
@@ -18,64 +17,20 @@ const { Content } = await render(project);
 ---
 
 <Layout title={project.data.title}>
-  <section class="mb-16 py-8">
-    <div class="mb-16 md:col-span-full">
-      <a
-        class="h2 whitespace-nowrap transition-colors transition-transform md:hover:-translate-x-2 md:hover:text-accent"
-        href="/projects">← PROJECTS</a
-      >
-    </div>
-    <div
-      class="grid grid-cols-1 gap-y-6 md:col-span-full md:grid-cols-10 md:gap-x-6 md:gap-y-8"
-    >
-      <h1 class="display-xl md:col-start-1 md:col-end-7">
-        {project.data.title}
-      </h1>
-      <p class="max-w-prose md:col-start-1 md:col-end-7">
-        {project.data.description}
-      </p>
-      <div
-        class="flex flex-col gap-y-4 md:col-start-8 md:col-end-11 md:row-start-1 md:row-end-3 md:items-end md:self-start md:text-right"
-      >
-        <div>
-          <h2>DATE</h2>
-          <p>{project.data.date}</p>
-        </div>
-        {
-          project.data.tech && (
-            <div>
-              <h2>TECH</h2>
-              <p>{project.data.tech.join(" / ")}</p>
-            </div>
-          )
-        }
-        {
-          project.data.github && (
-            <div>
-              <h2>REPO</h2>
-              <a
-                href={project.data.github}
-                target="_blank"
-                rel="noreferrer"
-                class="inline-flex items-center gap-2 transition-colors hover:text-accent"
-              >
-                View on GitHub
-                <LuArrowUpRight className="inline align-middle" />
-              </a>
-            </div>
-          )
-        }
-      </div>
-      <div class="overflow-hidden md:col-span-full">
-        <Image
-          src={project.data.image}
-          alt={`${project.data.title} cover`}
-          class="h-[clamp(24rem,55vw,42rem)] w-full object-cover"
-        />
-      </div>
-    </div>
-  </section>
-  <article class="mdx pb-16 md:pb-24">
+  <SlugHero
+    title={project.data.title}
+    image={project.data.image}
+    description={project.data.description}
+    backHref="/projects"
+    backLabel="PROJECTS"
+    typeLabel="Project"
+    date={project.data.date}
+    metaLabel="STACK"
+    metaValue={project.data.tech.join(" / ")}
+    linkHref={project.data.link}
+  />
+
+  <article class="mdx mx-auto max-w-[720px] pb-16 md:pb-24">
     <Content />
   </article>
 </Layout>

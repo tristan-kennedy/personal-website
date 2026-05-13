@@ -1,4 +1,6 @@
-﻿---
+---
+import CollectionIndexShell from "../../components/CollectionIndexShell.astro";
+import SelectableRow from "../../components/SelectableRow.astro";
 import Layout from "../../layouts/Layout.astro";
 import { getPosts } from "../../lib/content/posts";
 
@@ -6,39 +8,26 @@ const posts = await getPosts();
 ---
 
 <Layout title="Tristan Kennedy | Posts">
-  <section class="py-8">
-    <div class="mb-2 md:col-span-full">
-      <h1 class="display-xl">Posts</h1>
-    </div>
-    <h2 class="hidden md:col-span-full md:mb-32 md:block">SOME THOUGHTS</h2>
-    <div class="grid grid-cols-1 gap-10 md:col-start-2 md:col-end-11 md:gap-12">
-      {
-        posts.map((post, index) => (
-          <a
-            href={post.url}
-            class="group grid grid-cols-1 gap-2 md:grid-cols-10 md:gap-x-6"
-          >
-            <h2 class="hidden md:col-start-1 md:col-end-2 md:block">
-              [{String(index + 1).padStart(2, "0")}]
-            </h2>
-            <h3 class="transition-colors group-hover:text-accent md:col-start-2 md:col-end-9">
-              {post.data.title}
-            </h3>
-            <h2 class="uppercase md:col-start-9 md:col-end-11 md:text-right">
-              {post.data.date}
-            </h2>
-            <p class="md:col-start-2 md:col-end-9">
-              {post.data.description.split(".")[0]}...
-            </p>
-            <h2 class="uppercase md:col-start-2 md:col-end-9">
-              {post.data.length}
-            </h2>
-            <h2 class="hidden transition-colors transition-transform group-hover:translate-x-2 group-hover:text-accent md:col-start-9 md:col-end-11 md:block md:text-right">
-              →
-            </h2>
-          </a>
-        ))
-      }
-    </div>
-  </section>
+  <CollectionIndexShell
+    title="Posts"
+    backHref="/"
+    backLabel="BACK"
+    breadcrumb="INDEX / POSTS"
+    count={posts.length}
+    countLabel="POSTS"
+  >
+    {
+      posts.map((post, index) => (
+        <SelectableRow
+          href={post.url}
+          index={index + 1}
+          title={post.data.title}
+          description={post.data.description}
+          date={post.data.date}
+          meta={post.data.length}
+          metaType="text"
+        />
+      ))
+    }
+  </CollectionIndexShell>
 </Layout>
