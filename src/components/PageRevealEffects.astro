@@ -3,13 +3,9 @@
 
   type RevealWindow = Window & {
     __pageRevealBound?: boolean;
-    __pageRevealInit?: () => void;
   };
 
   const revealWindow = window as RevealWindow;
-
-  const getDirection = (target: HTMLElement) =>
-    target.dataset.revealDirection ?? "up";
 
   const getDelay = (target: HTMLElement) => {
     const manualDelay = Number(target.dataset.revealDelay);
@@ -37,27 +33,6 @@
     );
   };
 
-  const getDistance = (target: HTMLElement) => {
-    const manualDistance = Number(target.dataset.revealDistance);
-
-    if (Number.isFinite(manualDistance) && manualDistance > 0) {
-      return manualDistance;
-    }
-
-    switch (target.dataset.reveal) {
-      case "hero-title":
-      case "page-title":
-        return 30;
-      case "hero-nav":
-        return 24;
-      case "card":
-      case "row":
-        return 22;
-      default:
-        return 18;
-    }
-  };
-
   const getDuration = (target: HTMLElement) => {
     const manualDuration = Number(target.dataset.revealDuration);
 
@@ -77,25 +52,15 @@
     }
   };
 
-  const getInitialTransform = (target: HTMLElement) => {
-    const distance = getDistance(target);
-
-    switch (getDirection(target)) {
-      case "left":
-        return `translateX(-${distance}px)`;
-      case "right":
-        return `translateX(${distance}px)`;
-      default:
-        return `translateY(${distance}px)`;
-    }
-  };
-
   const revealTarget = (target: HTMLElement) => {
-    if (target.dataset.revealed === "true") {
+    if (
+      target.dataset.revealed === "true" ||
+      target.dataset.revealing === "true"
+    ) {
       return;
     }
 
-    target.dataset.revealed = "true";
+    target.dataset.revealing = "true";
 
     const animation = animate(
       target,
@@ -111,6 +76,8 @@
     );
 
     animation.finished.then(() => {
+      delete target.dataset.revealing;
+      target.dataset.revealed = "true";
       target.style.opacity = "1";
       target.style.transform = "none";
       target.style.willChange = "auto";
@@ -128,18 +95,11 @@
 
     const targets = Array.from(
       document.querySelectorAll<HTMLElement>("[data-reveal]"),
-    ).filter((target) => target.dataset.revealReady !== "true");
+    ).filter((target) => target.dataset.revealed !== "true");
 
     if (targets.length === 0) {
       return;
     }
-
-    targets.forEach((target) => {
-      target.dataset.revealReady = "true";
-      target.style.opacity = "0";
-      target.style.transform = getInitialTransform(target);
-      target.style.willChange = "opacity, transform";
-    });
 
     const loadTargets = targets.filter(
       (target) => target.dataset.revealTrigger === "load",
@@ -171,19 +131,17 @@
     });
   };
 
-  revealWindow.__pageRevealInit = initReveals;
-
   if (!revealWindow.__pageRevealBound) {
     revealWindow.__pageRevealBound = true;
 
     document.addEventListener("astro:page-load", () => {
-      revealWindow.__pageRevealInit?.();
+      initReveals();
     });
 
     document.addEventListener("astro:after-swap", () => {
-      revealWindow.__pageRevealInit?.();
+      initReveals();
     });
   }
 
-  revealWindow.__pageRevealInit();
+  initReveals();
 </script>

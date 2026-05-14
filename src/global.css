@@ -35,6 +35,53 @@
 }
 
 @layer components {
+  @media (prefers-reduced-motion: no-preference) {
+    :root[data-motion="on"] [data-reveal] {
+      --reveal-distance: 18px;
+      opacity: 0;
+      will-change: opacity, transform;
+    }
+
+    :root[data-motion="on"] [data-reveal="hero-title"],
+    :root[data-motion="on"] [data-reveal="page-title"] {
+      --reveal-distance: 30px;
+    }
+
+    :root[data-motion="on"] [data-reveal="hero-nav"] {
+      --reveal-distance: 24px;
+    }
+
+    :root[data-motion="on"] [data-reveal="card"],
+    :root[data-motion="on"] [data-reveal="row"] {
+      --reveal-distance: 22px;
+    }
+
+    :root[data-motion="on"]
+      [data-reveal][data-reveal-direction="left"]:not([data-revealed="true"]) {
+      transform: translate3d(calc(var(--reveal-distance) * -1), 0, 0);
+    }
+
+    :root[data-motion="on"]
+      [data-reveal][data-reveal-direction="right"]:not(
+        [data-revealed="true"]
+      ) {
+      transform: translate3d(var(--reveal-distance), 0, 0);
+    }
+
+    :root[data-motion="on"]
+      [data-reveal][data-reveal-direction="up"]:not([data-revealed="true"]),
+    :root[data-motion="on"]
+      [data-reveal]:not([data-reveal-direction]):not([data-revealed="true"]) {
+      transform: translate3d(0, var(--reveal-distance), 0);
+    }
+
+    :root[data-motion="on"] [data-reveal][data-revealed="true"] {
+      opacity: 1;
+      transform: none;
+      will-change: auto;
+    }
+  }
+
   .mdx {
     @apply leading-8 text-secondary;
   }
