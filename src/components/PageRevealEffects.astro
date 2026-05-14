@@ -134,10 +134,6 @@
   if (!revealWindow.__pageRevealBound) {
     revealWindow.__pageRevealBound = true;
 
-    document.addEventListener("astro:page-load", () => {
-      initReveals();
-    });
-
     document.addEventListener("astro:after-swap", () => {
       initReveals();
     });
