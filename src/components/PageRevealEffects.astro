@@ -1,0 +1,189 @@
+<script>
+  import { animate, inView } from "motion";
+
+  type RevealWindow = Window & {
+    __pageRevealBound?: boolean;
+    __pageRevealInit?: () => void;
+  };
+
+  const revealWindow = window as RevealWindow;
+
+  const getDirection = (target: HTMLElement) =>
+    target.dataset.revealDirection ?? "up";
+
+  const getDelay = (target: HTMLElement) => {
+    const manualDelay = Number(target.dataset.revealDelay);
+
+    if (Number.isFinite(manualDelay) && manualDelay >= 0) {
+      return manualDelay;
+    }
+
+    const group = target.closest<HTMLElement>("[data-reveal-group]");
+
+    if (!group) {
+      return 0;
+    }
+
+    const siblings = Array.from(
+      group.querySelectorAll<HTMLElement>("[data-reveal]"),
+    );
+    const index = siblings.indexOf(target);
+    const stagger = Number(group.dataset.revealStagger);
+    const maxDelay = Number(group.dataset.revealMaxDelay);
+
+    return Math.min(
+      index * (Number.isFinite(stagger) ? stagger : 0.08),
+      Number.isFinite(maxDelay) ? maxDelay : 0.4,
+    );
+  };
+
+  const getDistance = (target: HTMLElement) => {
+    const manualDistance = Number(target.dataset.revealDistance);
+
+    if (Number.isFinite(manualDistance) && manualDistance > 0) {
+      return manualDistance;
+    }
+
+    switch (target.dataset.reveal) {
+      case "hero-title":
+      case "page-title":
+        return 30;
+      case "hero-nav":
+        return 24;
+      case "card":
+      case "row":
+        return 22;
+      default:
+        return 18;
+    }
+  };
+
+  const getDuration = (target: HTMLElement) => {
+    const manualDuration = Number(target.dataset.revealDuration);
+
+    if (Number.isFinite(manualDuration) && manualDuration > 0) {
+      return manualDuration;
+    }
+
+    switch (target.dataset.reveal) {
+      case "hero-title":
+        return 0.85;
+      case "page-title":
+        return 0.8;
+      case "hero-nav":
+        return 0.7;
+      default:
+        return 0.65;
+    }
+  };
+
+  const getInitialTransform = (target: HTMLElement) => {
+    const distance = getDistance(target);
+
+    switch (getDirection(target)) {
+      case "left":
+        return `translateX(-${distance}px)`;
+      case "right":
+        return `translateX(${distance}px)`;
+      default:
+        return `translateY(${distance}px)`;
+    }
+  };
+
+  const revealTarget = (target: HTMLElement) => {
+    if (target.dataset.revealed === "true") {
+      return;
+    }
+
+    target.dataset.revealed = "true";
+
+    const animation = animate(
+      target,
+      {
+        opacity: 1,
+        transform: "translate3d(0px, 0px, 0px)",
+      },
+      {
+        delay: getDelay(target),
+        duration: getDuration(target),
+        easing: [0.22, 1, 0.36, 1],
+      },
+    );
+
+    animation.finished.then(() => {
+      target.style.opacity = "1";
+      target.style.transform = "none";
+      target.style.willChange = "auto";
+    });
+  };
+
+  const initReveals = () => {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (reduceMotion) {
+      return;
+    }
+
+    const targets = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-reveal]"),
+    ).filter((target) => target.dataset.revealReady !== "true");
+
+    if (targets.length === 0) {
+      return;
+    }
+
+    targets.forEach((target) => {
+      target.dataset.revealReady = "true";
+      target.style.opacity = "0";
+      target.style.transform = getInitialTransform(target);
+      target.style.willChange = "opacity, transform";
+    });
+
+    const loadTargets = targets.filter(
+      (target) => target.dataset.revealTrigger === "load",
+    );
+    const viewTargets = targets.filter(
+      (target) => target.dataset.revealTrigger !== "load",
+    );
+
+    const startLoadReveals = () => {
+      loadTargets.forEach(revealTarget);
+    };
+
+    requestAnimationFrame(startLoadReveals);
+    window.setTimeout(startLoadReveals, 32);
+
+    viewTargets.forEach((target) => {
+      const amount = Number(target.dataset.revealAmount);
+
+      inView(
+        target,
+        () => {
+          revealTarget(target);
+        },
+        {
+          amount: Number.isFinite(amount) ? amount : 0.22,
+          margin: target.dataset.revealMargin ?? "0px 0px -12% 0px",
+        },
+      );
+    });
+  };
+
+  revealWindow.__pageRevealInit = initReveals;
+
+  if (!revealWindow.__pageRevealBound) {
+    revealWindow.__pageRevealBound = true;
+
+    document.addEventListener("astro:page-load", () => {
+      revealWindow.__pageRevealInit?.();
+    });
+
+    document.addEventListener("astro:after-swap", () => {
+      revealWindow.__pageRevealInit?.();
+    });
+  }
+
+  revealWindow.__pageRevealInit();
+</script>

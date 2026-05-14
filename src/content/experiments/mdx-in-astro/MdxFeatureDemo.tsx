@@ -58,7 +58,9 @@ export default function MdxFeatureDemo({ mode }: MdxFeatureDemoProps) {
   if (mode === "counter") {
     return (
       <section className="my-8 bg-bg-elevated p-4 md:p-6">
-        <h3 className="h2 mb-3">TSX COUNTER IN MDX</h3>
+        <h3 className="mb-3 text-xs tracking-[0.2rem] text-secondary">
+          TSX COUNTER IN MDX
+        </h3>
         <p className="mb-4 text-sm text-secondary">
           This is a React island embedded directly inside MDX.
         </p>
@@ -71,21 +73,21 @@ export default function MdxFeatureDemo({ mode }: MdxFeatureDemoProps) {
             <button
               type="button"
               onClick={() => setCount((value) => value - step)}
-              className="h2 bg-bg px-3 py-2 text-primary transition-colors hover:text-accent"
+              className="bg-bg px-3 py-2 text-xs tracking-[0.2rem] text-primary transition-colors hover:text-accent"
             >
               - STEP
             </button>
             <button
               type="button"
               onClick={() => setCount((value) => value + step)}
-              className="h2 bg-bg px-3 py-2 text-primary transition-colors hover:text-accent"
+              className="bg-bg px-3 py-2 text-xs tracking-[0.2rem] text-primary transition-colors hover:text-accent"
             >
               + STEP
             </button>
             <button
               type="button"
               onClick={() => setCount(0)}
-              className="h2 bg-bg px-3 py-2 text-primary transition-colors hover:text-accent"
+              className="bg-bg px-3 py-2 text-xs tracking-[0.2rem] text-primary transition-colors hover:text-accent"
             >
               RESET
             </button>
@@ -113,7 +115,9 @@ export default function MdxFeatureDemo({ mode }: MdxFeatureDemoProps) {
   if (mode === "transform") {
     return (
       <section className="my-8 bg-bg-elevated p-4 md:p-6">
-        <h3 className="h2 mb-3">TYPESCRIPT TRANSFORM IN MDX</h3>
+        <h3 className="mb-3 text-xs tracking-[0.2rem] text-secondary">
+          TYPESCRIPT TRANSFORM IN MDX
+        </h3>
         <p className="mb-4 text-sm text-secondary">
           Typed utility functions update this output live as input changes.
         </p>
@@ -124,20 +128,26 @@ export default function MdxFeatureDemo({ mode }: MdxFeatureDemoProps) {
         />
         <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-4">
           <div className="bg-bg p-3">
-            <p className="h2 mb-2">WORDS</p>
+            <p className="mb-2 text-xs tracking-[0.2rem] text-secondary">
+              WORDS
+            </p>
             <p>{metrics.words}</p>
           </div>
           <div className="bg-bg p-3">
-            <p className="h2 mb-2">CHARS</p>
+            <p className="mb-2 text-xs tracking-[0.2rem] text-secondary">
+              CHARS
+            </p>
             <p>{metrics.chars}</p>
           </div>
           <div className="bg-bg p-3">
-            <p className="h2 mb-2">READING</p>
+            <p className="mb-2 text-xs tracking-[0.2rem] text-secondary">
+              READING
+            </p>
             <p>{metrics.readingSeconds}s</p>
           </div>
         </div>
         <div className="mt-3 bg-bg p-3">
-          <p className="h2 mb-2">SLUG</p>
+          <p className="mb-2 text-xs tracking-[0.2rem] text-secondary">SLUG</p>
           <p className="text-sm break-all text-secondary">
             {metrics.slug || "(empty)"}
           </p>
@@ -148,7 +158,9 @@ export default function MdxFeatureDemo({ mode }: MdxFeatureDemoProps) {
 
   return (
     <section className="my-8 bg-bg-elevated p-4 md:p-6">
-      <h3 className="h2 mb-3">COMPONENT REGISTRY PATTERN</h3>
+      <h3 className="mb-3 text-xs tracking-[0.2rem] text-secondary">
+        COMPONENT REGISTRY PATTERN
+      </h3>
       <p className="mb-4 text-sm text-secondary">
         MDX can switch between UI variants using typed keys from frontmatter or
         props.
@@ -159,7 +171,7 @@ export default function MdxFeatureDemo({ mode }: MdxFeatureDemoProps) {
             key={option}
             type="button"
             onClick={() => setTone(option)}
-            className={`h2 px-3 py-2 transition-colors ${
+            className={`px-3 py-2 text-xs tracking-[0.2rem] transition-colors ${
               tone === option
                 ? "bg-accent text-white"
                 : "bg-bg text-primary hover:text-accent"
@@ -170,7 +182,9 @@ export default function MdxFeatureDemo({ mode }: MdxFeatureDemoProps) {
         ))}
       </div>
       <div className="mt-4 bg-bg p-4">
-        <p className="h2 mb-2">{TONE_COPY[tone].title}</p>
+        <p className="mb-2 text-xs tracking-[0.2rem] text-secondary">
+          {TONE_COPY[tone].title}
+        </p>
         <p>{TONE_COPY[tone].body}</p>
       </div>
     </section>

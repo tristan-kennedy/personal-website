@@ -1,6 +1,7 @@
 ---
 import Head from "../components/Head.astro";
 import Footer from "../components/Footer.astro";
+import PageRevealEffects from "../components/PageRevealEffects.astro";
 import ScrollToTop from "../components/menu/ScrollToTop";
 import Navigation from "../components/Navigation.astro";
 import "../global.css";
@@ -25,5 +26,6 @@ const { title, bodyClass = "", showChrome = true, ...bodyProps } = Astro.props;
       <slot />
     </main>
     {showChrome && <Footer />}
+    <PageRevealEffects />
   </body>
 </html>

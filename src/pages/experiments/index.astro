@@ -10,6 +10,7 @@ const experiments = await getExperiments();
 <Layout title="Tristan Kennedy | Experiments">
   <CollectionIndexShell
     title="Experiments"
+    mobileTitleLines={["EXPER-", "IMENTS"]}
     backHref="/"
     backLabel="BACK"
     count={experiments.length}
@@ -17,15 +18,17 @@ const experiments = await getExperiments();
   >
     {
       experiments.map((experiment, index) => (
-        <SelectableRow
-          href={experiment.url}
-          index={index + 1}
-          title={experiment.data.title}
-          description={experiment.data.description}
-          date={experiment.data.date}
-          meta={experiment.data.tech}
-          metaType="tags"
-        />
+        <div data-reveal="row" data-reveal-direction="left">
+          <SelectableRow
+            href={experiment.url}
+            index={index + 1}
+            title={experiment.data.title}
+            description={experiment.data.description}
+            date={experiment.data.date}
+            meta={experiment.data.tech}
+            metaType="tags"
+          />
+        </div>
       ))
     }
   </CollectionIndexShell>

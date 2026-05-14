@@ -17,15 +17,17 @@ const posts = await getPosts();
   >
     {
       posts.map((post, index) => (
-        <SelectableRow
-          href={post.url}
-          index={index + 1}
-          title={post.data.title}
-          description={post.data.description}
-          date={post.data.date}
-          meta={post.data.length}
-          metaType="text"
-        />
+        <div data-reveal="row" data-reveal-direction="left">
+          <SelectableRow
+            href={post.url}
+            index={index + 1}
+            title={post.data.title}
+            description={post.data.description}
+            date={post.data.date}
+            meta={post.data.length}
+            metaType="text"
+          />
+        </div>
       ))
     }
   </CollectionIndexShell>

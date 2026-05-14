@@ -31,7 +31,9 @@ const metaItems = Array.isArray(meta) ? meta : meta ? [meta] : [];
   class={`group block border-b border-divider px-2 py-6 transition-colors hover:bg-accent/4 md:px-3 md:py-8 ${className}`}
 >
   <div class="flex flex-col gap-5 md:flex-row md:items-start md:gap-8">
-    <div class="h2 hidden shrink-0 text-subtle md:block md:w-12">
+    <div
+      class="hidden shrink-0 text-xs tracking-[0.2rem] text-subtle md:block md:w-12"
+    >
       {displayIndex}
     </div>
 
@@ -65,9 +67,10 @@ const metaItems = Array.isArray(meta) ? meta : meta ? [meta] : [];
     <div
       class="flex items-end justify-between gap-4 md:ml-auto md:min-w-36 md:flex-col md:items-end"
     >
-      <span class="h2 text-subtle uppercase">{date}</span>
+      <span class="text-xs tracking-[0.2rem] text-subtle uppercase">{date}</span
+      >
       <span
-        class="h2 text-subtle transition-colors group-hover:text-accent"
+        class="text-xs tracking-[0.2rem] text-subtle transition-colors group-hover:text-accent"
         aria-hidden="true"
       >
         &rarr;

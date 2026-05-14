@@ -56,19 +56,50 @@ const featuredExperiments = experiments.slice(0, 3);
 <Layout title="Tristan Kennedy">
   <div class="flex flex-col gap-16 md:gap-24 lg:gap-32">
     <section id="hero" class="flex min-h-[calc(100dvh-64px)] flex-col py-8">
-      <header class="flex items-center justify-end gap-2 text-right">
+      <header
+        class="flex items-center justify-end gap-2 text-right"
+        data-reveal="hero-meta"
+        data-reveal-trigger="load"
+        data-reveal-delay="0.18"
+      >
         <div>
           <h2>SOFTWARE ENGINEER</h2>
           <h3 class="text-sm text-subtle">Rogers, AR</h3>
         </div>
       </header>
       <div class="my-auto flex flex-col gap-6 py-6 md:gap-8">
-        <h1 class="display-hero font-black">
-          TRISTAN<br />KENNEDY
+        <h1
+          class="font-black uppercase"
+          aria-label="Tristan Kennedy"
+          data-reveal="hero-title"
+          data-reveal-trigger="load"
+          data-reveal-delay="0.08"
+        >
+          <span
+            class="flex flex-col text-[clamp(4.75rem,24vw,6.5rem)] leading-[0.8] tracking-[-0.05em] md:hidden"
+            aria-hidden="true"
+          >
+            <span class="block">TRIS-</span>
+            <span class="block">TAN</span>
+            <span class="block">KENN-</span>
+            <span class="block">EDY</span>
+          </span>
+          <span
+            class="hidden text-[clamp(5.5rem,14.5vw,16rem)] leading-[0.9] tracking-[-0.02em] md:block"
+            aria-hidden="true"
+          >
+            TRISTAN<br />KENNEDY
+          </span>
         </h1>
       </div>
       <footer class="flex items-end justify-end md:justify-between">
-        <nav class="hidden w-full md:block md:flex-1">
+        <nav
+          class="hidden w-full lg:block lg:flex-1"
+          data-reveal="hero-nav"
+          data-reveal-direction="left"
+          data-reveal-trigger="load"
+          data-reveal-delay="0.34"
+        >
           <ul class="flex flex-row gap-8">
             {
               heroNavItems.map((item) => (
@@ -77,8 +108,10 @@ const featuredExperiments = experiments.slice(0, 3);
                     href={item.href}
                     class="group inline-flex flex-col items-center gap-1 text-center"
                   >
-                    <span class="h2 text-subtle">{item.index}</span>
-                    <span class="h2 text-secondary transition-colors group-hover:text-accent">
+                    <span class="text-xs tracking-[0.2rem] text-subtle">
+                      {item.index}
+                    </span>
+                    <span class="text-xs tracking-[0.2rem] text-secondary transition-colors group-hover:text-accent">
                       {item.label}
                     </span>
                   </a>
@@ -87,19 +120,30 @@ const featuredExperiments = experiments.slice(0, 3);
             }
           </ul>
         </nav>
-        <h2 class="shrink-0">&copy; 2025</h2>
+        <h2
+          class="shrink-0"
+          data-reveal="hero-year"
+          data-reveal-trigger="load"
+          data-reveal-delay="0.24"
+        >
+          &copy; 2025
+        </h2>
       </footer>
     </section>
 
     <section id="about">
       <div class="border-y border-divider py-6 md:py-8">
-        <div class="mb-10 flex items-center gap-4">
-          <span class="h2 text-subtle">01 /</span>
-          <span class="h2 text-secondary">ABOUT ME</span>
+        <div class="mb-10 flex items-center gap-4" data-reveal="section-head">
+          <span class="text-xs tracking-[0.2rem] text-subtle">01 /</span>
+          <span class="text-xs tracking-[0.2rem] text-secondary">ABOUT ME</span>
         </div>
 
         <div class="flex flex-col items-start gap-12 md:flex-row md:gap-16">
-          <div class="max-w-[32rem]">
+          <div
+            class="max-w-[32rem]"
+            data-reveal="copy"
+            data-reveal-direction="left"
+          >
             <h1 class="mb-8 text-4xl font-light md:mb-10">
               I build products that are both functional and beautiful.
             </h1>
@@ -117,12 +161,24 @@ const featuredExperiments = experiments.slice(0, 3);
             </div>
           </div>
 
-          <div class="w-full max-w-[28rem]">
+          <div
+            class="w-full max-w-[28rem]"
+            data-reveal="copy"
+            data-reveal-direction="left"
+          >
             <h2 class="mb-6">EXPERTISE</h2>
-            <ul class="list-none p-0">
+            <ul
+              class="list-none p-0"
+              data-reveal-group
+              data-reveal-stagger="0.06"
+            >
               {
                 aboutExpertiseItems.map((item) => (
-                  <li class="border-t border-divider py-3 first:border-t">
+                  <li
+                    class="border-t border-divider py-3 first:border-t"
+                    data-reveal="list-item"
+                    data-reveal-direction="left"
+                  >
                     <span class="text-sm text-secondary">{item}</span>
                   </li>
                 ))
@@ -135,31 +191,42 @@ const featuredExperiments = experiments.slice(0, 3);
 
     <section id="projects">
       <div class="border-t border-divider pt-6 md:pt-8">
-        <div class="mb-4 flex items-center justify-between gap-6 pb-6">
+        <div
+          class="mb-4 flex items-center justify-between gap-6 pb-6"
+          data-reveal="section-head"
+        >
           <div class="flex items-center gap-4">
-            <span class="h2 text-subtle">02 /</span>
-            <span class="h2 text-secondary">PROJECTS</span>
+            <span class="text-xs tracking-[0.2rem] text-subtle">02 /</span>
+            <span class="text-xs tracking-[0.2rem] text-secondary"
+              >PROJECTS</span
+            >
           </div>
           <a
             href="/projects"
-            class="h2 whitespace-nowrap text-subtle transition-colors hover:text-accent"
+            class="text-xs tracking-[0.2rem] whitespace-nowrap text-subtle transition-colors hover:text-accent"
           >
             VIEW ALL <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
 
-        <div class="border-t border-divider">
+        <div
+          class="border-t border-divider"
+          data-reveal-group
+          data-reveal-stagger="0.08"
+        >
           {
             featuredProjects.map((project, index) => (
-              <SelectableRow
-                href={project.url}
-                index={index + 1}
-                title={project.data.title}
-                description={project.data.description}
-                date={project.data.date}
-                meta={project.data.tech}
-                metaType="tags"
-              />
+              <div data-reveal="row" data-reveal-direction="left">
+                <SelectableRow
+                  href={project.url}
+                  index={index + 1}
+                  title={project.data.title}
+                  description={project.data.description}
+                  date={project.data.date}
+                  meta={project.data.tech}
+                  metaType="tags"
+                />
+              </div>
             ))
           }
         </div>
@@ -168,31 +235,40 @@ const featuredExperiments = experiments.slice(0, 3);
 
     <section id="posts">
       <div class="border-t border-divider pt-6 md:pt-8">
-        <div class="mb-4 flex items-center justify-between gap-6 pb-6">
+        <div
+          class="mb-4 flex items-center justify-between gap-6 pb-6"
+          data-reveal="section-head"
+        >
           <div class="flex items-center gap-4">
-            <span class="h2 text-subtle">03 /</span>
-            <span class="h2 text-secondary">POSTS</span>
+            <span class="text-xs tracking-[0.2rem] text-subtle">03 /</span>
+            <span class="text-xs tracking-[0.2rem] text-secondary">POSTS</span>
           </div>
           <a
             href="/posts"
-            class="h2 whitespace-nowrap text-subtle transition-colors hover:text-accent"
+            class="text-xs tracking-[0.2rem] whitespace-nowrap text-subtle transition-colors hover:text-accent"
           >
             ALL POSTS <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
 
-        <div class="border-t border-divider">
+        <div
+          class="border-t border-divider"
+          data-reveal-group
+          data-reveal-stagger="0.08"
+        >
           {
             featuredPosts.map((post, index) => (
-              <SelectableRow
-                href={post.url}
-                index={index + 1}
-                title={post.data.title}
-                description={post.data.description}
-                date={post.data.date}
-                meta={post.data.length}
-                metaType="text"
-              />
+              <div data-reveal="row" data-reveal-direction="left">
+                <SelectableRow
+                  href={post.url}
+                  index={index + 1}
+                  title={post.data.title}
+                  description={post.data.description}
+                  date={post.data.date}
+                  meta={post.data.length}
+                  metaType="text"
+                />
+              </div>
             ))
           }
         </div>
@@ -201,26 +277,37 @@ const featuredExperiments = experiments.slice(0, 3);
 
     <section id="experiments">
       <div class="border-t border-divider pt-6 md:pt-8">
-        <div class="mb-4 flex items-center justify-between gap-6 pb-6">
+        <div
+          class="mb-4 flex items-center justify-between gap-6 pb-6"
+          data-reveal="section-head"
+        >
           <div class="flex items-center gap-4">
-            <span class="h2 text-subtle">04 /</span>
-            <span class="h2 text-secondary">EXPERIMENTS</span>
+            <span class="text-xs tracking-[0.2rem] text-subtle">04 /</span>
+            <span class="text-xs tracking-[0.2rem] text-secondary"
+              >EXPERIMENTS</span
+            >
           </div>
           <a
             href="/experiments"
-            class="h2 whitespace-nowrap text-subtle transition-colors hover:text-accent"
+            class="text-xs tracking-[0.2rem] whitespace-nowrap text-subtle transition-colors hover:text-accent"
           >
             EXPLORE MORE <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
 
-        <div class="flex flex-col gap-10 border-t border-divider pt-6 xl:flex-row xl:gap-8 xl:pt-8">
+        <div
+          class="flex flex-col gap-10 border-t border-divider pt-6 xl:flex-row xl:gap-8 xl:pt-8"
+          data-reveal-group
+          data-reveal-stagger="0.1"
+        >
           {
             featuredExperiments.map((experiment) => {
               return (
                 <a
                   href={experiment.url}
                   class="group flex w-full flex-col gap-2 xl:flex-1"
+                  data-reveal="card"
+                  data-reveal-direction="left"
                 >
                   <Tooltip client:load label={"READ MORE"} className="mb-4">
                     <div class="aspect-[1.25/1] overflow-hidden">
@@ -250,14 +337,21 @@ const featuredExperiments = experiments.slice(0, 3);
 
     <section id="contact" class="pb-24">
       <div class="border-t border-divider pt-6 md:pt-8">
-        <div class="mb-6 flex items-center gap-4 pb-4 md:mb-8">
-          <span class="h2 text-subtle">05 /</span>
-          <span class="h2 text-secondary">CONTACT</span>
+        <div
+          class="mb-6 flex items-center gap-4 pb-4 md:mb-8"
+          data-reveal="section-head"
+        >
+          <span class="text-xs tracking-[0.2rem] text-subtle">05 /</span>
+          <span class="text-xs tracking-[0.2rem] text-secondary">CONTACT</span>
         </div>
 
         <div class="border-t border-divider pt-8 md:pt-10">
           <div class="flex flex-col items-start gap-12 md:flex-row md:gap-16">
-            <div class="max-w-[36rem]">
+            <div
+              class="max-w-[36rem]"
+              data-reveal="copy"
+              data-reveal-direction="left"
+            >
               <h1 class="mb-8 text-4xl font-light md:mb-10">
                 Let&apos;s build something thoughtful together.
               </h1>
@@ -272,12 +366,24 @@ const featuredExperiments = experiments.slice(0, 3);
               </p>
             </div>
 
-            <div class="w-full max-w-[28rem]">
+            <div
+              class="w-full max-w-[28rem]"
+              data-reveal="copy"
+              data-reveal-direction="left"
+            >
               <h2 class="mb-6">ELSEWHERE</h2>
-              <ul class="list-none p-0">
+              <ul
+                class="list-none p-0"
+                data-reveal-group
+                data-reveal-stagger="0.06"
+              >
                 {
                   contactItems.map((item) => (
-                    <li class="border-t border-divider py-3 first:border-t">
+                    <li
+                      class="border-t border-divider py-3 first:border-t"
+                      data-reveal="list-item"
+                      data-reveal-direction="left"
+                    >
                       <a
                         href={item.href}
                         class="group flex items-center justify-between gap-4 text-sm text-secondary transition-colors hover:text-accent"

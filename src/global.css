@@ -35,39 +35,6 @@
 }
 
 @layer components {
-  .h2 {
-    @apply text-xs tracking-[0.2rem] text-secondary;
-  }
-
-  .display-hero {
-    font-size: clamp(5.5rem, 14.5vw, 16rem);
-    line-height: 0.9;
-    letter-spacing: -0.02em;
-  }
-
-  .display-collection {
-    font-size: clamp(3.75rem, 11vw, 10rem);
-    line-height: 0.9;
-    letter-spacing: -0.02em;
-  }
-
-  .display-slug {
-    font-size: clamp(3rem, 8vw, 5.75rem);
-    line-height: 0.92;
-    letter-spacing: -0.03em;
-  }
-
-  .display-xl {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 1.08;
-    letter-spacing: -0.01em;
-  }
-
-  .display-lg {
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    line-height: 1.05;
-  }
-
   .mdx {
     @apply leading-8 text-secondary;
   }

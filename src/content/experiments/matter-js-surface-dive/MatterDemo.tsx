@@ -315,11 +315,13 @@ export default function MatterDemo({
   return (
     <section className="my-8">
       <div className="mb-3 flex items-center justify-between gap-4">
-        <h3 className="h2">{SCENE_META[scenario].label}</h3>
+        <h3 className="text-xs tracking-[0.2rem] text-secondary">
+          {SCENE_META[scenario].label}
+        </h3>
         <button
           type="button"
           onClick={() => setResetKey((value) => value + 1)}
-          className="h2 transition-colors hover:text-accent"
+          className="text-xs tracking-[0.2rem] text-secondary transition-colors hover:text-accent"
         >
           RESET
         </button>

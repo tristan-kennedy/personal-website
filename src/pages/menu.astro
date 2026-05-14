@@ -21,7 +21,7 @@ const navItems = [
       <h2 class="text-white">MENU</h2>
       <a
         href="/"
-        class="h2 flex items-center gap-2 text-white transition-all hover:translate-x-1"
+        class="flex items-center gap-2 text-xs tracking-[0.2rem] text-white transition-all hover:translate-x-1"
         aria-label="Back to previous page"
         onclick="event.preventDefault(); window.history.back();"
       >
@@ -34,7 +34,7 @@ const navItems = [
         {
           navItems.map((item) => (
             <li class="group">
-              <h1 class="display-xl">
+              <h1 class="text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.08] tracking-[-0.01em]">
                 <a
                   href={item.href}
                   class="block opacity-70 transition-all group-hover:translate-x-2 group-hover:opacity-100"
