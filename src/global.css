@@ -62,9 +62,7 @@
     }
 
     :root[data-motion="on"]
-      [data-reveal][data-reveal-direction="right"]:not(
-        [data-revealed="true"]
-      ) {
+      [data-reveal][data-reveal-direction="right"]:not([data-revealed="true"]) {
       transform: translate3d(var(--reveal-distance), 0, 0);
     }
 
@@ -193,5 +191,13 @@
   html::-webkit-scrollbar,
   body::-webkit-scrollbar {
     display: none; /* Chrome, Safari */
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  html[data-theme="light"] {
+    color-scheme: light;
   }
 }

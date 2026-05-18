@@ -15,21 +15,44 @@ const { title } = Astro.props;
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
   <script is:inline data-astro-rerun>
+    const root = document.documentElement;
+
     if (!window.__pageMotionBootstrapped) {
-      document.documentElement.setAttribute("data-motion", "on");
+      root.setAttribute("data-motion", "on");
       window.__pageMotionBootstrapped = true;
     }
 
-    function setTheme() {
-      const theme =
-        localStorage.theme ??
-        (window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light");
-      document.documentElement.setAttribute("data-theme", theme);
+    function getTheme() {
+      const storedTheme = localStorage.getItem("theme");
+
+      if (storedTheme === "dark" || storedTheme === "light") {
+        return storedTheme;
+      }
+
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
     }
 
-    setTheme();
-    document.addEventListener("astro:after-swap", setTheme);
+    function applyTheme(target = root) {
+      const theme = getTheme();
+
+      target.setAttribute("data-theme", theme);
+      target.style.colorScheme = theme;
+    }
+
+    if (!window.__themePrepBound) {
+      window.__themePrepBound = true;
+
+      document.addEventListener("astro:before-swap", (event) => {
+        applyTheme(event.newDocument.documentElement);
+      });
+
+      document.addEventListener("astro:after-swap", () => {
+        applyTheme(document.documentElement);
+      });
+    }
+
+    applyTheme();
   </script>
 </head>
