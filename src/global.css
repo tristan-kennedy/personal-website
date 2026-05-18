@@ -39,6 +39,7 @@
     :root[data-motion="on"] [data-reveal] {
       --reveal-distance: 18px;
       opacity: 0;
+      will-change: opacity, transform;
     }
 
     :root[data-motion="on"] [data-reveal="hero-title"],
@@ -61,7 +62,9 @@
     }
 
     :root[data-motion="on"]
-      [data-reveal][data-reveal-direction="right"]:not([data-revealed="true"]) {
+      [data-reveal][data-reveal-direction="right"]:not(
+        [data-revealed="true"]
+      ) {
       transform: translate3d(var(--reveal-distance), 0, 0);
     }
 
@@ -70,15 +73,6 @@
     :root[data-motion="on"]
       [data-reveal]:not([data-reveal-direction]):not([data-revealed="true"]) {
       transform: translate3d(0, var(--reveal-distance), 0);
-    }
-
-    :root[data-motion="on"]
-      [data-reveal][data-reveal-direction="down"]:not([data-revealed="true"]) {
-      transform: translate3d(0, calc(var(--reveal-distance) * -1), 0);
-    }
-
-    :root[data-motion="on"] [data-reveal][data-revealing="true"] {
-      will-change: opacity, transform;
     }
 
     :root[data-motion="on"] [data-reveal][data-revealed="true"] {

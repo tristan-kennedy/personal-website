@@ -15,6 +15,11 @@ const { title } = Astro.props;
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
   <script is:inline data-astro-rerun>
+    if (!window.__pageMotionBootstrapped) {
+      document.documentElement.setAttribute("data-motion", "on");
+      window.__pageMotionBootstrapped = true;
+    }
+
     function setTheme() {
       const theme =
         localStorage.theme ??
