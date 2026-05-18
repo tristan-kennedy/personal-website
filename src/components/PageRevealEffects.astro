@@ -3,9 +3,35 @@
 
   type RevealWindow = Window & {
     __pageRevealBound?: boolean;
+    __pageRevealInit?: () => void;
+    __pageRevealCleanup?: () => void;
   };
 
   const revealWindow = window as RevealWindow;
+
+  const observerStops = new Set<() => void>();
+  const activeAnimations = new Set<ReturnType<typeof animate>>();
+  let loadFrame = 0;
+
+  const cleanupObservers = () => {
+    window.cancelAnimationFrame(loadFrame);
+
+    observerStops.forEach((stop) => stop());
+    observerStops.clear();
+  };
+
+  const cleanupForNavigation = () => {
+    cleanupObservers();
+
+    activeAnimations.forEach((animation) => animation.stop());
+    activeAnimations.clear();
+
+    document
+      .querySelectorAll<HTMLElement>("[data-revealing='true']")
+      .forEach((target) => {
+        delete target.dataset.revealing;
+      });
+  };
 
   const getDelay = (target: HTMLElement) => {
     const manualDelay = Number(target.dataset.revealDelay);
@@ -23,6 +49,7 @@
     const siblings = Array.from(
       group.querySelectorAll<HTMLElement>("[data-reveal]"),
     );
+
     const index = siblings.indexOf(target);
     const stagger = Number(group.dataset.revealStagger);
     const maxDelay = Number(group.dataset.revealMaxDelay);
@@ -75,67 +102,105 @@
       },
     );
 
-    animation.finished.then(() => {
-      delete target.dataset.revealing;
-      target.dataset.revealed = "true";
-      target.style.opacity = "1";
-      target.style.transform = "none";
-      target.style.willChange = "auto";
-    });
+    activeAnimations.add(animation);
+
+    animation.finished
+      .then(() => {
+        target.dataset.revealed = "true";
+        target.style.opacity = "1";
+        target.style.transform = "none";
+        target.style.willChange = "auto";
+      })
+      .catch(() => {
+        // Animation was stopped during navigation.
+        // Do not mark as revealed.
+      })
+      .finally(() => {
+        delete target.dataset.revealing;
+        activeAnimations.delete(animation);
+      });
   };
 
   const initReveals = () => {
+    cleanupObservers();
+
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
     if (reduceMotion) {
+      document
+        .querySelectorAll<HTMLElement>("[data-reveal]")
+        .forEach((target) => {
+          target.dataset.revealed = "true";
+          target.style.opacity = "1";
+          target.style.transform = "none";
+          target.style.willChange = "auto";
+        });
+
       return;
     }
 
     const targets = Array.from(
       document.querySelectorAll<HTMLElement>("[data-reveal]"),
-    ).filter((target) => target.dataset.revealed !== "true");
-
-    if (targets.length === 0) {
-      return;
-    }
+    ).filter(
+      (target) =>
+        target.dataset.revealed !== "true" &&
+        target.dataset.revealing !== "true",
+    );
 
     const loadTargets = targets.filter(
       (target) => target.dataset.revealTrigger === "load",
     );
+
     const viewTargets = targets.filter(
       (target) => target.dataset.revealTrigger !== "load",
     );
 
-    const startLoadReveals = () => {
+    loadFrame = window.requestAnimationFrame(() => {
       loadTargets.forEach(revealTarget);
-    };
-
-    requestAnimationFrame(startLoadReveals);
-    window.setTimeout(startLoadReveals, 32);
+    });
 
     viewTargets.forEach((target) => {
       const amount = Number(target.dataset.revealAmount);
 
-      inView(
+      let stop: (() => void) | undefined;
+
+      stop = inView(
         target,
         () => {
           revealTarget(target);
+
+          queueMicrotask(() => {
+            stop?.();
+
+            if (stop) {
+              observerStops.delete(stop);
+            }
+          });
         },
         {
           amount: Number.isFinite(amount) ? amount : 0.22,
           margin: target.dataset.revealMargin ?? "0px 0px -12% 0px",
         },
       );
+
+      observerStops.add(stop);
     });
   };
+
+  revealWindow.__pageRevealInit = initReveals;
+  revealWindow.__pageRevealCleanup = cleanupForNavigation;
 
   if (!revealWindow.__pageRevealBound) {
     revealWindow.__pageRevealBound = true;
 
-    document.addEventListener("astro:after-swap", () => {
-      initReveals();
+    document.addEventListener("astro:before-swap", () => {
+      revealWindow.__pageRevealCleanup?.();
+    });
+
+    document.addEventListener("astro:page-load", () => {
+      revealWindow.__pageRevealInit?.();
     });
   }
 
