@@ -73,7 +73,7 @@
 #project(
   role: "Creator & Developer",
   name: "Golf Club Curator",
-  url: "golfclubcurator.com",
+  url: "pre-alpha",
   dates: "Apr 2026 - Present",
 )
 - Building a TypeScript platform that compares golf-club specs, merchant offers, and complete bag configurations.
