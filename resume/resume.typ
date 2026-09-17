@@ -39,7 +39,7 @@
   location: "Rogers, AR",
   dates: "Jul 2024 - Jul 2025",
 )
-- Cut application load times by ~44% through targeted database indexing and elimination of N+1 queries.
+- Cut application load times by -44% through targeted database indexing and elimination of N+1 queries.
 - Owned shared React navigation used across products, including authentication context, hooks, and utilities.
 - Standardized revenue-loss and billing data models used by multiple retailer integrations and product teams.
 
