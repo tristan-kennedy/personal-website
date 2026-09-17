@@ -3,7 +3,7 @@
 // Keep each contact URL together when the template's header wraps.
 #show link: it => box(it)
 #show: resume.with(
-  author: "Tristan Kennedy",
+  author: "Tristan D. Kennedy",
   location: "Rogers, AR",
   email: "tdouglaskennedy@gmail.com",
   phone: "+1 (615) 556-4405",
