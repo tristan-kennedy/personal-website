@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-04T18:22:20.179Z",
+  "title": "Design System: Tristan Kennedy",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Signal Red",
+        "tonalRamp": [
+          "oklch(15% 0.12 27)",
+          "oklch(26% 0.12 27)",
+          "oklch(38% 0.12 27)",
+          "oklch(49% 0.12 27)",
+          "oklch(61% 0.12 27)",
+          "oklch(72% 0.12 27)",
+          "oklch(84% 0.12 27)",
+          "oklch(95% 0.12 27)"
+        ]
+      },
+      "bg": { "role": "neutral", "displayName": "Warm Paper" },
+      "bg-elevated": {
+        "role": "neutral",
+        "displayName": "Light Elevated Surface"
+      },
+      "primary": { "role": "neutral", "displayName": "Charcoal Text" },
+      "secondary": { "role": "neutral", "displayName": "Supporting Gray" },
+      "subtle": { "role": "neutral", "displayName": "Quiet Gray" },
+      "divider": { "role": "neutral", "displayName": "Paper Divider" },
+      "black": { "role": "neutral", "displayName": "Overlay Black" },
+      "white": { "role": "neutral", "displayName": "Warm Inverse Text" },
+      "dark-bg": { "role": "neutral", "displayName": "Ink Surface" },
+      "dark-bg-elevated": {
+        "role": "neutral",
+        "displayName": "Dark Elevated Surface"
+      },
+      "dark-primary": { "role": "neutral", "displayName": "Light Text" },
+      "dark-secondary": {
+        "role": "neutral",
+        "displayName": "Dark Supporting Text"
+      },
+      "dark-subtle": { "role": "neutral", "displayName": "Dark Quiet Text" },
+      "dark-divider": { "role": "neutral", "displayName": "Ink Divider" }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Homepage Display",
+        "purpose": "Desktop name hero; responsive hero variants remain in their components."
+      },
+      "headline": {
+        "displayName": "Light Headline",
+        "purpose": "Homepage statements and selectable-row titles."
+      },
+      "body": { "displayName": "Body", "purpose": "Homepage supporting copy." },
+      "article-body": {
+        "displayName": "Article Body",
+        "purpose": "Long-form MDX copy with open leading."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Navigation, section labels, and metadata."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "reveal-ease",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Existing page reveal deceleration; reduced motion bypasses reveals."
+      },
+      {
+        "name": "hero-reveal",
+        "value": "850ms",
+        "purpose": "Homepage title reveal."
+      },
+      {
+        "name": "page-reveal",
+        "value": "800ms",
+        "purpose": "Collection title reveal."
+      },
+      {
+        "name": "content-reveal",
+        "value": "650ms",
+        "purpose": "Default content reveal."
+      },
+      {
+        "name": "image-hover",
+        "value": "500ms",
+        "purpose": "Experiment cover hover zoom."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" },
+      { "name": "2xl", "value": "1536px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Theme Toggle",
+      "kind": "button",
+      "refersTo": "theme-toggle",
+      "description": "Text-only light/dark control on the red menu surface; preview shows its appearance.",
+      "html": "<div class=\"ds-menu-surface\"><button class=\"ds-theme-toggle\" aria-label=\"Toggle theme\"><span class=\"ds-theme-active\">LIGHT</span><span>/</span><span class=\"ds-theme-inactive\">DARK</span></button></div>",
+      "css": ".ds-menu-surface{background:var(--color-accent);padding:1rem}.ds-theme-toggle{display:flex;align-items:center;gap:.5rem;background:transparent;border:0;border-radius:0;color:var(--color-white);font-family:var(--font-inter);font-size:.75rem;line-height:1rem;letter-spacing:.2rem;cursor:pointer;transition:transform .15s}.ds-theme-active{font-weight:700}.ds-theme-inactive{opacity:.7}.ds-theme-toggle:hover{transform:scale(1.05)}.ds-theme-toggle:active{transform:scale(.98)}.ds-theme-toggle:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Neutral navigation bar with the existing identity link and signal-red menu square.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" href=\"/\">TRISTAN KENNEDY</a><a class=\"ds-nav-link ds-menu-link\" href=\"/menu\">MENU<span class=\"ds-menu-square\" aria-hidden=\"true\"></span></a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;background:var(--color-bg);padding:1rem;border-bottom:1px solid var(--color-divider);font-family:var(--font-inter)}.ds-nav-link{color:var(--color-secondary);font-size:.75rem;line-height:1rem;letter-spacing:.2rem;text-decoration:none;transition:color .15s}.ds-menu-link{display:flex;align-items:center;gap:.75rem}.ds-menu-square{width:2rem;height:2rem;background:var(--color-accent);transition:transform .15s}.ds-nav-link:hover,.ds-nav-link:focus-visible{color:var(--color-accent)}.ds-menu-link:hover .ds-menu-square{transform:rotate(45deg)}.ds-nav-link:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+    },
+    {
+      "name": "Selectable Row",
+      "kind": "card",
+      "refersTo": "selectable-row",
+      "description": "Unboxed full-row link used by project and post collections.",
+      "html": "<a class=\"ds-row\" href=\"/projects/personal-portfolio\"><div><h2 class=\"ds-row-title\">Personal Portfolio</h2><p class=\"ds-row-description\">A fast, content-first space for project case studies, writing, and experiments.</p></div><span class=\"ds-row-arrow\" aria-hidden=\"true\">&rarr;</span></a>",
+      "css": ".ds-row{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;padding:1.5rem .5rem;border-bottom:1px solid var(--color-divider);border-radius:0;color:var(--color-primary);text-decoration:none;font-family:var(--font-inter);transition:background-color .15s}.ds-row-title{margin:0 0 1rem;font-size:2.25rem;line-height:2.5rem;font-weight:300;letter-spacing:-.025em;transition:color .15s}.ds-row-description{margin:0;max-width:42rem;color:var(--color-secondary);font-size:1rem;line-height:1.5}.ds-row-arrow{color:var(--color-subtle);transition:color .15s}.ds-row:hover{background:color-mix(in srgb,var(--color-accent) 4%,transparent)}.ds-row:hover .ds-row-title,.ds-row:hover .ds-row-arrow,.ds-row:focus-visible .ds-row-title{color:var(--color-accent)}.ds-row:focus-visible{outline:2px solid var(--color-accent);outline-offset:4px}@media(min-width:768px){.ds-row{padding:2rem .75rem}}"
+    },
+    {
+      "name": "Technology Tags",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Plain uppercase metadata, without pill backgrounds or borders.",
+      "html": "<div class=\"ds-tags\"><span>ASTRO</span><span>REACT</span><span>TYPESCRIPT</span><span>MDX</span></div>",
+      "css": ".ds-tags{display:flex;flex-wrap:wrap;gap:.5rem 1rem;color:var(--color-subtle);font-family:var(--font-inter);font-size:.75rem;line-height:1rem;letter-spacing:.18rem;text-transform:uppercase}"
+    },
+    {
+      "name": "Read More Tooltip",
+      "kind": "custom",
+      "refersTo": "tooltip",
+      "description": "Inverse-color supplemental label shown near the pointer; preview shows the visible state.",
+      "html": "<span class=\"ds-tooltip\">READ MORE</span>",
+      "css": ".ds-tooltip{display:inline-block;pointer-events:none;background:var(--color-primary);color:var(--color-bg);border-radius:0;padding:.5rem .75rem;font-family:var(--font-inter);font-size:.75rem;line-height:1rem;letter-spacing:.2rem}"
+    }
+  ],
+  "narrative": {
+    "overview": "The existing system is Swiss bold minimal: a typography-led portfolio with oversized, tightly spaced display text, generous whitespace, and restrained ornamentation. Heavy uppercase page identities sit alongside light headlines, quiet metadata, and readable long-form content.\n\nThis document records the current implementation and the owner's constraints; it does not propose a replacement identity. `src/global.css` and the reusable components remain the implementation sources. Update this record when an intentional design change lands.",
+    "keyCharacteristics": [
+      "Strong scale and weight contrast within one font family.",
+      "Warm light surfaces and near-black dark surfaces.",
+      "A single red accent for navigation, emphasis, and interaction.",
+      "Square geometry, flat surfaces, and content-led layouts.",
+      "Spacing and typography provide the primary hierarchy."
+    ],
+    "rules": [
+      {
+        "name": "The Existing Tokens Rule",
+        "body": "Use the semantic tokens from `src/global.css` and their Tailwind utilities. Do not introduce a new palette for ordinary additions.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Create hierarchy with size, weight, spacing, and case within Inter. Do not add another display or body font.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Do reuse the existing semantic color tokens and light/dark overrides.",
+      "Do use Inter and the established display, headline, body, and label hierarchy.",
+      "Do let whitespace, typography, and real content lead the composition.",
+      "Do reuse collection rows, detail heroes, and MDX styles across related pages.",
+      "Do preserve responsive layouts, visible content, and reduced-motion behavior."
+    ],
+    "donts": [
+      "Don't add new font families or palettes for routine changes.",
+      "Don't add decorative borders, shadows, rounded panels, or extra ornamentation.",
+      "Don't turn plain metadata into pills or nest the portfolio content in cards.",
+      "Don't apply a demo's visual treatment to the surrounding portfolio chrome.",
+      "Don't replace the established identity during documentation or maintenance."
+    ]
+  }
+}

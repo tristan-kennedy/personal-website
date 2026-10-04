@@ -11,6 +11,16 @@
 - TypeScript for utilities and React (`.tsx`) components.
 - Tailwind CSS with custom theme tokens in `src/global.css`.
 
+## Product and design context
+
+- Read `docs/PRODUCT.md` for audience, purpose, capabilities, and constraints.
+- Read `docs/DESIGN.md` for the existing visual system and component guidance.
+- Impeccable is managed by the Skills CLI in `.agents/skills/impeccable/`, with its
+  source tracked in `skills-lock.json`. Follow its `SKILL.md` when using it; this
+  project's explicit styling rules take precedence over generic skill defaults.
+  See `README.md` for install/update commands.
+- Impeccable workflow defaults live in `.impeccable/config.json`.
+
 ## Repository structure
 
 - `src/pages`: top-level routes.
@@ -29,7 +39,7 @@
 
 ## Astro content framework
 
-- Content collections are defined in `src/content/config.ts` and must match schema fields.
+- Content collections are defined in `src/content.config.ts` and must match schema fields.
 - Add content as MDX files under `src/content/<collection>/`.
 - Required frontmatter:
   - `projects`: `title`, `date`, `description`, `tech`, `image`

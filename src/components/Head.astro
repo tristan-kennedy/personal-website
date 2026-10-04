@@ -15,44 +15,46 @@ const { title } = Astro.props;
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
   <script is:inline data-astro-rerun>
-    const root = document.documentElement;
+    (() => {
+      const root = document.documentElement;
 
-    if (!window.__pageMotionBootstrapped) {
-      root.setAttribute("data-motion", "on");
-      window.__pageMotionBootstrapped = true;
-    }
-
-    function getTheme() {
-      const storedTheme = localStorage.getItem("theme");
-
-      if (storedTheme === "dark" || storedTheme === "light") {
-        return storedTheme;
+      if (!window.__pageMotionBootstrapped) {
+        root.setAttribute("data-motion", "on");
+        window.__pageMotionBootstrapped = true;
       }
 
-      return window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
-    }
+      function getTheme() {
+        const storedTheme = localStorage.getItem("theme");
 
-    function applyTheme(target = root) {
-      const theme = getTheme();
+        if (storedTheme === "dark" || storedTheme === "light") {
+          return storedTheme;
+        }
 
-      target.setAttribute("data-theme", theme);
-      target.style.colorScheme = theme;
-    }
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+      }
 
-    if (!window.__themePrepBound) {
-      window.__themePrepBound = true;
+      function applyTheme(target = root) {
+        const theme = getTheme();
 
-      document.addEventListener("astro:before-swap", (event) => {
-        applyTheme(event.newDocument.documentElement);
-      });
+        target.setAttribute("data-theme", theme);
+        target.style.colorScheme = theme;
+      }
 
-      document.addEventListener("astro:after-swap", () => {
-        applyTheme(document.documentElement);
-      });
-    }
+      if (!window.__themePrepBound) {
+        window.__themePrepBound = true;
 
-    applyTheme();
+        document.addEventListener("astro:before-swap", (event) => {
+          applyTheme(event.newDocument.documentElement);
+        });
+
+        document.addEventListener("astro:after-swap", () => {
+          applyTheme(document.documentElement);
+        });
+      }
+
+      applyTheme();
+    })();
   </script>
 </head>

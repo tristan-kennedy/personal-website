@@ -23,3 +23,23 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Impeccable engine binaries are fetched by the bundled launcher.
+.agents/skills/impeccable/scripts/bin/
+
+# impeccable-ignore-start
+**/.impeccable/config.local.json
+**/.impeccable/hook-log.jsonl
+**/.impeccable/screenshots/
+**/.impeccable/review/
+**/.impeccable/previews/
+**/.impeccable/critique/.work/
+**/.impeccable/live/roots.json
+**/.impeccable/live/inject-journal.json
+**/.impeccable/live/wrap-journal.json
+**/.impeccable/live/sessions/
+**/.impeccable/live/request.json
+**/.impeccable/live/response.json
+**/.impeccable/live/server.json
+**/.impeccable/live/*.png
+# impeccable-ignore-end
