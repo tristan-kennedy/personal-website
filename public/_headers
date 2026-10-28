@@ -2,13 +2,3 @@
   Content-Type: application/pdf
   Content-Disposition: inline; filename="Tristan-Kennedy-Resume.pdf"
   Cache-Control: public, max-age=0, must-revalidate
-
-/resume
-  Content-Type: application/pdf
-  Content-Disposition: inline; filename="Tristan-Kennedy-Resume.pdf"
-  Cache-Control: public, max-age=0, must-revalidate
-
-/resume/
-  Content-Type: application/pdf
-  Content-Disposition: inline; filename="Tristan-Kennedy-Resume.pdf"
-  Cache-Control: public, max-age=0, must-revalidate

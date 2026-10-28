@@ -1,0 +1,17 @@
+---
+import ArchivePage from "../components/ArchivePage.astro";
+import { now } from "../lib/site";
+---
+
+<ArchivePage title="About me" nav={{ href: "/index", label: "Index" }}>
+  <div class="max-w-[62ch] [&_p]:text-body/[1.65] [&_p+p]:mt-5">
+    <p>
+      I’m Tristan. I live in {now.place}, and write code for a living, mostly in
+      TypeScript and Python with React, Astro, Node.js, and PostgreSQL.
+    </p>
+    <p>
+      This is where I keep the things along the way: places I’ve been, things
+      I’ve made, and questions I’m still turning over.
+    </p>
+  </div>
+</ArchivePage>

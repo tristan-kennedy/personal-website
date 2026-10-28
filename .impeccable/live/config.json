@@ -1,5 +1,5 @@
 {
-  "files": ["src/layouts/Layout.astro"],
+  "files": ["src/layouts/Document.astro"],
   "insertBefore": "</body>",
   "commentSyntax": "html",
   "cspChecked": true

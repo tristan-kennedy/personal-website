@@ -1,6 +1,6 @@
-# Tristan Kennedy's portfolio
+# Tristan Kennedy’s personal website
 
-Astro, MDX, React, Tailwind CSS, and a Typst resume.
+A personal archive built with Astro and Tailwind CSS.
 
 ```sh
 pnpm install --frozen-lockfile
@@ -8,5 +8,19 @@ pnpm dev
 pnpm build
 ```
 
-Cloudflare Pages runs `pnpm build` and publishes `dist/`. The resume source and
-build notes are in [resume/](resume/).
+Cloudflare Pages builds with `pnpm build` and publishes `dist/`. The Typst résumé
+in `resume/` is compiled to `/resume.pdf` during the build.
+
+Entries are JSON files in `src/catalog/`:
+
+```json
+{
+  "title": "Puerto Rico",
+  "date": "2026-08",
+  "keywords": ["Travel", "Scrapbook"]
+}
+```
+
+- Product intent: [docs/PRODUCT.md](docs/PRODUCT.md)
+- Visual system: [docs/DESIGN.md](docs/DESIGN.md)
+- Code layout and conventions: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)

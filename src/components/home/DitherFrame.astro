@@ -1,0 +1,20 @@
+---
+interface Props {
+  src: string;
+  size: number;
+}
+
+const { src, size } = Astro.props;
+const layer = "absolute top-0 left-0 size-full [image-rendering:pixelated]";
+---
+
+<div class="relative aspect-square">
+  <img
+    class:list={[layer, "in-data-[enhanced=true]:invisible"]}
+    src={src}
+    alt=""
+    width={size}
+    height={size}
+  />
+  <canvas class={layer}></canvas>
+</div>

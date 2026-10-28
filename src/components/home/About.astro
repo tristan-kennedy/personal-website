@@ -1,0 +1,83 @@
+---
+import { getHistory } from "../../lib/history";
+import { now } from "../../lib/site";
+
+const log = getHistory().changes.slice(0, 160);
+const leadLine =
+  "reveal block text-balance unrevealed:-translate-x-8 unrevealed:opacity-0";
+---
+
+<section
+  class="relative isolate scroll-mt-6 items-start overflow-clip px-(--gutter) py-(--section-space) paper"
+  data-reveal
+  id="about"
+  aria-labelledby="about-title"
+>
+  {
+    log.length > 0 && (
+      <div
+        class="pointer-events-none absolute inset-0 -z-1 mask-[linear-gradient(to_bottom,#000_70%,transparent)] px-(--gutter) pt-[clamp(20px,2.4vw,40px)] font-mono text-[13px]/[2.1] text-[#dedbd1] reveal select-none [--delay:0.5s] [--reveal-duration:2s] phone:mask-[linear-gradient(to_bottom,#000_16%,transparent_40%)] unrevealed:opacity-0"
+        aria-hidden="true"
+      >
+        <p class="text-[#a9a69b]">$ git log --oneline</p>
+        <ol class="h-full columns-4 gap-x-(--col-inset) [column-fill:balance] phone:columns-2">
+          {log.map((change) => (
+            <li
+              class:list={[
+                "truncate",
+                change.major ? "text-[#c6c3b8]" : "[&_code]:text-[#d3d0c5]",
+              ]}
+            >
+              <code class="[font:inherit]">{change.hash}</code> {change.message}
+            </li>
+          ))}
+        </ol>
+      </div>
+    )
+  }
+  <div
+    class="relative -mr-(--gutter) mb-[clamp(28px,3.4vw,56px)] flex items-center gap-[clamp(16px,2vw,32px)]"
+  >
+    <h2
+      id="about-title"
+      class="relative z-1 flex-none leading-[0.9] reveal unrevealed:-translate-x-8 unrevealed:opacity-0"
+      aria-label="Me, briefly."
+    >
+      <span
+        class="block font-serif text-[clamp(110px,15vw,250px)]/[0.9] tracking-[-0.03em] phone:text-[clamp(88px,26vw,120px)]"
+        aria-hidden="true">Me,</span
+      >
+      <span
+        class="absolute top-[44%] left-[62%] [transform:rotate(-4deg)] font-script text-[clamp(84px,11.5vw,190px)]/none whitespace-nowrap text-charcoal paper-outline-[clamp(4px,0.5vw,8px)] phone:text-[clamp(60px,17vw,88px)]"
+        aria-hidden="true">briefly</span
+      >
+    </h2>
+    <span
+      class="mt-[0.2em] h-[clamp(6px,0.8vw,14px)] min-w-12 flex-auto self-center bg-current reveal motion-safe:origin-right unrevealed:scale-x-0"
+      aria-hidden="true"></span>
+  </div>
+  <div class="relative grid grid-cols-4 items-start phone:grid-cols-1">
+    <p
+      class="col-[1/3] pr-(--col-inset) font-serif text-[clamp(28px,2.9vw,50px)]/[1.15] tracking-[-0.02em] paper-halo phone:col-[1] phone:px-0 phone:text-[clamp(26px,7.4vw,34px)]"
+    >
+      <span class:list={[leadLine, "[--delay:0.15s]"]}
+        >I keep redoing this site.</span
+      >
+      <span class:list={[leadLine, "[--delay:0.3s]"]}
+        >At this point it’s just for me.</span
+      >
+    </p>
+    <div
+      class="col-[3/5] pl-(--col-inset) reveal [--delay:0.35s] paper-halo phone:col-[1] phone:mt-5 phone:pl-0 unrevealed:translate-x-10 unrevealed:opacity-0 [&_p]:max-w-[62ch] [&_p]:text-body/[1.65] phone:[&_p]:text-[17px] [&_p+p]:mt-5"
+    >
+      <p>
+        I’m Tristan. I live in {now.place}, and write code for a living, mostly
+        in TypeScript and Python with React, Astro, Node.js, and PostgreSQL.
+      </p>
+      <p>
+        This is where I keep the things along the way: places I’ve been, things
+        I’ve made, and questions I’m still turning over.
+      </p>
+    </div>
+  </div>
+</section>

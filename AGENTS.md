@@ -1,54 +1,25 @@
 # AGENTS.md
 
-## Project snapshot
+Tristan Kennedy's personal archive: Astro, Tailwind CSS v4, static on Cloudflare Pages.
 
-- Personal portfolio built with Astro, MDX content collections, and Tailwind CSS.
-- Visual style: Swiss bold minimal, typography-led, generous whitespace, little to no borders/linework.
+## Read first
 
-## Tech stack
+- `docs/PRODUCT.md`: what the site is for, the content model, and constraints.
+- `docs/DESIGN.md`: the visual system. Read it before any interface change.
+- `docs/ARCHITECTURE.md`: file layout, packages, and styling conventions.
+- `.impeccable/surfaces/src-pages-index-astro.md`: the homepage's composition and what was rejected.
+- Impeccable lives in `.agents/skills/impeccable/` (pinned by `skills-lock.json`, defaults in `.impeccable/config.json`). Follow its SKILL.md for design work. The owner's explicit instructions take precedence.
 
-- Astro for pages/layouts (`.astro`) and content collections.
-- TypeScript for utilities and React (`.tsx`) components.
-- Tailwind CSS with custom theme tokens in `src/global.css`.
+## Rules
 
-## Product and design context
-
-- Read `docs/PRODUCT.md` for audience, purpose, capabilities, and constraints.
-- Read `docs/DESIGN.md` for the existing visual system and component guidance.
-- Impeccable is managed by the Skills CLI in `.agents/skills/impeccable/`, with its
-  source tracked in `skills-lock.json`. Follow its `SKILL.md` when using it; this
-  project's explicit styling rules take precedence over generic skill defaults.
-  See `README.md` for install/update commands.
-- Impeccable workflow defaults live in `.impeccable/config.json`.
-
-## Repository structure
-
-- `src/pages`: top-level routes.
-- `src/layouts/Layout.astro`: global layout, view transitions, base body styles.
-- `src/components`: reusable UI pieces (Astro + TSX).
-- `src/content`: MDX content sources for `projects`, `posts`, and `experiments`.
-- `src/lib/content`: collection helpers using `getCollection`.
-
-## Styling rules (important)
-
-- Maintain Swiss bold minimal aesthetic: strong typography, clean spacing, minimal ornamentation.
-- Avoid borders/lines unless strictly necessary for clarity; prefer spacing, color, and type scale.
-- Use existing color tokens (`--color-*`) and Tailwind utilities; avoid introducing new palettes.
-- Keep typography consistent with Inter; do not add new fonts.
-- Respect the light/dark theme tokens and `data-theme` selector behavior.
-
-## Astro content framework
-
-- Content collections are defined in `src/content.config.ts` and must match schema fields.
-- Add content as MDX files under `src/content/<collection>/`.
-- Required frontmatter:
-  - `projects`: `title`, `date`, `description`, `tech`, `image`
-  - `posts`: `title`, `date`, `description`, `length`, `image`
-  - `experiments`: `title`, `date`, `description`, `tech`, `image`
-- Use existing helpers in `src/lib/content/*` to fetch and sort content.
-
-## Workflow expectations
-
-- No tests required for this project unless explicitly requested.
-- Keep changes minimal and consistent with existing patterns.
-- Avoid large refactors or structural changes unless asked.
+- Style with inline Tailwind utilities. Extend `src/styles/global.css` only for shared tokens, variants, or utilities a class can't express.
+- Keep comments to a minimum. Name things well instead.
+- Personal details live in `src/lib/site.ts`. Never hard-code them elsewhere.
+- Every dithered piece uses the shared threshold, sun, and `--dot`.
+- Keep keyboard focus, reduced-motion paths, and content before JavaScript working.
+- Don't design entry pages or restore the rejected pages and hover previews without working through them with the owner section by section.
+- Call catalog records "entries" and their destinations "pages", never "worlds".
+- Don't invent content (trips, photos, stories, metrics).
+- No redirects, compatibility aliases, route-existence checks, or publication filters.
+- No tests unless asked. Run `pnpm build` and check the pages in a browser.
+- Keep changes scoped and preserve unrelated work.

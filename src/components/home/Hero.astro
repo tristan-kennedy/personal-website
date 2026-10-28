@@ -1,0 +1,50 @@
+---
+import HeroGlobe from "./HeroGlobe.astro";
+import StatusStrip from "./StatusStrip.astro";
+---
+
+<header
+  class="relative px-(--gutter) pt-[clamp(40px,4.4vw,72px)] pb-0 motion-safe:overflow-x-clip phone:pt-[60px]"
+>
+  <HeroGlobe />
+  <h1
+    class="relative isolate z-1 text-[min(23vw,552px)]/[0.8] tracking-[-0.035em] phone:text-[25vw]/[0.85] phone:tracking-[-0.025em]"
+    aria-label="Tristan Douglas Kennedy"
+  >
+    <span
+      class="block font-display font-extrabold motion-safe:animate-wipe-left"
+      aria-hidden="true"
+    >
+      TRISTAN
+    </span>
+    <span
+      class="absolute top-[31%] left-[48%] z-1 font-script text-[0.52em]/[1.1] tracking-normal text-charcoal paper-outline-[2.4px] motion-safe:animate-write-in phone:top-[30%] phone:left-[45%] phone:text-[0.59em] phone:[-webkit-text-stroke-width:1.2px]"
+      aria-hidden="true"
+    >
+      Douglas
+    </span>
+    <span
+      class="ml-0 block font-serif text-[0.6em]/[1.55] tracking-[-0.02em] whitespace-nowrap not-italic motion-safe:animate-wipe-right phone:text-[0.61em]/[1.6]"
+      aria-hidden="true"
+    >
+      KENNEDY
+    </span>
+  </h1>
+  <StatusStrip />
+  <div
+    class="grid grid-cols-4 items-start pt-8 pb-12 motion-safe:animate-enter-rise-late phone:block phone:pt-6 phone:pb-9"
+  >
+    <p class="col-[1/4] pr-[min(6vw,144px)] text-body/[1.65] phone:text-[17px]">
+      Projects, writing, trips, and other things I’ve spent time on. This site
+      keeps them in one place, with a few selections below and a full index for
+      browsing the rest.
+    </p>
+    <nav
+      class="flex flex-col items-start gap-1 pl-(--col-inset) text-body phone:mt-4 phone:flex-row phone:gap-7 phone:pl-0 phone:text-[17px] [&_a]:block [&_a]:min-h-11 [&_a]:py-2.5 [&_a]:link [&_a]:underline-offset-[0.25em]"
+      aria-label="Explore the site"
+    >
+      <a href="/about">About me</a>
+      <a href="/index">Index</a>
+    </nav>
+  </div>
+</header>

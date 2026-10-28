@@ -1,31 +1,43 @@
 ---
-import Head from "../components/Head.astro";
 import Footer from "../components/Footer.astro";
-import PageRevealEffects from "../components/PageRevealEffects.astro";
-import ScrollToTop from "../components/menu/ScrollToTop";
-import Navigation from "../components/Navigation.astro";
-import "../global.css";
+import "@fontsource/barlow-condensed/800.css";
+import "@fontsource/marcellus/400.css";
+import "@fontsource/mrs-saint-delafield/400.css";
+import "../styles/global.css";
+
 interface Props {
   title: string;
-  bodyClass?: string;
-  showChrome?: boolean;
+  description?: string;
+  home?: boolean;
 }
 
-const { title, bodyClass = "", showChrome = true, ...bodyProps } = Astro.props;
+const {
+  title,
+  description = "Projects, writing, trips, and other things I’ve spent time on. A personal archive by Tristan Kennedy.",
+  home = false,
+} = Astro.props;
+const pageTitle = home ? title : `${title} — Tristan Kennedy`;
 ---
 
+<!doctype html>
 <html lang="en">
-  <Head title={title} />
-  <body
-    {...bodyProps}
-    class={`${bodyClass} mx-auto flex flex-col scroll-smooth bg-bg px-8 font-inter text-primary transition-colors`}
-  >
-    <ScrollToTop client:load />
-    {showChrome && <Navigation />}
-    <main>
-      <slot />
-    </main>
-    {showChrome && <Footer />}
-    <PageRevealEffects />
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#292824" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <title>{pageTitle}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <a
+      class="fixed top-2 left-4 z-100 -translate-y-[160%] bg-paper px-[18px] py-3 text-charcoal focus:translate-y-0"
+      href="#main">Skip to content</a
+    >
+    <main id="main" tabindex="-1"><slot /></main>
+    <Footer />
   </body>
 </html>

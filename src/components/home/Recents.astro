@@ -1,0 +1,68 @@
+---
+import type { Entry } from "../../lib/entries";
+
+interface Props {
+  entries: Entry[];
+}
+
+const { entries } = Astro.props;
+const line = "reveal unrevealed:-translate-x-4 unrevealed:opacity-0";
+---
+
+<div
+  class="mt-[clamp(72px,8vw,160px)] px-(--gutter) font-mono text-[clamp(15px,1.35vw,24px)]/[2] text-[#b3b0a6]"
+  data-reveal
+>
+  <div
+    class="mb-[clamp(12px,1.4vw,24px)] -ml-(--gutter) flex items-center gap-4"
+  >
+    <span
+      class="h-px flex-auto bg-rule reveal motion-safe:origin-left unrevealed:scale-x-0"
+      aria-hidden="true"></span>
+    <h3
+      class:list={[
+        line,
+        "flex-none text-[13px]/none tracking-[0.14em] text-muted uppercase [--delay:0.3s]",
+      ]}
+    >
+      Recents
+    </h3>
+  </div>
+  <p class:list={[line, "text-muted [--delay:0.4s]"]} aria-hidden="true">
+    $ ls -lt ~/stuff | head -{entries.length}
+  </p>
+  <ol>
+    {
+      entries.map((entry, i) => (
+        <li class={line} style={`--delay: ${0.55 + i * 0.1}s`}>
+          <a
+            class="group grid grid-cols-4 phone:grid-cols-[auto_1fr] phone:gap-x-3 phone:gap-y-0"
+            href={entry.url}
+          >
+            <time datetime={entry.data.date}>{entry.data.date}</time>
+            <span class="col-[2/4] pl-(--col-inset) text-paper group-hover:underline group-hover:underline-offset-[0.2em] group-focus-visible:underline group-focus-visible:underline-offset-[0.2em] phone:col-[2] phone:pl-0">
+              {entry.id}/
+            </span>
+            <span class="truncate pl-(--col-inset) phone:hidden">
+              {entry.data.keywords.join(" ").toLowerCase()}
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+  <p
+    class:list={[line, "mt-[clamp(20px,2vw,40px)] text-center [--delay:0.95s]"]}
+  >
+    <a
+      class="text-paper hover:underline hover:underline-offset-[0.2em] focus-visible:underline focus-visible:underline-offset-[0.2em]"
+      href="/index"
+    >
+      <span aria-hidden="true">$ </span>open ~/stuff
+      <span class="text-muted phone:block">(everything in the index)</span>
+    </a>
+    <span
+      class="ml-[0.3em] inline-block h-[1.1em] w-[0.6em] bg-paper align-text-bottom motion-safe:animate-blink"
+      aria-hidden="true"></span>
+  </p>
+</div>

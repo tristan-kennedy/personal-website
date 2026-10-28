@@ -1,0 +1,132 @@
+---
+import { now } from "../../lib/site";
+
+const items = [
+  { text: now.timeZoneName, clock: true },
+  {
+    text: `${now.listening.track} / ${now.listening.artist}`,
+    href: now.listening.href,
+    label: "Listening to",
+  },
+  { text: now.place },
+  {
+    text: `Working on ${now.workingOn.text.toLowerCase()}`,
+    href: now.workingOn.href,
+  },
+];
+---
+
+<div
+  class="-mx-(--gutter) mt-2 min-h-11 border-y border-rule text-paper motion-safe:animate-enter-rise"
+  data-status-strip
+  data-time-zone={now.timeZone}
+>
+  <div class="overflow-hidden py-3 enhanced:py-0">
+    <div
+      class="flex enhanced:w-max enhanced:animate-ribbon enhanced:[animation-play-state:paused] running:[animation-play-state:running]"
+      data-track
+    >
+      <ul
+        class="flex w-full flex-wrap gap-x-6 gap-y-3 px-(--gutter) in-data-[enhanced=true]:flex-none motion-reduce:aria-hidden:hidden enhanced:w-max enhanced:flex-nowrap enhanced:gap-6 enhanced:py-3 enhanced:pr-6 enhanced:pl-0 enhanced:whitespace-nowrap"
+        aria-label="A little of right now"
+      >
+        {
+          items.map((item) => (
+            <li class="flex min-w-0 items-center gap-6 text-sm/[1.4]">
+              {item.href ? (
+                <a
+                  class="link underline-offset-[0.25em]"
+                  href={item.href}
+                  rel={item.href.startsWith("http") ? "noopener" : undefined}
+                >
+                  {item.label && (
+                    <span class="mr-[0.5em] text-muted">{item.label}</span>
+                  )}
+                  {item.text}
+                </a>
+              ) : (
+                <span
+                  class:list={[item.clock && "min-w-[94px] tabular-nums"]}
+                  data-clock={item.clock ? "" : undefined}
+                >
+                  {item.text}
+                </span>
+              )}
+              <svg
+                class="shrink-0"
+                width="14"
+                height="14"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path d="M2 8h12" stroke="currentColor" stroke-width="1.1" />
+              </svg>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { clockFormat, startClock } from "../../lib/clock";
+
+  const strip = document.querySelector<HTMLElement>("[data-status-strip]");
+  const track = strip?.querySelector<HTMLElement>("[data-track]");
+  const firstGroup = track?.querySelector<HTMLElement>("ul");
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (strip && track && firstGroup) {
+    const timeZone = strip.dataset.timeZone;
+    const format = clockFormat(timeZone);
+    const showTime = (time = format.format(new Date())) =>
+      strip
+        .querySelectorAll<HTMLElement>("[data-clock]")
+        .forEach((clock) => (clock.textContent = time));
+    let visible = false;
+    let stopClock = () => {};
+
+    const sync = () => {
+      strip.dataset.running = String(
+        visible && !document.hidden && !reducedMotion.matches,
+      );
+      stopClock();
+      if (visible && !document.hidden)
+        stopClock = startClock(timeZone, showTime);
+    };
+    const fillTrack = () => {
+      if (reducedMotion.matches) return;
+      const width = firstGroup.getBoundingClientRect().width;
+      if (!width) return;
+      const count = Math.max(2, Math.ceil(strip.clientWidth / width) + 1);
+      while (track.children.length > count) track.lastElementChild!.remove();
+      while (track.children.length < count) {
+        const copy = firstGroup.cloneNode(true) as HTMLElement;
+        copy.removeAttribute("aria-label");
+        copy.setAttribute("aria-hidden", "true");
+        copy.querySelectorAll("a").forEach((link) => (link.tabIndex = -1));
+        track.append(copy);
+      }
+      strip.style.setProperty("--ribbon-distance", `${-width}px`);
+      strip.style.setProperty("--ribbon-duration", `${width / 36}s`);
+      showTime();
+    };
+
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      sync();
+    }).observe(strip);
+    document.addEventListener("visibilitychange", sync);
+    reducedMotion.addEventListener("change", () => {
+      fillTrack();
+      sync();
+    });
+    strip.dataset.enhanced = "true";
+    showTime();
+    new ResizeObserver(fillTrack).observe(strip);
+    fillTrack();
+    sync();
+  }
+</script>

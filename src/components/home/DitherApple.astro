@@ -1,0 +1,26 @@
+---
+import DitherFrame from "./DitherFrame.astro";
+---
+
+<div
+  class="relative z-1 col-[1/3] row-[1/5] -mb-[calc(var(--apple)*0.17)] -ml-[calc(var(--gutter)+var(--apple)*0.2)] w-(--apple) self-end reveal [--delay:0.3s] unrevealed:-translate-x-[110%]"
+  aria-hidden="true"
+  data-quote-apple
+>
+  <DitherFrame src="/dither/apple.png" size={240} />
+</div>
+
+<script>
+  import { mountDitherCanvas } from "../../lib/dither/canvas";
+  import { renderApple, START_ANGLE } from "../../lib/dither/apple";
+
+  mountDitherCanvas(
+    "[data-quote-apple]",
+    (size, seconds) => renderApple(size, START_ANGLE + seconds * 0.35),
+    [
+      [0, 0, 0, 0],
+      [0xf2, 0xf0, 0xe9, 255],
+      [0x29, 0x28, 0x24, 255],
+    ],
+  );
+</script>

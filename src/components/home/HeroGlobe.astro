@@ -1,0 +1,31 @@
+---
+import { now, formatCoordinates } from "../../lib/site";
+import DitherFrame from "./DitherFrame.astro";
+---
+
+<figure
+  class="pointer-events-none absolute top-[clamp(40px,4.5vw,72px)] right-(--gutter) w-[min(33vw,792px)] motion-safe:animate-enter-fade phone:top-4 phone:w-[46vw]"
+  aria-hidden="true"
+  data-hero-globe
+>
+  <DitherFrame src="/dither/globe.png" size={280} />
+  <figcaption
+    class="mt-3 text-right text-[13px]/[1.45] text-muted phone:hidden"
+  >
+    Home, {formatCoordinates(now.coordinates)}
+  </figcaption>
+</figure>
+
+<script>
+  import { mountDitherCanvas } from "../../lib/dither/canvas";
+  import { renderGlobe, START_LON } from "../../lib/dither/globe";
+
+  mountDitherCanvas(
+    "[data-hero-globe]",
+    (size, seconds) => renderGlobe(size, START_LON + seconds * 4.5),
+    [
+      [0, 0, 0, 0],
+      [0xb8, 0xb5, 0xaa, 255],
+    ],
+  );
+</script>

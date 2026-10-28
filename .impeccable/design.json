@@ -1,178 +1,231 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-04T18:22:20.179Z",
+  "generatedAt": "2026-10-21T00:40:35.2310204Z",
   "title": "Design System: Tristan Kennedy",
   "extensions": {
     "colorMeta": {
-      "accent": {
-        "role": "primary",
-        "displayName": "Signal Red",
+      "charcoal": {
+        "role": "neutral",
+        "displayName": "Warm Charcoal",
         "tonalRamp": [
-          "oklch(15% 0.12 27)",
-          "oklch(26% 0.12 27)",
-          "oklch(38% 0.12 27)",
-          "oklch(49% 0.12 27)",
-          "oklch(61% 0.12 27)",
-          "oklch(72% 0.12 27)",
-          "oklch(84% 0.12 27)",
-          "oklch(95% 0.12 27)"
+          "oklch(15% 0.0073 95.33)",
+          "oklch(26% 0.0073 95.33)",
+          "oklch(38% 0.0073 95.33)",
+          "oklch(49% 0.0073 95.33)",
+          "oklch(61% 0.0073 95.33)",
+          "oklch(72% 0.0073 95.33)",
+          "oklch(84% 0.0073 95.33)",
+          "oklch(95% 0.0073 95.33)"
         ]
       },
-      "bg": { "role": "neutral", "displayName": "Warm Paper" },
-      "bg-elevated": {
+      "paper": {
         "role": "neutral",
-        "displayName": "Light Elevated Surface"
+        "displayName": "Soft Paper",
+        "tonalRamp": [
+          "oklch(15% 0.0095 93.57)",
+          "oklch(26% 0.0095 93.57)",
+          "oklch(38% 0.0095 93.57)",
+          "oklch(49% 0.0095 93.57)",
+          "oklch(61% 0.0095 93.57)",
+          "oklch(72% 0.0095 93.57)",
+          "oklch(84% 0.0095 93.57)",
+          "oklch(95% 0.0095 93.57)"
+        ]
       },
-      "primary": { "role": "neutral", "displayName": "Charcoal Text" },
-      "secondary": { "role": "neutral", "displayName": "Supporting Gray" },
-      "subtle": { "role": "neutral", "displayName": "Quiet Gray" },
-      "divider": { "role": "neutral", "displayName": "Paper Divider" },
-      "black": { "role": "neutral", "displayName": "Overlay Black" },
-      "white": { "role": "neutral", "displayName": "Warm Inverse Text" },
-      "dark-bg": { "role": "neutral", "displayName": "Ink Surface" },
-      "dark-bg-elevated": {
+      "muted": {
         "role": "neutral",
-        "displayName": "Dark Elevated Surface"
+        "displayName": "Muted on Charcoal",
+        "tonalRamp": [
+          "oklch(15% 0.0157 94.25)",
+          "oklch(26% 0.0157 94.25)",
+          "oklch(38% 0.0157 94.25)",
+          "oklch(49% 0.0157 94.25)",
+          "oklch(61% 0.0157 94.25)",
+          "oklch(72% 0.0157 94.25)",
+          "oklch(84% 0.0157 94.25)",
+          "oklch(95% 0.0157 94.25)"
+        ]
       },
-      "dark-primary": { "role": "neutral", "displayName": "Light Text" },
-      "dark-secondary": {
+      "ink-muted": {
         "role": "neutral",
-        "displayName": "Dark Supporting Text"
-      },
-      "dark-subtle": { "role": "neutral", "displayName": "Dark Quiet Text" },
-      "dark-divider": { "role": "neutral", "displayName": "Ink Divider" }
+        "displayName": "Muted on Paper",
+        "tonalRamp": [
+          "oklch(15% 0.0144 91.63)",
+          "oklch(26% 0.0144 91.63)",
+          "oklch(38% 0.0144 91.63)",
+          "oklch(49% 0.0144 91.63)",
+          "oklch(61% 0.0144 91.63)",
+          "oklch(72% 0.0144 91.63)",
+          "oklch(84% 0.0144 91.63)",
+          "oklch(95% 0.0144 91.63)"
+        ]
+      }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Homepage Display",
-        "purpose": "Desktop name hero; responsive hero variants remain in their components."
+        "purpose": "Heavy condensed first name; archive identity has its own clamp."
       },
       "headline": {
-        "displayName": "Light Headline",
-        "purpose": "Homepage statements and selectable-row titles."
+        "displayName": "Condensed Headline",
+        "purpose": "Large section headings and individually composed selected entries."
       },
-      "body": { "displayName": "Body", "purpose": "Homepage supporting copy." },
-      "article-body": {
-        "displayName": "Article Body",
-        "purpose": "Long-form MDX copy with open leading."
+      "title": {
+        "displayName": "Archive Title",
+        "purpose": "Serif archive row titles. Future individual pages will own their display roles."
+      },
+      "body": {
+        "displayName": "Introduction Body",
+        "purpose": "Shared Arial/Helvetica size and 1.65 line height for hero text, hero links, and About paragraphs; 17px at 700px and below. Technical tools are part of the prose."
       },
       "label": {
-        "displayName": "Label",
-        "purpose": "Navigation, section labels, and metadata."
+        "displayName": "Metadata",
+        "purpose": "Quiet dates and supporting labels."
+      },
+      "signature": {
+        "displayName": "Douglas Signature",
+        "purpose": "Only the overlapping homepage middle name."
+      },
+      "latest-heading": {
+        "displayName": "Most Recently Heading",
+        "purpose": "Body-size sans-serif section heading in a compact ruled row; same 17px compact body size."
+      },
+      "latest-title": {
+        "displayName": "Latest Entry Title",
+        "purpose": "Bold Barlow Condensed title that echoes Selected Works at a distinctly smaller scale, with quiet date metadata."
       }
     },
     "shadows": [],
     "motion": [
       {
-        "name": "reveal-ease",
-        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
-        "purpose": "Existing page reveal deceleration; reduced motion bypasses reveals."
+        "name": "status-circulation",
+        "value": "36px/s linear infinite",
+        "purpose": "Compact repeated status units, with no controls or hover/focus pause; suspended offscreen and while hidden, static under reduced motion."
       },
       {
-        "name": "hero-reveal",
-        "value": "850ms",
-        "purpose": "Homepage title reveal."
+        "name": "arrow-response",
+        "value": "transform 0.3s ease; translateX(3px)",
+        "purpose": "Horizontal inline navigation response; reduced motion removes it. Back to top retains a static upward arrow."
       },
       {
-        "name": "page-reveal",
-        "value": "800ms",
-        "purpose": "Collection title reveal."
-      },
-      {
-        "name": "content-reveal",
-        "value": "650ms",
-        "purpose": "Default content reveal."
-      },
-      {
-        "name": "image-hover",
-        "value": "500ms",
-        "purpose": "Experiment cover hover zoom."
+        "name": "selected-heading-scroll",
+        "value": "64px desktop / 16px at 700px and below",
+        "purpose": "Maximum scroll-dependent offset; scheduled only while visible and disabled under reduced motion."
       }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "640px" },
-      { "name": "md", "value": "768px" },
-      { "name": "lg", "value": "1024px" },
-      { "name": "xl", "value": "1280px" },
-      { "name": "2xl", "value": "1536px" }
+      {
+        "name": "about-prose-and-latest-row",
+        "value": "1100px"
+      },
+      {
+        "name": "compact-layout",
+        "value": "700px"
+      },
+      {
+        "name": "compact-footer",
+        "value": "600px"
+      }
     ]
   },
   "components": [
     {
-      "name": "Theme Toggle",
-      "kind": "button",
-      "refersTo": "theme-toggle",
-      "description": "Text-only light/dark control on the red menu surface; preview shows its appearance.",
-      "html": "<div class=\"ds-menu-surface\"><button class=\"ds-theme-toggle\" aria-label=\"Toggle theme\"><span class=\"ds-theme-active\">LIGHT</span><span>/</span><span class=\"ds-theme-inactive\">DARK</span></button></div>",
-      "css": ".ds-menu-surface{background:var(--color-accent);padding:1rem}.ds-theme-toggle{display:flex;align-items:center;gap:.5rem;background:transparent;border:0;border-radius:0;color:var(--color-white);font-family:var(--font-inter);font-size:.75rem;line-height:1rem;letter-spacing:.2rem;cursor:pointer;transition:transform .15s}.ds-theme-active{font-weight:700}.ds-theme-inactive{opacity:.7}.ds-theme-toggle:hover{transform:scale(1.05)}.ds-theme-toggle:active{transform:scale(.98)}.ds-theme-toggle:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
-    },
-    {
-      "name": "Navigation",
+      "name": "Text navigation",
       "kind": "nav",
-      "refersTo": "navigation",
-      "description": "Neutral navigation bar with the existing identity link and signal-red menu square.",
-      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link\" href=\"/\">TRISTAN KENNEDY</a><a class=\"ds-nav-link ds-menu-link\" href=\"/menu\">MENU<span class=\"ds-menu-square\" aria-hidden=\"true\"></span></a></nav>",
-      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;background:var(--color-bg);padding:1rem;border-bottom:1px solid var(--color-divider);font-family:var(--font-inter)}.ds-nav-link{color:var(--color-secondary);font-size:.75rem;line-height:1rem;letter-spacing:.2rem;text-decoration:none;transition:color .15s}.ds-menu-link{display:flex;align-items:center;gap:.75rem}.ds-menu-square{width:2rem;height:2rem;background:var(--color-accent);transition:transform .15s}.ds-nav-link:hover,.ds-nav-link:focus-visible{color:var(--color-accent)}.ds-menu-link:hover .ds-menu-square{transform:rotate(45deg)}.ds-nav-link:focus-visible{outline:2px solid currentColor;outline-offset:4px}"
+      "refersTo": "text-navigation",
+      "description": "Compact text navigation row on the paper index.",
+      "html": "<nav class=\"ds-page-nav\" aria-label=\"Site\"><a href=\"/\">Tristan Kennedy</a><a href=\"/#about\">About me</a></nav>",
+      "css": ".ds-page-nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px;padding:24px 0;background:var(--paper,#f2f0e9);color:var(--charcoal,#292824);font-size:15px;font-family:Arial,Helvetica,sans-serif;}.ds-page-nav a{display:inline-flex;align-items:center;gap:12px;min-height:44px;color:inherit;text-decoration:underline;text-underline-offset:.22em}.ds-page-nav a:hover{text-decoration-thickness:1px}.ds-page-nav a:focus-visible{outline:2px solid currentColor;outline-offset:6px}"
     },
     {
-      "name": "Selectable Row",
-      "kind": "card",
-      "refersTo": "selectable-row",
-      "description": "Unboxed full-row link used by project and post collections.",
-      "html": "<a class=\"ds-row\" href=\"/projects/personal-portfolio\"><div><h2 class=\"ds-row-title\">Personal Portfolio</h2><p class=\"ds-row-description\">A fast, content-first space for project case studies, writing, and experiments.</p></div><span class=\"ds-row-arrow\" aria-hidden=\"true\">&rarr;</span></a>",
-      "css": ".ds-row{display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;padding:1.5rem .5rem;border-bottom:1px solid var(--color-divider);border-radius:0;color:var(--color-primary);text-decoration:none;font-family:var(--font-inter);transition:background-color .15s}.ds-row-title{margin:0 0 1rem;font-size:2.25rem;line-height:2.5rem;font-weight:300;letter-spacing:-.025em;transition:color .15s}.ds-row-description{margin:0;max-width:42rem;color:var(--color-secondary);font-size:1rem;line-height:1.5}.ds-row-arrow{color:var(--color-subtle);transition:color .15s}.ds-row:hover{background:color-mix(in srgb,var(--color-accent) 4%,transparent)}.ds-row:hover .ds-row-title,.ds-row:hover .ds-row-arrow,.ds-row:focus-visible .ds-row-title{color:var(--color-accent)}.ds-row:focus-visible{outline:2px solid var(--color-accent);outline-offset:4px}@media(min-width:768px){.ds-row{padding:2rem .75rem}}"
-    },
-    {
-      "name": "Technology Tags",
-      "kind": "chip",
-      "refersTo": "tag",
-      "description": "Plain uppercase metadata, without pill backgrounds or borders.",
-      "html": "<div class=\"ds-tags\"><span>ASTRO</span><span>REACT</span><span>TYPESCRIPT</span><span>MDX</span></div>",
-      "css": ".ds-tags{display:flex;flex-wrap:wrap;gap:.5rem 1rem;color:var(--color-subtle);font-family:var(--font-inter);font-size:.75rem;line-height:1rem;letter-spacing:.18rem;text-transform:uppercase}"
-    },
-    {
-      "name": "Read More Tooltip",
+      "name": "Status strip",
       "kind": "custom",
-      "refersTo": "tooltip",
-      "description": "Inverse-color supplemental label shown near the pointer; preview shows the visible state.",
-      "html": "<span class=\"ds-tooltip\">READ MORE</span>",
-      "css": ".ds-tooltip{display:inline-block;pointer-events:none;background:var(--color-primary);color:var(--color-bg);border-radius:0;padding:.5rem .75rem;font-family:var(--font-inter);font-size:.75rem;line-height:1rem;letter-spacing:.2rem}"
+      "refersTo": "status-strip",
+      "description": "Compact continuously repeated time, song, location, and current work, all in the body sans-serif, with dash separators. No pause controls or hover pauses; static under reduced motion.",
+      "html": "<div class=\"ds-status-surface\"><span>8:30 PM CDT</span><svg width=\"14\" height=\"14\" viewBox=\"0 0 16 16\" fill=\"none\" aria-hidden=\"true\"><path d=\"M2 8h12\" stroke=\"currentColor\" stroke-width=\"1.1\"/></svg><span>Everything In Its Right Place / Radiohead (demo)</span></div>",
+      "css": ".ds-status-surface{display:flex;flex-wrap:wrap;align-items:center;gap:24px;min-height:44px;padding:12px 0;border-block:1px solid var(--muted,#b8b5aa);background:var(--charcoal,#292824);color:var(--paper,#f2f0e9);font:14px/1.4 Arial,Helvetica,sans-serif}.ds-status-surface svg{flex-shrink:0}"
+    },
+    {
+      "name": "Quote frame",
+      "kind": "custom",
+      "refersTo": "quote-frame",
+      "description": "Complete square border with equal close outer insets and uniform inner padding, centered upright serif quote, and linked attribution on paper, with charcoal text and border; the selection remains provisional.",
+      "html": "<section class=\"ds-quote-section\"><figure class=\"ds-quote\"><blockquote><p>“Pay attention. Be astonished. Tell about it.”</p></blockquote><figcaption><span aria-hidden=\"true\">—</span><a href=\"https://penguinrandomhousehighereducation.com/book/?isbn=9798217034956\">Mary Oliver</a></figcaption></figure></section>",
+      "css": ".ds-quote-section{border-top:1px solid var(--ink-muted,#67645b);padding:clamp(16px,2vw,32px);background:var(--paper,#f2f0e9)}.ds-quote{margin:0;border:1px solid var(--charcoal,#292824);padding:clamp(24px,4vw,64px);background:var(--paper,#f2f0e9);color:var(--charcoal,#292824);text-align:center}.ds-quote blockquote{margin:0;font-size:clamp(28px,3.2vw,64px);letter-spacing:-.025em;font-family:var(--serif,\"Marcellus\",Georgia,serif);font-weight:400;font-style:normal;}.ds-quote p{margin:0;line-height:1.35;text-wrap:balance}.ds-quote figcaption{display:flex;align-items:baseline;justify-content:center;gap:10px;margin-top:24px;color:var(--ink-muted,#67645b);font-size:14px;font-family:Arial,Helvetica,sans-serif;}.ds-quote a{display:inline-block;min-height:44px;padding:10px 0;color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em}.ds-quote a:hover,.ds-quote a:focus-visible{text-decoration-thickness:2px}.ds-quote a:focus-visible{outline:2px solid currentColor;outline-offset:6px}@media(max-width:700px){.ds-quote figcaption{margin-top:18px}}"
+    },
+    {
+      "name": "Selected entry",
+      "kind": "custom",
+      "refersTo": "selected-entry",
+      "description": "Open typographic composition from a title split into first word and remainder. Planned entries remain plain text; published links underline on hover or focus.",
+      "html": "<div class=\"ds-selected\"><h3 aria-label=\"Dipsy Dolphin\"><span>Dipsy</span> <em>Dolphin</em></h3></div>",
+      "css": ".ds-selected{display:block;width:fit-content;background:var(--charcoal,#292824);color:var(--paper,#f2f0e9);text-decoration:none}.ds-selected h3{margin:0;font-size:max(80px,10.3vw);line-height:.95;letter-spacing:-.03em}.ds-selected h3>span{font-family:var(--sans,\"Barlow Condensed\",sans-serif);font-weight:800}.ds-selected em{font-family:var(--serif,\"Marcellus\",Georgia,serif);font-weight:400;font-style:normal;font-size:.88em}a.ds-selected:hover h3,a.ds-selected:focus-visible h3{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em}a.ds-selected:focus-visible{outline:2px solid currentColor;outline-offset:6px}@media(max-width:700px){.ds-selected h3{font-size:clamp(70px,20vw,132px)}.ds-selected h3>span{display:block}}"
+    },
+    {
+      "name": "Most recently",
+      "kind": "custom",
+      "refersTo": "latest-entry",
+      "description": "Compact ruled charcoal row with a body-size sans-serif section heading, bold condensed title, quiet date, and full-index link. Planned entries remain plain text.",
+      "html": "<section class=\"ds-latest\" aria-labelledby=\"ds-latest-title\"><h3 id=\"ds-latest-title\">Most recently.</h3><div class=\"ds-latest-entry\"><h4>This website</h4><time datetime=\"2026-10\">Oct 2026</time></div><a class=\"ds-latest-index\" href=\"/index\">Everything in the index <svg class=\"ds-latest-arrow\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M3 12h17m-7-7 7 7-7 7\"></path></svg></a></section>",
+      "css": ".ds-latest{--intro-size:max(18px,1.4vw);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) auto;align-items:baseline;gap:32px;margin-top:clamp(64px,8vw,120px);padding-top:32px;border-top:1px solid var(--muted,#b8b5aa);background:var(--charcoal,#292824);color:var(--paper,#f2f0e9);font-family:Arial,Helvetica,sans-serif}.ds-latest>h3{margin:0;font-family:inherit;font-size:var(--intro-size);font-weight:400;line-height:1.65}.ds-latest-index{display:inline-flex;align-items:center;gap:12px;min-height:44px;color:inherit;font-size:14px;text-decoration:none;text-underline-offset:.22em}.ds-latest-index:hover{text-decoration:underline}.ds-latest-arrow{display:inline-block;stroke:currentColor;stroke-width:1.4;flex-shrink:0;vertical-align:middle;transition:transform .3s ease}.ds-latest-index:hover>.ds-latest-arrow{transform:translateX(3px)}.ds-latest-entry{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:24px;min-width:0;color:inherit;text-decoration:none}.ds-latest-entry time{color:var(--muted,#b8b5aa);font-size:13px;line-height:1.5;white-space:nowrap}.ds-latest-entry h4{margin:0;font-family:var(--sans,\"Barlow Condensed\",sans-serif);font-size:clamp(36px,4vw,64px);font-weight:800;line-height:1.05;overflow-wrap:anywhere}a.ds-latest-entry:hover h4,a.ds-latest-entry:focus-visible h4{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em}.ds-latest a:focus-visible{outline:2px solid currentColor;outline-offset:6px}@media(max-width:1100px){.ds-latest{grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:16px 32px}.ds-latest-index{grid-column:2}}@media(max-width:700px){.ds-latest{--intro-size:17px;margin-top:64px;padding-top:24px;gap:16px}.ds-latest-entry{display:flex;flex-direction:column;align-items:flex-start;gap:8px}}@media(prefers-reduced-motion:reduce){.ds-latest-arrow{transition:none}.ds-latest-index:hover>.ds-latest-arrow{transform:none}}"
+    },
+    {
+      "name": "Archive entry",
+      "kind": "custom",
+      "refersTo": "archive-entry",
+      "description": "Paper index row with optional description. Planned records show Page in progress as plain text; published rows link and underline the title on hover or focus.",
+      "html": "<div class=\"ds-archive\"><time datetime=\"2026-04\">Apr 2026</time><div><h3>Dipsy Dolphin</h3><span class=\"ds-archive-status\">Page in progress</span></div></div>",
+      "css": ".ds-archive{display:grid;grid-template-columns:100px minmax(0,1fr);align-items:baseline;gap:28px;padding:20px 0 32px;background:var(--paper,#f2f0e9);color:var(--charcoal,#292824);text-decoration:none;font-family:Arial,Helvetica,sans-serif}.ds-archive time{color:var(--ink-muted,#67645b);font-size:13px}.ds-archive h3{margin:0;font-size:clamp(28px,3vw,48px);line-height:1.2;overflow-wrap:anywhere;font-family:var(--serif,\"Marcellus\",Georgia,serif);font-weight:400;font-style:normal}.ds-archive p{margin:12px 0 0;color:var(--ink-muted,#67645b);font-size:max(16px,1.1vw);line-height:1.6}.ds-archive-status{display:block;margin-top:12px;color:var(--ink-muted,#67645b);font-size:13px}a.ds-archive:hover h3,a.ds-archive:focus-visible h3{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.22em}a.ds-archive:focus-visible{outline:2px solid currentColor;outline-offset:6px}@media(max-width:700px){.ds-archive{grid-template-columns:minmax(0,1fr);gap:12px 16px}}"
+    },
+    {
+      "name": "Footer navigation",
+      "kind": "nav",
+      "refersTo": "footer-navigation",
+      "description": "Quiet charcoal footer with three equal navigation columns, copyright, and Back to top. No brand introduction; all links share the body sans-serif.",
+      "html": "<footer class=\"ds-footer\"><nav aria-label=\"Pages\"><h2>Pages</h2><a href=\"/\">Home</a><a href=\"/index\">Index</a><span class=\"ds-planned\">About <small>Coming soon</small></span></nav><nav aria-label=\"Elsewhere\"><h2>Elsewhere</h2><a href=\"https://github.com/tristan-kennedy\">GitHub</a><a href=\"https://www.linkedin.com/in/tristandkennedy/\">LinkedIn</a><a href=\"https://letterboxd.com/tdouglaskennedy/\">Letterboxd</a></nav><nav aria-label=\"Contact\"><h2>Contact</h2><a href=\"mailto:hello@tristan-kennedy.com\">Say hello</a><a href=\"/resume.pdf\">Résumé</a></nav><div class=\"ds-footer-bottom\"><small>© 2026 Tristan Douglas Kennedy</small><a href=\"#main\">Back to top <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M12 21V4m-7 7 7-7 7 7\" stroke=\"currentColor\" stroke-width=\"1.4\"/></svg></a></div></footer>",
+      "css": ".ds-footer{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px 5vw;padding:40px max(24px,5vw) 20px;border-top:1px solid var(--muted,#b8b5aa);background:var(--charcoal,#292824);color:var(--paper,#f2f0e9);font-family:Arial,Helvetica,sans-serif}.ds-footer a{color:inherit;text-decoration:none}.ds-footer h2{margin:0 0 10px;color:var(--muted,#b8b5aa);font-size:14px;line-height:1.4;font-weight:400}.ds-footer nav>a,.ds-planned{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;width:fit-content;min-height:44px;padding:10px 0;font-size:14px;line-height:1.5;overflow-wrap:anywhere}.ds-planned small{color:var(--muted,#b8b5aa);font-size:11px}.ds-footer-bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px;grid-column:1/-1}.ds-footer-bottom small{color:var(--muted,#b8b5aa);font-size:12px;line-height:1.5}.ds-footer-bottom a{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-size:14px}.ds-footer a:hover,.ds-footer a:focus-visible{text-decoration:underline;text-underline-offset:.22em}.ds-footer a:focus-visible{outline:2px solid currentColor;outline-offset:6px}@media(max-width:600px){.ds-footer{gap:28px 16px}.ds-footer h2{margin-bottom:8px}}"
     }
   ],
   "narrative": {
-    "overview": "The existing system is Swiss bold minimal: a typography-led portfolio with oversized, tightly spaced display text, generous whitespace, and restrained ornamentation. Heavy uppercase page identities sit alongside light headlines, quiet metadata, and readable long-form content.\n\nThis document records the current implementation and the owner's constraints; it does not propose a replacement identity. `src/global.css` and the reusable components remain the implementation sources. Update this record when an intentional design change lands.",
+    "overview": "The personal archive puts typography in the foreground. Heavy condensed sans-serif\nand upright serif forms give ordinary titles distinct compositions; quiet body\ncopy and metadata keep the reading path clear. Warm charcoal and paper sections\nprovide a stable structure beneath the changes in scale and alignment.\n\nThis is the approved production system for the homepage and shared index.\nIts character comes from type, whitespace, controlled asymmetry, and real content.\nIndividual pages will own their visual systems, developed with the owner section\nby section. The first custom pages and listing previews were rejected and removed;\ntheir reserved folders are empty. The homepage's specific composition is recorded\nin its surface brief.\n\nPersonality comes from the material Tristan publishes, rather than a fictional\nnewspaper, museum, scrapbook, or permanent subject theme. Trips, passing thoughts,\nwriting, and code share this visual identity without needing identical treatments.\nThe scale contrast and independent experiences of henry.codes inform the direction;\nthe compositions and personal details remain Tristan's own.\n\nAnnotations, footnotes, pixel art, diagrams, and small interactions may add\ncharacter when the content earns them. They are optional contributions, not\nrequired decorations or a reason to fill every quiet space. The approved homepage\ncontinues to use its typographic identity without a pixel logo.",
     "keyCharacteristics": [
-      "Strong scale and weight contrast within one font family.",
-      "Warm light surfaces and near-black dark surfaces.",
-      "A single red accent for navigation, emphasis, and interaction.",
-      "Square geometry, flat surfaces, and content-led layouts.",
-      "Spacing and typography provide the primary hierarchy."
+      "Dramatic scale contrast between condensed sans-serif and upright serif type.",
+      "Warm charcoal and paper surfaces with monochrome resting states.",
+      "Fluid gutters, full available width, and deliberate changes in alignment.",
+      "Flat, square geometry with rules that mark meaningful boundaries.",
+      "Restrained interaction and visible content before JavaScript."
     ],
     "rules": [
       {
-        "name": "The Existing Tokens Rule",
-        "body": "Use the semantic tokens from `src/global.css` and their Tailwind utilities. Do not introduce a new palette for ordinary additions.",
+        "name": "The Resting Monochrome Rule",
+        "body": "Keep the homepage and index monochrome. Published entry links respond with underlines on hover and keyboard focus, within the existing charcoal and paper palette.",
         "section": "colors"
       },
       {
-        "name": "The One Family Rule",
-        "body": "Create hierarchy with size, weight, spacing, and case within Inter. Do not add another display or body font.",
+        "name": "The Upright Serif Rule",
+        "body": "Keep Marcellus upright in the shared identity and homepage emphasis; semantic emphasis does not introduce an italic display style.",
         "section": "typography"
       }
     ],
     "dos": [
-      "Do reuse the existing semantic color tokens and light/dark overrides.",
-      "Do use Inter and the established display, headline, body, and label hierarchy.",
-      "Do let whitespace, typography, and real content lead the composition.",
-      "Do reuse collection rows, detail heroes, and MDX styles across related pages.",
-      "Do preserve responsive layouts, visible content, and reduced-motion behavior."
+      "Do use charcoal and paper for shared page surfaces and adapt muted text to its surface.",
+      "Do pair heavy Barlow Condensed with upright Marcellus in the shared identity; keep its Mrs Saint Delafield signature on the homepage middle name.",
+      "Do preserve fluid gutters, available width, clear boundaries, and controlled asymmetry.",
+      "Do keep entries and metadata readable before JavaScript and without hover.",
+      "Do preserve keyboard focus, touch targets, reduced-motion paths, and static content before JavaScript.",
+      "Do preserve optional content fields and develop each page's visual system with the owner section by section.",
+      "Do keep planned entries as plain text until their destination pages exist.",
+      "Do call catalog records entries and their destinations pages."
     ],
     "donts": [
-      "Don't add new font families or palettes for routine changes.",
-      "Don't add decorative borders, shadows, rounded panels, or extra ornamentation.",
-      "Don't turn plain metadata into pills or nest the portfolio content in cards.",
-      "Don't apply a demo's visual treatment to the surrounding portfolio chrome.",
-      "Don't replace the established identity during documentation or maintenance."
+      "Don't restore the red accent, Inter display system, or global theme toggle to the shared shell.",
+      "Don't add a top homepage navbar, pixel logo, or artificial maximum page width.",
+      "Don't turn entries into identical cards or tags into pills.",
+      "Don't add decorative shadows or borders around every region.",
+      "Don't introduce another resting page-surface color or persistent chromatic color on the homepage or index.",
+      "Don't treat the signature overlap as a general layout device or impose the shared layout on independent pages.",
+      "Don't restore the rejected page or preview treatments or require a shared MDX visual template.",
+      "Don't tie the archive to a permanent subject theme or add decorative oddities to fill space."
     ]
   }
 }

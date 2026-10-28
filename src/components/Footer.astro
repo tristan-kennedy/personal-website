@@ -1,18 +1,93 @@
 ---
-import Barcode from "../assets/barcode.svg";
+import { links, now } from "../lib/site";
+import { getHistory } from "../lib/history";
+import { formatEntryDate } from "../lib/entries";
+
+const year = new Intl.DateTimeFormat("en-US", {
+  timeZone: now.timeZone,
+  year: "numeric",
+}).format(new Date());
+const history = getHistory();
+const lastChange = history.changes[0];
+const pieceClass = "reveal unrevealed:translate-y-4 unrevealed:opacity-0";
+const textClass = `${pieceClass} max-w-[46ch] font-serif text-[clamp(18px,1.5vw,24px)]/[1.6] phone:text-[17px]`;
+const diamondClass =
+  "reveal size-[calc(var(--dot)*4)] rotate-45 unrevealed:scale-0";
+const checker =
+  "bg-[repeating-conic-gradient(var(--color-paper)_0_25%,transparent_0_50%)] bg-size-[var(--dot)_var(--dot)]";
 ---
 
-<footer class="pb-4">
-  <div class="-mx-8 border-t border-divider px-8 pt-4">
-    <div class="flex items-center justify-between gap-4">
-      <p class="text-xs tracking-[0.2rem] text-subtle">
-        © 2025 TRISTAN KENNEDY.
-      </p>
-      <Barcode
-        class="hidden text-subtle md:block"
-        style="height: 2rem;"
-        aria-hidden="true"
-      />
-    </div>
+<footer
+  class="flex flex-col items-center bg-charcoal px-(--gutter) pt-[clamp(56px,6vw,112px)] pb-[clamp(40px,4vw,72px)] text-center text-paper [&_a]:link [&_a]:underline-offset-[0.2em]"
+  data-reveal
+>
+  <div
+    class="mb-[clamp(32px,3.4vw,56px)] flex gap-[calc(var(--dot)*3)]"
+    aria-hidden="true"
+  >
+    <span class:list={[diamondClass, checker]}></span><span
+      class:list={[diamondClass, "bg-paper [--delay:0.12s]"]}></span><span
+      class:list={[diamondClass, checker, "[--delay:0.24s]"]}></span>
   </div>
+  <h2
+    class:list={[
+      pieceClass,
+      "mb-5 font-mono text-[13px]/[1.6] tracking-[0.14em] text-muted uppercase [--delay:0.3s]",
+    ]}
+  >
+    Colophon
+  </h2>
+  <p class:list={[textClass, "[--delay:0.4s]"]}>
+    Made in {now.place}, in Astro, and hosted on Cloudflare Pages. Set in Barlow
+    Condensed, Marcellus, and Mrs Saint Delafield. The dithered images are drawn
+    in your browser.
+  </p>
+  {
+    lastChange && (
+      <p class:list={[textClass, "mt-3.5 [--delay:0.5s]"]}>
+        Last changed {formatEntryDate(lastChange.date)}: “{lastChange.message}”.{" "}
+        {history.total} changes so far.
+      </p>
+    )
+  }
+  <nav
+    class:list={[
+      pieceClass,
+      "mt-[clamp(28px,3vw,48px)] flex flex-wrap justify-center gap-x-[22px] gap-y-1 text-[15px] [--delay:0.6s] [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center",
+      "phone:grid phone:grid-cols-[repeat(3,auto)] phone:gap-y-0 phone:[&_a:first-child]:col-span-full phone:[&_a:first-child]:justify-self-center",
+    ]}
+    aria-label="Contact, pages, and elsewhere"
+  >
+    <a href={links.email}>{links.email.replace(/^mailto:/, "")}</a>
+    <a href={links.resume}>Résumé</a>
+    <a href="/about">About me</a>
+    <a href="/index">Index</a>
+    {links.profiles.map((item) => <a href={item.href}>{item.label}</a>)}
+  </nav>
+  <p
+    class="mt-[clamp(28px,3vw,48px)] font-script text-[clamp(56px,6vw,96px)]/none reveal [--delay:0.8s] [--reveal-duration:1.4s] motion-safe:[clip-path:inset(-50%_-20%_-50%_-20%)] unrevealed:[clip-path:inset(-50%_100%_-50%_-20%)]"
+    aria-hidden="true"
+  >
+    Tristan
+  </p>
+  <p
+    class:list={[
+      pieceClass,
+      "mt-[18px] text-[13px]/[1.45] text-muted [--delay:1s] [&_a]:whitespace-nowrap",
+    ]}
+  >
+    © {year} Tristan Douglas Kennedy ·{" "}
+    <span class="whitespace-nowrap" data-clock data-time-zone={now.timeZone}
+      >{now.timeZoneName}</span
+    >
+    · <a href="#main">Back to top</a>
+  </p>
 </footer>
+
+<script>
+  import { startClock } from "../lib/clock";
+
+  const clock = document.querySelector<HTMLElement>("footer [data-clock]");
+  if (clock)
+    startClock(clock.dataset.timeZone, (time) => (clock.textContent = time));
+</script>
