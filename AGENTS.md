@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Tristan Kennedy's personal archive: Astro, Tailwind CSS v4, static on Cloudflare Pages.
+Tristan Kennedy's personal archive: Astro, Tailwind CSS v4, static on Cloudflare Workers (static assets).
 
 ## Read first
 

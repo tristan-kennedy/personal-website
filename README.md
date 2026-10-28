@@ -8,7 +8,7 @@ pnpm dev
 pnpm build
 ```
 
-Cloudflare Pages builds with `pnpm build` and publishes `dist/`. The Typst résumé
+Cloudflare Workers Builds runs `pnpm build` and serves `dist/` (see `wrangler.jsonc`). The Typst résumé
 in `resume/` is compiled to `/resume.pdf` during the build.
 
 Entries are JSON files in `src/catalog/`:

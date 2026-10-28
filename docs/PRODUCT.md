@@ -52,7 +52,7 @@ themed identity.
   requirement is an obvious way back. None are built yet; each will be designed with
   the owner section by section.
 - **About (`/about`)**: a placeholder in the index's shell until it is designed.
-- Publishing happens through the repository. Cloudflare Pages builds and hosts it.
+- Publishing happens through the repository. Cloudflare Workers builds and hosts it.
 
 ## Capabilities and Constraints
 

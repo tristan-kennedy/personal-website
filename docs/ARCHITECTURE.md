@@ -1,6 +1,6 @@
 # Architecture
 
-A static Astro site, styled with Tailwind CSS v4 and deployed to Cloudflare Pages.
+A static Astro site, styled with Tailwind CSS v4 and deployed to Cloudflare Workers as static assets.
 
 ## Stack
 
@@ -50,6 +50,7 @@ scripts/
   land-mask.mjs              Regenerate src/lib/dither/land-mask.ts
   full-history.mjs           Unshallow CI checkouts so the git log is complete
 public/                      Static files (favicon, résumé, dither PNGs, _headers)
+wrangler.jsonc               Workers deploy config: serves dist/ as static assets
 resume/                      Typst résumé source and fonts
 docs/                        PRODUCT.md, DESIGN.md, this file
 ```
@@ -103,5 +104,4 @@ pnpm dev     # local server on :4321
 pnpm build   # résumé, full git history, astro build → dist/
 ```
 
-Cloudflare Pages runs `pnpm build` and publishes `dist/`. Source edits don't deploy
-by themselves.
+Workers Builds runs `pnpm build`, then `wrangler deploy` serves `dist/` per `wrangler.jsonc`.
