@@ -16,7 +16,7 @@ const leadLine =
   {
     log.length > 0 && (
       <div
-        class="pointer-events-none absolute inset-0 -z-1 mask-[linear-gradient(to_bottom,#000_70%,transparent)] px-(--gutter) pt-[clamp(20px,2.4vw,40px)] font-mono text-[13px]/[2.1] text-[#dedbd1] reveal select-none [--delay:0.5s] [--reveal-duration:2s] phone:mask-[linear-gradient(to_bottom,#000_16%,transparent_40%)] unrevealed:opacity-0"
+        class="pointer-events-none absolute inset-0 -z-1 mask-[linear-gradient(to_bottom,#000_70%,transparent)] px-(--gutter) pt-[clamp(20px,2.4vw,40px)] font-mono text-[13px]/[2.1] text-[#dedbd1] reveal select-none [--delay:0.3s] [--reveal-duration:1.3s] phone:mask-[linear-gradient(to_bottom,#000_16%,transparent_40%)] unrevealed:opacity-0"
         aria-hidden="true"
       >
         <p class="text-[#a9a69b]">$ git log --oneline</p>
@@ -44,11 +44,11 @@ const leadLine =
       aria-label="Me, briefly."
     >
       <span
-        class="block font-serif text-[clamp(110px,15vw,250px)]/[0.9] tracking-[-0.03em] phone:text-[clamp(88px,26vw,120px)]"
+        class="block font-serif text-[clamp(110px,15vw,250px)]/[0.9] tracking-[-0.03em] phone:text-[40vw]"
         aria-hidden="true">Me,</span
       >
       <span
-        class="absolute top-[44%] left-[62%] [transform:rotate(-4deg)] font-script text-[clamp(84px,11.5vw,190px)]/none whitespace-nowrap text-charcoal paper-outline-[clamp(4px,0.5vw,8px)] phone:text-[clamp(60px,17vw,88px)]"
+        class="absolute top-[44%] left-[62%] [transform:rotate(-4deg)] font-script text-[clamp(84px,11.5vw,190px)]/none whitespace-nowrap text-charcoal paper-outline-[clamp(4px,0.5vw,8px)] phone:text-[26vw]"
         aria-hidden="true">briefly</span
       >
     </h2>
@@ -58,17 +58,17 @@ const leadLine =
   </div>
   <div class="relative grid grid-cols-4 items-start phone:grid-cols-1">
     <p
-      class="col-[1/3] pr-(--col-inset) font-serif text-[clamp(28px,2.9vw,50px)]/[1.15] tracking-[-0.02em] paper-halo phone:col-[1] phone:px-0 phone:text-[clamp(26px,7.4vw,34px)]"
+      class="col-[1/3] pr-(--col-inset) font-serif text-[clamp(28px,2.9vw,50px)]/[1.15] tracking-[-0.02em] paper-halo phone:col-[1] phone:px-0 phone:text-[9vw]"
     >
-      <span class:list={[leadLine, "[--delay:0.15s]"]}
+      <span class:list={[leadLine, "[--delay:0.09s]"]}
         >I keep redoing this site.</span
       >
-      <span class:list={[leadLine, "[--delay:0.3s]"]}
+      <span class:list={[leadLine, "[--delay:0.18s]"]}
         >At this point it’s just for me.</span
       >
     </p>
     <div
-      class="col-[3/5] pl-(--col-inset) reveal [--delay:0.35s] paper-halo phone:col-[1] phone:mt-5 phone:pl-0 unrevealed:translate-x-10 unrevealed:opacity-0 [&_p]:max-w-[62ch] [&_p]:text-body/[1.65] phone:[&_p]:text-[17px] [&_p+p]:mt-5"
+      class="col-[3/5] pl-(--col-inset) reveal [--delay:0.21s] paper-halo phone:col-[1] phone:mt-5 phone:pl-0 unrevealed:translate-x-10 unrevealed:opacity-0 [&_p]:max-w-[62ch] [&_p]:text-body/[1.65] phone:[&_p]:text-[17px] [&_p+p]:mt-5"
     >
       <p>
         I’m Tristan. I live in {now.place}, and write code for a living, mostly

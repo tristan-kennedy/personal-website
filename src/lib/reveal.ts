@@ -1,5 +1,5 @@
-const HERO_LEAD = 900;
-const ENTRANCE_LENGTH = 3000;
+const HERO_LEAD = 600;
+const ENTRANCE_LENGTH = 2000;
 
 declare global {
   interface Window {

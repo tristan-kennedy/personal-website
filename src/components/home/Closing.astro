@@ -4,21 +4,23 @@ import DitherApple from "./DitherApple.astro";
 const source =
   "https://www.victorianweb.org/authors/pater/renaissance/conclusion.html";
 const mark =
-  "reveal relative z-2 col-[1/5] justify-self-center bg-paper px-3 font-mono text-[13px]/none tracking-[0.14em] whitespace-nowrap text-ink-muted uppercase [--delay:1.1s] unrevealed:opacity-0";
+  "relative z-2 col-[1/5] justify-self-center bg-paper px-3 font-mono text-[13px]/none tracking-[0.14em] whitespace-nowrap text-ink-muted uppercase";
+const markText =
+  "block reveal [--delay:0.5s] motion-safe:[clip-path:inset(-50%_0_-50%_0)] unrevealed:[clip-path:inset(-50%_100%_-50%_0)]";
 ---
 
 <section
-  class="relative z-1 overflow-x-clip px-(--gutter) py-(--section-space) paper [--apple:min(58vw,1100px)] [--box-line:clamp(2px,0.2vw,3px)] phone:[--apple:64vw]"
+  class="relative z-1 overflow-x-clip px-(--gutter) py-(--section-space) paper [--apple:min(58vw,1100px)] [--box-line:clamp(2px,0.2vw,3px)] phone:[--apple:84vw]"
   data-reveal
   id="quote"
   aria-label="A quote by Walter Pater"
 >
   <figure
-    class="relative grid grid-cols-4 grid-rows-[1fr_auto_auto_1fr] before:col-[1/5] before:row-[1/5] before:border-(length:--box-line) before:border-charcoal before:content-[''] ready:before:[transition:var(--reveal-transition)] unrevealed:before:opacity-0"
+    class="relative grid grid-cols-4 grid-rows-[1fr_auto_auto_1fr] before:col-[1/5] before:row-[1/5] before:border-(length:--box-line) before:border-charcoal before:content-[''] phone:grid-rows-[auto_auto_auto_auto] ready:before:[transition:var(--reveal-transition)] unrevealed:before:opacity-0"
   >
     <DitherApple />
     <blockquote
-      class="relative z-2 col-[2/5] row-[2] px-[clamp(20px,3vw,72px)] pt-[clamp(32px,4vw,96px)] pb-0 text-right font-serif text-[clamp(20px,3.6vw,64px)] tracking-[-0.025em] reveal [--delay:0.45s] phone:col-[1/5] phone:ml-[22%] phone:px-4 phone:pt-[22px] unrevealed:translate-x-12 unrevealed:opacity-0"
+      class="relative z-2 col-[2/5] row-[2] px-[clamp(20px,3vw,72px)] pt-[clamp(32px,4vw,96px)] pb-0 text-right font-serif text-[clamp(20px,3.6vw,64px)] tracking-[-0.025em] reveal [--delay:0.27s] phone:col-[1/5] phone:ml-[6%] phone:px-4 phone:pt-[22px] phone:text-[6.6vw] unrevealed:translate-x-12 unrevealed:opacity-0"
       cite={source}
     >
       <p
@@ -32,7 +34,7 @@ const mark =
       </p>
     </blockquote>
     <figcaption
-      class="relative z-2 col-[2/5] row-[3] flex items-baseline gap-2.5 justify-self-end px-[clamp(20px,3vw,72px)] pt-[clamp(8px,1vw,16px)] pb-[clamp(32px,4vw,96px)] text-right text-[13px]/[1.45] text-muted reveal [--delay:0.65s] phone:col-[1/5] phone:ml-auto phone:block phone:max-w-[56%] phone:px-4 phone:pt-1.5 phone:pb-6 phone:leading-[1.6] unrevealed:translate-x-12 unrevealed:opacity-0"
+      class="relative z-2 col-[2/5] row-[3] flex items-baseline gap-2.5 justify-self-end px-[clamp(20px,3vw,72px)] pt-[clamp(8px,1vw,16px)] pb-[clamp(32px,4vw,96px)] text-right text-[13px]/[1.45] text-muted reveal [--delay:0.39s] phone:col-[1/5] phone:ml-auto phone:block phone:max-w-[56%] phone:px-4 phone:pt-1.5 phone:pb-6 phone:leading-[1.6] unrevealed:translate-x-12 unrevealed:opacity-0"
     >
       <span class="phone:hidden" aria-hidden="true">—</span>
       <span>
@@ -47,14 +49,14 @@ const mark =
         mark,
         "row-[1] [translate:0_calc(-50%-var(--box-line)/2)] self-start",
       ]}
-      aria-hidden="true">What is the end</span
+      aria-hidden="true"><span class={markText}>What is the end</span></span
     >
     <span
       class:list={[
         mark,
-        "row-[4] [translate:0_calc(50%+var(--box-line)/2)] rotate-180 self-end",
+        "row-[4] [translate:0_calc(50%+var(--box-line)/2)] rotate-180 self-end phone:mr-5 phone:justify-self-end",
       ]}
-      aria-hidden="true">Who am I</span
+      aria-hidden="true"><span class={markText}>Who am I</span></span
     >
   </figure>
 </section>

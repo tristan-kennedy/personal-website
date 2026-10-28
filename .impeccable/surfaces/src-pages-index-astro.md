@@ -32,29 +32,29 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 ## Sections
 
-- **Hero.** Name, globe, status ribbon, intro, and links, as in the first viewport. The links sit side by side on phones.
-- **About ("Me, briefly.").** The ruled script lockup, then "I keep redoing this site. / At this point it's just for me." (columns 1–2, one sentence per line) beside two short paragraphs (columns 3–4). Behind the whole section runs the site's own `git log --oneline` in faint mono: newest first, balanced columns, fading out, with the largest quarter of changes a shade darker. Text over it has a paper halo. About stays shorter than the hero. On phones the log fades out before the prose.
-- **Favorites.** The mirrored ruled heading, then the four picks as poster rows (see DESIGN.md), with no descriptions or dates.
+- **Hero.** Name, globe, status ribbon, intro, and links, as in the first viewport. On phones the hero is a full-screen poster: TRISTAN and KENNEDY each fill the width between the gutters over a globe at 112vw bleeding off the right, and the ribbon, intro, and side-by-side links sit at the foot of the screen.
+- **About ("Me, briefly.").** The ruled script lockup, then "I keep redoing this site. / At this point it's just for me." (columns 1–2, one sentence per line) beside two short paragraphs (columns 3–4). Behind the whole section runs the site's own `git log --oneline` in faint mono: newest first, balanced columns, fading out, with the largest quarter of changes a shade darker. Text over it has a paper halo. About stays shorter than the hero. On phones "Me," is set at 40vw with the lead at 9vw, and the log fades out before the prose.
+- **Favorites.** The mirrored ruled heading, then the four picks as poster rows (see DESIGN.md), with no descriptions or dates. On phones the rule becomes a full-bleed bar above FAVORITES., which fills the width. Each pick becomes a stacked poster block: the title wraps by word, sized so its longest word fills about 80% of the row, and its keywords run vertically (reading upward) along the outer edge, right for Barlow rows and left for Marcellus rows. The trails are dropped on phones.
 - **Recents.** Understated, inside Favorites. A hairline-and-label heading, `$ ls -lt ~/stuff | head -3`, the three newest entries as date / slug / keywords on the grid (keywords hidden on phones), and a centred `$ open ~/stuff (everything in the index)` link ending in a blinking cursor.
-- **Closing scene.** A ruled box around the whole scene. An oversized apple (`min(58vw, 1100px)`, 64vw on phones) bleeds off the left edge and dips below the box's foot. The right-aligned Pater quote (28ch max) is centred inside it from column 2, with "experience itself" in Barlow caps, and the source sits beneath. "WHAT IS THE END" is set into the top rule and "WHO AM I" upside down in the bottom rule. Phones keep the composition, with the quote starting 22% across and the source kept in the right 56%.
-- **Footer.** The shared colophon.
+- **Closing scene.** A ruled box around the whole scene. An oversized apple (`min(58vw, 1100px)`, 64vw on phones) bleeds off the left edge and dips below the box's foot. The right-aligned Pater quote (28ch max) is centred inside it from column 2, with "experience itself" in Barlow caps, and the source sits beneath. "WHAT IS THE END" is set into the top rule and "WHO AM I" upside down in the bottom rule. On phones the scene reorders instead of shrinking: the quote (6.6vw) and source on clear paper at the top, then the apple at 84vw below them, still bleeding off the left edge and through the box's foot. "WHO AM I" moves to the right of the bottom rule so the apple never runs under it.
+- **Footer.** The shared colophon. On phones the signature is set at 30vw and the diamonds grow.
 
 ## Entrances
 
 The page is marked ready by an inline script before first paint, so a section
-already in view still plays its entrance once the hero's name lands (about 900ms).
+already in view still plays its entrance once the hero's name lands (about 600ms).
 Sections whose top has already scrolled past skip their entrance. If the reveal
-module never runs, everything shows after 3s. Within a section the pieces are
+module never runs, everything shows after 2s. Within a section the pieces are
 staggered so it unfolds in order:
 
-- **About:** the rule draws from the right edge, the heading slides in, then the two lead lines (0.15s, 0.3s) and the paragraphs from the right (0.35s). The git log fades up over 2s from 0.5s.
-- **Favorites:** the rule draws from the left, FAVORITES. slides in (0.15s), and rows arrive from their trail's side 0.1s apart (from 0.2s). Each row's shadow slips out 0.5s after it, its trail 0.6s after, and its keywords 0.8s after.
-- **Recents:** the hairline draws, then the label (0.3s), the `$ ls` line (0.4s), each entry (0.55s, 0.65s, 0.75s), and the open line (0.95s), like output arriving.
-- **Closing scene:** the box fades in, the apple slides in from off screen (0.3s; it never fades, so the box line never shows through it), the quote (0.45s) and source (0.65s) come in from the right, then the two marks (1.1s).
-- **Footer:** the diamonds pop in 0.12s apart, then the label (0.3s), the two notes (0.4s, 0.5s), the links (0.6s), the signature wiped in over 1.4s (0.8s), and the small line (1s).
+- **About:** the rule draws from the right edge, the heading slides in, then the two lead lines (0.09s, 0.18s) and the paragraphs from the right (0.21s). The git log fades up over 1.3s from 0.3s.
+- **Favorites:** the rule draws from the left, FAVORITES. slides in (0.09s), and rows arrive from their trail's side 0.06s apart (from 0.12s). Each row's shadow slips out 0.3s after it, its trail 0.35s after, and its keywords 0.5s after. The shadow and trail hover offsets ride on `transform`, separate from the entrance's `translate`, so hovering during the entrance never waits on its delay.
+- **Recents:** the hairline draws, then the label (0.18s), the `$ ls` line (0.24s), each entry (0.35s, 0.41s, 0.47s), and the open line (0.57s), like output arriving.
+- **Closing scene:** the box fades in, the apple slides in from off screen (0.18s; it never fades, so the box line never shows through it), the quote (0.27s) and source (0.39s) come in from the right, then the two marks wipe into their gaps in the rule in reading direction (0.5s). The gaps are there from the start; only the words animate.
+- **Footer:** the diamonds pop in 0.07s apart, then the label (0.18s), the two notes (0.24s, 0.3s), the links (0.36s), the signature wiped in over 0.9s (0.48s), and the small line (0.6s).
 
 Delays apply only while a section is entering. `src/lib/reveal.ts` marks it
-`done` after 3s, so hover transitions afterwards respond without delay.
+`done` after 2s, so hover transitions afterwards respond without delay.
 
 ## Rejected (don't bring back)
 

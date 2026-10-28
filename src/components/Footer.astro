@@ -12,7 +12,7 @@ const lastChange = history.changes[0];
 const pieceClass = "reveal unrevealed:translate-y-4 unrevealed:opacity-0";
 const textClass = `${pieceClass} max-w-[46ch] font-serif text-[clamp(18px,1.5vw,24px)]/[1.6] phone:text-[17px]`;
 const diamondClass =
-  "reveal size-[calc(var(--dot)*4)] rotate-45 unrevealed:scale-0";
+  "reveal size-[calc(var(--dot)*4)] rotate-45 phone:size-[calc(var(--dot)*7)] unrevealed:scale-0";
 const checker =
   "bg-[repeating-conic-gradient(var(--color-paper)_0_25%,transparent_0_50%)] bg-size-[var(--dot)_var(--dot)]";
 ---
@@ -26,25 +26,25 @@ const checker =
     aria-hidden="true"
   >
     <span class:list={[diamondClass, checker]}></span><span
-      class:list={[diamondClass, "bg-paper [--delay:0.12s]"]}></span><span
-      class:list={[diamondClass, checker, "[--delay:0.24s]"]}></span>
+      class:list={[diamondClass, "bg-paper [--delay:0.07s]"]}></span><span
+      class:list={[diamondClass, checker, "[--delay:0.14s]"]}></span>
   </div>
   <h2
     class:list={[
       pieceClass,
-      "mb-5 font-mono text-[13px]/[1.6] tracking-[0.14em] text-muted uppercase [--delay:0.3s]",
+      "mb-5 font-mono text-[13px]/[1.6] tracking-[0.14em] text-muted uppercase [--delay:0.18s]",
     ]}
   >
     Colophon
   </h2>
-  <p class:list={[textClass, "[--delay:0.4s]"]}>
+  <p class:list={[textClass, "[--delay:0.24s]"]}>
     Made in {now.place}, in Astro, and hosted on Cloudflare Pages. Set in Barlow
     Condensed, Marcellus, and Mrs Saint Delafield. The dithered images are drawn
     in your browser.
   </p>
   {
     lastChange && (
-      <p class:list={[textClass, "mt-3.5 [--delay:0.5s]"]}>
+      <p class:list={[textClass, "mt-3.5 [--delay:0.3s]"]}>
         Last changed {formatEntryDate(lastChange.date)}: “{lastChange.message}”.{" "}
         {history.total} changes so far.
       </p>
@@ -53,7 +53,7 @@ const checker =
   <nav
     class:list={[
       pieceClass,
-      "mt-[clamp(28px,3vw,48px)] flex flex-wrap justify-center gap-x-[22px] gap-y-1 text-[15px] [--delay:0.6s] [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center",
+      "mt-[clamp(28px,3vw,48px)] flex flex-wrap justify-center gap-x-[22px] gap-y-1 text-[15px] [--delay:0.36s] [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center",
       "phone:grid phone:grid-cols-[repeat(3,auto)] phone:gap-y-0 phone:[&_a:first-child]:col-span-full phone:[&_a:first-child]:justify-self-center",
     ]}
     aria-label="Contact, pages, and elsewhere"
@@ -65,7 +65,7 @@ const checker =
     {links.profiles.map((item) => <a href={item.href}>{item.label}</a>)}
   </nav>
   <p
-    class="mt-[clamp(28px,3vw,48px)] font-script text-[clamp(56px,6vw,96px)]/none reveal [--delay:0.8s] [--reveal-duration:1.4s] motion-safe:[clip-path:inset(-50%_-20%_-50%_-20%)] unrevealed:[clip-path:inset(-50%_100%_-50%_-20%)]"
+    class="mt-[clamp(28px,3vw,48px)] font-script text-[clamp(56px,6vw,96px)]/none reveal [--delay:0.48s] [--reveal-duration:0.9s] motion-safe:[clip-path:inset(-50%_-20%_-50%_-20%)] phone:text-[30vw] unrevealed:[clip-path:inset(-50%_100%_-50%_-20%)]"
     aria-hidden="true"
   >
     Tristan
@@ -73,7 +73,7 @@ const checker =
   <p
     class:list={[
       pieceClass,
-      "mt-[18px] text-[13px]/[1.45] text-muted [--delay:1s] [&_a]:whitespace-nowrap",
+      "mt-[18px] text-[13px]/[1.45] text-muted [--delay:0.6s] [&_a]:whitespace-nowrap",
     ]}
   >
     © {year} Tristan Douglas Kennedy ·{" "}

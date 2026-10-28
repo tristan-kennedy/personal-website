@@ -9,6 +9,8 @@ interface Props {
 
 const { picks, recent } = Astro.props;
 const fills = [0.74, 0.66, 0.72, 0.68];
+const longestWord = (title: string) =>
+  Math.max(...title.split(" ").map((word) => word.length));
 ---
 
 <section
@@ -18,14 +20,14 @@ const fills = [0.74, 0.66, 0.72, 0.68];
   aria-labelledby="selected-title"
 >
   <div
-    class="mb-[clamp(32px,4vw,64px)] flex items-center gap-[clamp(16px,2vw,32px)] pr-(--gutter) pl-0"
+    class="mb-[clamp(32px,4vw,64px)] flex items-center gap-[clamp(16px,2vw,32px)] pr-(--gutter) pl-0 phone:flex-col phone:items-stretch phone:gap-3 phone:pl-(--gutter)"
   >
     <span
-      class="h-[clamp(6px,0.8vw,14px)] min-w-12 flex-auto bg-current reveal motion-safe:origin-left unrevealed:scale-x-0"
+      class="h-[clamp(6px,0.8vw,14px)] min-w-12 flex-auto bg-current reveal motion-safe:origin-left phone:-ml-(--gutter) unrevealed:scale-x-0"
       aria-hidden="true"></span>
     <h2
       id="selected-title"
-      class="flex-none font-display text-[clamp(76px,12vw,288px)]/[0.8] font-extrabold tracking-[-0.03em] uppercase reveal [--delay:0.15s] phone:text-[12.5vw] unrevealed:translate-x-8 unrevealed:opacity-0"
+      class="flex-none font-display text-[clamp(76px,12vw,288px)]/[0.8] font-extrabold tracking-[-0.03em] uppercase reveal [--delay:0.09s] phone:text-[calc((100vw-2*var(--gutter))/3.82)] unrevealed:translate-x-8 unrevealed:opacity-0"
     >
       Favorites.
     </h2>
@@ -37,24 +39,29 @@ const fills = [0.74, 0.66, 0.72, 0.68];
         return (
           <li
             class:list={[
-              "reveal [--delay:var(--row)] not-first:mt-[clamp(10px,1.6vw,36px)] unrevealed:opacity-0",
+              "reveal [--delay:var(--row)] not-first:mt-[clamp(20px,2vw,40px)] phone:not-first:mt-10 unrevealed:opacity-0",
               even ? "unrevealed:translate-x-12" : "unrevealed:-translate-x-12",
             ]}
-            style={`--n: ${entry.data.title.length}; --fill: ${fills[i]}; --row: ${0.2 + i * 0.1}s`}
+            style={`--n: ${entry.data.title.length}; --w: ${longestWord(entry.data.title)}; --fill: ${fills[i]}; --row: ${0.12 + i * 0.06}s`}
           >
             <a
               class:list={[
-                "group flex items-start whitespace-nowrap [transition:color_0.3s_ease] phone:flex-wrap",
+                "group relative flex items-start whitespace-nowrap [transition:color_0.3s_ease]",
                 "in-[ol:has(a:hover,a:focus-visible)]:not-[:hover,:focus-visible]:text-dim",
                 even
-                  ? "-ml-(--gutter) flex-row-reverse font-serif text-(length:--fs)/[0.95] tracking-[-0.03em] [--fs:calc(var(--fill)*216cqi/var(--n))]"
-                  : "-mr-(--gutter) font-display text-(length:--fs)/[0.84] font-extrabold tracking-[-0.035em] uppercase [--fs:calc(var(--fill)*240cqi/var(--n))]",
+                  ? "-ml-(--gutter) flex-row-reverse font-serif text-(length:--fs)/[0.95] tracking-[-0.03em] [--fs:calc(var(--fill)*216cqi/var(--n))] phone:ml-0 phone:pl-11 phone:[--fs:calc(0.8*216cqi/var(--w))]"
+                  : "-mr-(--gutter) font-display text-(length:--fs)/[0.84] font-extrabold tracking-[-0.035em] uppercase [--fs:calc(var(--fill)*240cqi/var(--n))] phone:mr-0 phone:pr-11 phone:[--fs:calc(0.8*240cqi/var(--w))]",
               ]}
               href={entry.url}
             >
-              <span class="relative flex-none">
+              <span
+                class:list={[
+                  "relative flex-none phone:min-w-0 phone:flex-1 phone:whitespace-normal",
+                  even && "phone:text-right",
+                ]}
+              >
                 <span
-                  class="dither-text absolute top-0 left-0 [translate:0.05em_0.06em] reveal [--delay:calc(var(--row)+0.5s)] [transition:translate_0.45s_var(--ease-soft)] group-hover:[translate:0.12em_0.14em] group-focus-visible:[translate:0.12em_0.14em] unrevealed:[translate:0_0]"
+                  class="dither-text absolute top-0 left-0 [translate:0.05em_0.06em] [--delay:0s] [transition:translate_0.7s_var(--ease-soft)_var(--delay),transform_0.45s_var(--ease-soft)] group-hover:[transform:translate(0.07em,0.08em)] group-focus-visible:[transform:translate(0.07em,0.08em)] unrevealed:[translate:0_0] revealing:[--delay:calc(var(--row)+0.3s)]"
                   aria-hidden="true"
                 >
                   {entry.data.title}
@@ -63,11 +70,11 @@ const fills = [0.74, 0.66, 0.72, 0.68];
               </span>
               <span
                 class:list={[
-                  "relative z-1 flex flex-none flex-col gap-0.5 font-sans text-[clamp(11px,0.8vw,14px)]/[1.3] font-normal tracking-[0.08em] text-muted uppercase reveal [--delay:calc(var(--row)+0.8s)] unrevealed:opacity-0",
-                  "phone:order-1 phone:m-0 phone:mt-1.5 phone:w-full phone:flex-row phone:gap-x-2.5 phone:gap-y-0",
+                  "relative z-1 flex flex-none flex-col gap-0.5 font-sans text-[clamp(11px,0.8vw,14px)]/[1.3] font-normal tracking-[0.08em] text-muted uppercase reveal [--delay:calc(var(--row)+0.5s)] unrevealed:opacity-0",
+                  "phone:absolute phone:top-0 phone:bottom-0 phone:m-0 phone:w-max phone:rotate-180 phone:flex-row phone:flex-wrap phone:content-start phone:justify-end phone:gap-x-3 phone:gap-y-1 phone:text-[11px] phone:tracking-[0.14em] phone:[writing-mode:vertical-rl]",
                   even
-                    ? "mt-[calc(var(--fs)*0.16)] mr-[clamp(12px,1.2vw,24px)] items-end text-right phone:justify-end"
-                    : "mt-[calc(var(--fs)*0.1)] ml-[clamp(12px,1.2vw,24px)]",
+                    ? "mt-[calc(var(--fs)*0.16)] mr-[clamp(12px,1.2vw,24px)] items-end text-right phone:left-0"
+                    : "mt-[calc(var(--fs)*0.1)] ml-[clamp(12px,1.2vw,24px)] phone:right-0",
                 ]}
               >
                 {entry.data.keywords.map((keyword) => (
@@ -76,11 +83,11 @@ const fills = [0.74, 0.66, 0.72, 0.68];
               </span>
               <span
                 class:list={[
-                  "dither-text flex flex-none gap-[0.3em] opacity-60 reveal [--delay:calc(var(--row)+0.6s)] [transition:translate_0.6s_var(--ease-soft)] unrevealed:opacity-0 [&>span]:flex-none",
-                  "phone:min-w-0 phone:flex-[1_1_0] phone:overflow-hidden phone:mask-none",
+                  "dither-text flex flex-none gap-[0.3em] opacity-60 [--delay:0s] [transition:opacity_0.6s_ease_var(--delay),translate_0.7s_var(--ease-soft)_var(--delay),transform_0.6s_var(--ease-soft)] unrevealed:opacity-0 revealing:[--delay:calc(var(--row)+0.35s)] [&>span]:flex-none",
+                  "phone:hidden",
                   even
-                    ? "flex-row-reverse mask-[linear-gradient(to_left,#000,transparent_70%)] pr-[0.3em] group-hover:[translate:-0.3em_0] group-focus-visible:[translate:-0.3em_0] phone:flex-row phone:justify-end unrevealed:[translate:0.6em_0]"
-                    : "mask-[linear-gradient(to_right,#000,transparent_70%)] pl-[0.3em] group-hover:[translate:0.3em_0] group-focus-visible:[translate:0.3em_0] unrevealed:[translate:-0.6em_0]",
+                    ? "flex-row-reverse mask-[linear-gradient(to_left,#000,transparent_70%)] pr-[0.3em] group-hover:[transform:translateX(-0.3em)] group-focus-visible:[transform:translateX(-0.3em)] unrevealed:[translate:0.6em_0]"
+                    : "mask-[linear-gradient(to_right,#000,transparent_70%)] pl-[0.3em] group-hover:[transform:translateX(0.3em)] group-focus-visible:[transform:translateX(0.3em)] unrevealed:[translate:-0.6em_0]",
                 ]}
                 aria-hidden="true"
               >

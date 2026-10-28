@@ -146,7 +146,7 @@ instead (the quote's "experience itself" is set in Barlow caps).
 - **One grid.** Every homepage section sits on four equal columns (the status ribbon's). Content past column 1 starts `--col-inset` (20px) after its column line.
 - **Gutters.** `--gutter` is fluid. Past `--page-max` (2400px) the gutter grows instead of the content, and viewport-scaled type is capped to match. Backgrounds and rules still run edge to edge.
 - **Rhythm.** Every section uses `--section-space` top and bottom.
-- **Breakpoint.** One content-led breakpoint at 700px (the `phone:` variant). Phones keep every idea and shed clutter. They stack most grids, but the closing scene keeps its four-column composition.
+- **Breakpoint.** One content-led breakpoint at 700px (the `phone:` variant). Phones keep every idea and its scale: display type is sized to fill the width between the gutters (TRISTAN and KENNEDY, FAVORITES., each poster title by its longest word), not shrunk to a fixed vw. Grids stack, and compositions reorder rather than shrink. Rotation is allowed where it buys scale: the poster keywords run vertically beside their titles.
 - **Order.** Charcoal hero, paper About, charcoal Favorites, paper closing scene, charcoal footer. Hero and footer are always charcoal.
 - Touch targets are at least 44px tall where links stand alone.
 
