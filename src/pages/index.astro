@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Reveal from "../components/Reveal.astro";
 import Hero from "../components/home/Hero.astro";
 import About from "../components/home/About.astro";
 import Favorites from "../components/home/Favorites.astro";
@@ -15,24 +16,9 @@ const picks = entries
 ---
 
 <Layout title="Tristan Kennedy" home>
-  <script is:inline>
-    if ("IntersectionObserver" in window) {
-      document.documentElement.dataset.reveal = "ready";
-      setTimeout(() => {
-        if (window.__reveal) return;
-        document
-          .querySelectorAll("[data-reveal]")
-          .forEach((section) => (section.dataset.revealed = "true"));
-      }, 3000);
-    }
-  </script>
+  <Reveal />
   <Hero />
   <About />
   <Favorites picks={picks} recent={entries.slice(0, 3)} />
   <Closing />
 </Layout>
-
-<script>
-  import { revealOnScroll } from "../lib/reveal";
-  revealOnScroll();
-</script>

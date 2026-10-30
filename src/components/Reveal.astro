@@ -1,0 +1,16 @@
+<script is:inline>
+  if ("IntersectionObserver" in window) {
+    document.documentElement.dataset.reveal = "ready";
+    setTimeout(() => {
+      if (window.__reveal) return;
+      document
+        .querySelectorAll("[data-reveal]")
+        .forEach((section) => (section.dataset.revealed = "true"));
+    }, 3000);
+  }
+</script>
+
+<script>
+  import { revealOnScroll } from "../lib/reveal";
+  revealOnScroll();
+</script>

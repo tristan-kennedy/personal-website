@@ -1,5 +1,5 @@
 ---
-import DitherFrame from "./DitherFrame.astro";
+import DitherFrame from "../DitherFrame.astro";
 ---
 
 <div
@@ -13,14 +13,11 @@ import DitherFrame from "./DitherFrame.astro";
 <script>
   import { mountDitherCanvas } from "../../lib/dither/canvas";
   import { renderApple, START_ANGLE } from "../../lib/dither/apple";
+  import { CHARCOAL, CLEAR, PAPER, opaque } from "../../lib/dither/palette";
 
   mountDitherCanvas(
     "[data-quote-apple]",
     (size, seconds) => renderApple(size, START_ANGLE + seconds * 0.35),
-    [
-      [0, 0, 0, 0],
-      [0xf2, 0xf0, 0xe9, 255],
-      [0x29, 0x28, 0x24, 255],
-    ],
+    [CLEAR, opaque(PAPER), opaque(CHARCOAL)],
   );
 </script>

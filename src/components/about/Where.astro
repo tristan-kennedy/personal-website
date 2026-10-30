@@ -1,0 +1,145 @@
+---
+import Blurb from "./Blurb.astro";
+import SectionHeading from "./SectionHeading.astro";
+import { about, moves, now, formatCoordinates } from "../../lib/site";
+import {
+  MAP_HEIGHT,
+  MAP_WIDTH,
+  PHONE_MAP_HEIGHT,
+  PHONE_MAP_WIDTH,
+  flightPath,
+  phoneMapProjection,
+} from "../../lib/dither/where";
+import { dashed } from "../../lib/dither/route";
+
+const [latitude, longitude] = formatCoordinates(now.coordinates).split(", ");
+const stops = moves.map((move) => move.coordinates);
+const routeShape = (route: ReturnType<typeof flightPath>) =>
+  [
+    ...route.path.filter((_, i) => dashed(i)),
+    ...route.arrivals.flatMap((i) => {
+      const [x, y] = route.path[i];
+      return [
+        [x - 1, y],
+        [x + 1, y],
+        [x, y - 1],
+        [x, y + 1],
+        [x, y],
+      ];
+    }),
+  ]
+    .map(([x, y]) => `M${x} ${y}h1v1h-1z`)
+    .join("");
+const maps = [
+  {
+    src: "/dither/where.png",
+    width: MAP_WIDTH,
+    height: MAP_HEIGHT,
+    route: flightPath(stops),
+    class:
+      "absolute top-[calc(-30*var(--dot))] right-[calc(var(--gutter)-77*var(--dot))] -z-1 w-[calc(400*var(--dot))] max-w-none max-[1280px]:relative max-[1280px]:top-0 max-[1280px]:order-3 max-[1280px]:-my-[calc(40*var(--dot))] max-[1280px]:ml-[calc(50vw-var(--gutter)-234*var(--dot))] phone:hidden",
+  },
+  {
+    src: "/dither/where-phone.png",
+    width: PHONE_MAP_WIDTH,
+    height: PHONE_MAP_HEIGHT,
+    route: flightPath(stops, phoneMapProjection()),
+    class:
+      "relative order-4 mt-4 hidden w-[calc(160*var(--dot))] self-center phone:block min-[560px]:w-[calc(240*var(--dot))]",
+    plane: 0.7,
+  },
+];
+---
+
+<section
+  class="relative isolate overflow-clip px-(--gutter) py-(--section-space) paper max-[1280px]:flex max-[1280px]:flex-col"
+  data-reveal
+  aria-labelledby="where-title"
+>
+  {
+    maps.map((map) => (
+      <figure
+        class:list={[
+          map.class,
+          "reveal [--delay:0.2s] [--reveal-duration:1.3s] unrevealed:opacity-0",
+        ]}
+        aria-hidden="true"
+        data-route={JSON.stringify(map.route)}
+        data-stops="[data-stop]"
+        data-plane={map.plane}
+        data-where-map
+      >
+        <img
+          class="block w-full [image-rendering:pixelated]"
+          src={map.src}
+          alt=""
+          width={map.width}
+          height={map.height}
+        />
+        <svg
+          class="absolute inset-0 size-full in-data-[enhanced=true]:invisible"
+          viewBox={`0 0 ${map.width} ${map.height}`}
+          shape-rendering="crispEdges"
+        >
+          <path class="fill-charcoal" d={routeShape(map.route)} />
+        </svg>
+        <canvas
+          class="absolute inset-0 size-full [image-rendering:pixelated]"
+          width={map.width}
+          height={map.height}
+        />
+      </figure>
+    ))
+  }
+  <SectionHeading
+    id="where-title"
+    class="mb-[clamp(28px,3.6vw,64px)] paper-halo unrevealed:translate-x-8"
+  >
+    Where I’ve lived.
+  </SectionHeading>
+  <p
+    class="font-serif text-[clamp(64px,10.4vw,200px)]/[0.95] tracking-[-0.03em] whitespace-nowrap paper-halo max-[1280px]:order-2 phone:text-[19vw]"
+    aria-label={`${now.place}, ${latitude}, ${longitude}`}
+  >
+    <span
+      class="block reveal [--delay:0.1s] unrevealed:-translate-x-10 unrevealed:opacity-0"
+      aria-hidden="true">{latitude},</span
+    >
+    <span
+      class="block pl-[25%] reveal [--delay:0.2s] phone:pl-[12%] unrevealed:translate-x-10 unrevealed:opacity-0"
+      aria-hidden="true">{longitude}</span
+    >
+  </p>
+  <div
+    class="mt-[clamp(20px,2.4vw,40px)] grid grid-cols-4 items-start gap-y-6 reveal [--delay:0.3s] max-[1280px]:order-4 phone:contents unrevealed:opacity-0"
+  >
+    <Blurb
+      class="col-[1/3] pr-(--col-inset) paper-halo phone:order-3 phone:mt-6 phone:pr-0"
+    >
+      {about.where}
+    </Blurb>
+    <ol
+      class="col-[3/5] grid grid-flow-col grid-cols-2 grid-rows-4 gap-x-(--col-inset) pl-(--col-inset) font-mono text-[clamp(13px,1vw,16px)]/[2] paper-halo phone:relative phone:z-1 phone:order-5 phone:col-1 phone:-mt-[calc(58*var(--dot))] phone:grid-flow-row phone:grid-cols-1 phone:grid-rows-none phone:pl-0 phone:leading-[1.8]"
+      aria-label="Everywhere I’ve lived, in order"
+    >
+      {
+        moves.map((move, i) => (
+          <li
+            class="transition-colors duration-300 data-[reached=false]:text-ink-muted"
+            data-stop
+          >
+            <span class="text-ink-muted" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
+            </span>{" "}
+            {move.place}
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<script>
+  import { mountRoute } from "../../lib/dither/route";
+  mountRoute("[data-where-map]");
+</script>

@@ -1,0 +1,16 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<p
+  class:list={[
+    "max-w-[44ch] text-body/[1.65] text-pretty phone:text-[17px]",
+    className,
+  ]}
+>
+  <slot />
+</p>

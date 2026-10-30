@@ -32,6 +32,9 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 ## Sections
 
+Surface order: charcoal hero, paper About, charcoal Favorites, paper closing
+scene, charcoal footer.
+
 - **Hero.** Name, globe, status ribbon, intro, and links, as in the first viewport. On phones the hero is a full-screen poster: TRISTAN and KENNEDY each fill the width between the gutters over a globe at 112vw bleeding off the right, and the ribbon, intro, and side-by-side links sit at the foot of the screen.
 - **About ("Me, briefly.").** The ruled script lockup, then "I keep redoing this site. / At this point it's just for me." (columns 1–2, one sentence per line) beside two short paragraphs (columns 3–4). Behind the whole section runs the site's own `git log --oneline` in faint mono: newest first, balanced columns, fading out, with the largest quarter of changes a shade darker. Text over it has a paper halo. About stays shorter than the hero. On phones "Me," is set at 40vw with the lead at 9vw, and the log fades out before the prose.
 - **Favorites.** The mirrored ruled heading, then the four picks as poster rows (see DESIGN.md), with no descriptions or dates. On phones the rule becomes a full-bleed bar above FAVORITES., which fills the width. Each pick becomes a stacked poster block: the title wraps by word, sized so its longest word fills about 80% of the row, and its keywords run vertically (reading upward) along the outer edge, right for Barlow rows and left for Marcellus rows. The trails are dropped on phones.
@@ -63,4 +66,8 @@ Delays apply only while a section is entering. `src/lib/reveal.ts` marks it
 - In About: a facts ledger, a dithered portrait, "Now" or "Not committed yet" stamps, overlays, a caret after the paragraphs.
 - Between Favorites and the quote: frayed overhangs, hanging leaves, torn edges. Inside it: an "AN EXCERPT" label, a box around the quote alone, a halo on the source.
 - Footers: Pages/Elsewhere/Contact columns, "Say hello.", a planet horizon, a dither band.
+- Across the page: a top navbar, a pixel logo, a theme toggle, a red accent or
+  chromatic imagery, a third surface colour, boxed entries, keyword pills,
+  decorative shadows or borders, arrows on entry rows, and an identity tied to a
+  content subject (coastlines, travel, ferns, shells).
 - Scroll-linked motion, a diagonal rotating Douglas, a wipe that draws the quote box, a lopsided Red Delicious apple (too costly to render), and a static status readout.

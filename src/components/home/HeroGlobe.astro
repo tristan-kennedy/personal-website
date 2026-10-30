@@ -1,6 +1,6 @@
 ---
 import { now, formatCoordinates } from "../../lib/site";
-import DitherFrame from "./DitherFrame.astro";
+import DitherFrame from "../DitherFrame.astro";
 ---
 
 <figure
@@ -19,13 +19,11 @@ import DitherFrame from "./DitherFrame.astro";
 <script>
   import { mountDitherCanvas } from "../../lib/dither/canvas";
   import { renderGlobe, START_LON } from "../../lib/dither/globe";
+  import { CLEAR, MUTED, opaque } from "../../lib/dither/palette";
 
   mountDitherCanvas(
     "[data-hero-globe]",
     (size, seconds) => renderGlobe(size, START_LON + seconds * 4.5),
-    [
-      [0, 0, 0, 0],
-      [0xb8, 0xb5, 0xaa, 255],
-    ],
+    [CLEAR, opaque(MUTED)],
   );
 </script>

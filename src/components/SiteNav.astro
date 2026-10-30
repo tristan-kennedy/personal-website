@@ -1,0 +1,14 @@
+---
+interface Props {
+  link: { href: string; label: string };
+}
+
+const { link } = Astro.props;
+---
+
+<nav
+  class="flex flex-wrap items-center justify-between gap-x-8 gap-y-4 py-6 text-[15px] [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:gap-3 [&_a]:underline"
+  aria-label="Site"
+>
+  <a href="/">Tristan Kennedy</a><a href={link.href}>{link.label}</a>
+</nav>

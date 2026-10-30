@@ -72,11 +72,12 @@ const items = [
 
 <script>
   import { clockFormat, startClock } from "../../lib/clock";
+  import { reducedMotion as prefersReducedMotion } from "../../lib/motion";
 
   const strip = document.querySelector<HTMLElement>("[data-status-strip]");
   const track = strip?.querySelector<HTMLElement>("[data-track]");
   const firstGroup = track?.querySelector<HTMLElement>("ul");
-  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const reducedMotion = prefersReducedMotion();
 
   if (strip && track && firstGroup) {
     const timeZone = strip.dataset.timeZone;

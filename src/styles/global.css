@@ -211,6 +211,16 @@
     0 0 6px var(--color-paper),
     0 0 12px var(--color-paper),
     0 0 18px var(--color-paper);
+
+  &::selection,
+  & ::selection {
+    text-shadow: none;
+  }
+}
+
+@utility dither-fill {
+  background: repeating-conic-gradient(currentColor 0 25%, transparent 0 50%) 0
+    0 / calc(var(--dot) * 2) calc(var(--dot) * 2);
 }
 
 @utility dither-text {

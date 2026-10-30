@@ -1,0 +1,60 @@
+---
+import Blurb from "./Blurb.astro";
+import SiteNav from "../SiteNav.astro";
+import DitherFrame from "../DitherFrame.astro";
+import { about } from "../../lib/site";
+---
+
+<section
+  class="relative overflow-clip px-(--gutter) pb-(--section-space) paper"
+  data-reveal
+  aria-labelledby="about-title"
+>
+  <SiteNav link={{ href: "/index", label: "Index" }} />
+  <div
+    class="grid grid-cols-4 items-end pt-[clamp(16px,3vw,56px)] phone:grid-cols-1"
+  >
+    <figure
+      class="col-[3/5] row-1 mb-[clamp(6px,0.8vw,14px)] ml-[calc(var(--col-inset)*-3)] reveal [--delay:0.1s] phone:col-1 phone:mr-[-14vw] phone:ml-[22vw] unrevealed:opacity-0"
+      aria-hidden="true"
+      data-portrait
+    >
+      <DitherFrame src="/dither/portrait.png" size={220} />
+    </figure>
+    <div
+      class="relative z-1 col-[1/5] row-1 -mr-(--gutter) flex items-end phone:col-1 phone:row-2 phone:-mt-[24vw]"
+    >
+      <h1
+        id="about-title"
+        class="relative z-1 flex-none reveal unrevealed:-translate-x-8 unrevealed:opacity-0"
+        aria-label="Me, at length."
+      >
+        <span
+          class="block font-serif text-[clamp(150px,23vw,440px)]/[0.78] tracking-[-0.04em] phone:text-[52vw]"
+          aria-hidden="true">Me,</span
+        >
+        <span
+          class="absolute top-[64%] left-[50%] [transform:rotate(-4deg)] font-script text-[clamp(100px,14vw,270px)]/none whitespace-nowrap text-charcoal paper-outline-[clamp(4px,0.5vw,8px)] phone:top-[76%] phone:left-[22%] phone:text-[21vw]"
+          aria-hidden="true">at length</span
+        >
+      </h1>
+      <span
+        class="mb-[0.02em] ml-[clamp(12px,1.4vw,24px)] h-[clamp(6px,0.8vw,14px)] min-w-8 flex-auto bg-current reveal [--delay:0.05s] motion-safe:origin-right phone:hidden unrevealed:scale-x-0"
+        aria-hidden="true"></span>
+    </div>
+  </div>
+  <div
+    class="mt-[clamp(48px,6vw,112px)] grid grid-cols-4 items-start gap-y-6 phone:mt-[16vw] phone:grid-cols-1"
+  >
+    <Blurb
+      class="col-[3/5] pl-(--col-inset) reveal [--delay:0.2s] phone:col-1 phone:pl-0 unrevealed:translate-x-6 unrevealed:opacity-0"
+    >
+      {about.opener}
+    </Blurb>
+  </div>
+</section>
+
+<script>
+  import { mountPortrait } from "../../lib/dither/portrait";
+  mountPortrait("[data-portrait]", "/dither/portrait-source.png");
+</script>

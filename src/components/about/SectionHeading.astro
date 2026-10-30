@@ -1,0 +1,18 @@
+---
+interface Props {
+  id: string;
+  class?: string;
+}
+
+const { id, class: className } = Astro.props;
+---
+
+<h2
+  {id}
+  class:list={[
+    "font-serif text-[clamp(44px,5.6vw,104px)]/[0.95] tracking-[-0.03em] reveal phone:text-[16vw] unrevealed:opacity-0",
+    className,
+  ]}
+>
+  <slot />
+</h2>

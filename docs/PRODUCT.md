@@ -51,7 +51,10 @@ themed identity.
   typography, colour, layout, and interaction to suit the material. The only shared
   requirement is an obvious way back. None are built yet; each will be designed with
   the owner section by section.
-- **About (`/about`)**: a placeholder in the index's shell until it is designed.
+- **About (`/about`)**: "Me, at length." A mostly paper page with the dithered
+  portrait, where Tristan has lived, work, recent films and music, and what he's
+  settled on versus still wondering about. Its composition lives in
+  `.impeccable/surfaces/src-pages-about-astro.md`.
 - Publishing happens through the repository. Cloudflare Workers builds and hosts it.
 
 ## Capabilities and Constraints

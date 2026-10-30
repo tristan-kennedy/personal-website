@@ -1,0 +1,166 @@
+---
+import Blurb from "./Blurb.astro";
+import SectionHeading from "./SectionHeading.astro";
+import { getHistory } from "../../lib/history";
+import { about, education, links, work } from "../../lib/site";
+
+const { changes, total } = getHistory();
+const WEEK = 7 * 24 * 60 * 60 * 1000;
+const times = changes.map((change) => Date.parse(change.date));
+const first = Math.min(...times);
+const weeks = Array.from(
+  { length: total ? Math.floor((Math.max(...times) - first) / WEEK) + 1 : 0 },
+  () => [] as boolean[],
+);
+changes.forEach((change, i) =>
+  weeks[Math.floor((times[i] - first) / WEEK)].push(change.major),
+);
+const tallest = Math.max(1, ...weeks.map((week) => week.length));
+const cell = Math.max(3, Math.floor(60 / tallest) - 1);
+const years = total
+  ? [changes.at(-1)!.date.slice(0, 4), changes[0].date.slice(0, 4)]
+  : [];
+const row = "reveal unrevealed:-translate-x-4 unrevealed:opacity-0";
+const month = (value: string) =>
+  value === "now"
+    ? "now"
+    : new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        year: "numeric",
+        timeZone: "UTC",
+      }).format(new Date(`${value}-01`));
+const tools = about.tools.map((paragraph) => paragraph.split(/\*([^*]+)\*/));
+---
+
+<section
+  class="overflow-clip px-(--gutter) py-(--section-space) paper"
+  data-reveal
+  aria-labelledby="work-title"
+>
+  <div class="grid grid-cols-4 items-start gap-y-6 phone:grid-cols-1">
+    <SectionHeading
+      id="work-title"
+      class="col-[1/3] pr-(--col-inset) phone:col-1 unrevealed:-translate-x-8"
+    >
+      What I do.
+    </SectionHeading>
+    <div
+      class="col-[3/5] pl-(--col-inset) reveal [--delay:0.12s] phone:col-1 phone:pl-0 unrevealed:translate-x-6 unrevealed:opacity-0"
+    >
+      <Blurb>{about.work[0]}</Blurb>
+      <Blurb class="mt-5">{about.work[1]}</Blurb>
+    </div>
+  </div>
+  <div
+    class="mt-[clamp(48px,6vw,104px)] grid grid-cols-4 items-start gap-y-5 phone:grid-cols-1"
+    aria-label="Tools"
+  >
+    {
+      tools.map((parts, i) => (
+        <Blurb
+          class:list={[
+            "text-ink-muted reveal unrevealed:opacity-0",
+            i === 0
+              ? "col-[1/3] pr-(--col-inset) [--delay:0.1s] unrevealed:-translate-x-6"
+              : "col-[3/5] mt-[clamp(0px,5vw,96px)] pl-(--col-inset) [--delay:0.2s] phone:mt-0 phone:pl-0 unrevealed:translate-x-6",
+            "phone:col-1 phone:pr-0",
+          ]}
+        >
+          {parts.map((part, j) =>
+            j % 2 ? <span class="text-charcoal">{part}</span> : part,
+          )}
+        </Blurb>
+      ))
+    }
+  </div>
+  <div
+    class="mt-[clamp(48px,6vw,104px)] grid grid-cols-4 font-mono text-[clamp(14px,1.1vw,18px)]/[2.1] phone:grid-cols-1 phone:text-[13px]/[1.7]"
+  >
+    <div class="col-[2/5] pl-(--col-inset) phone:col-1 phone:pl-0">
+      <p
+        class:list={[row, "text-ink-muted [--delay:0.18s]"]}
+        aria-hidden="true"
+      >
+        $ cat ~/work
+      </p>
+      <ol>
+        {
+          work.map((item, i) => (
+            <li
+              class:list={[
+                row,
+                "grid grid-cols-[19ch_minmax(0,1fr)_minmax(0,1fr)] gap-x-6 phone:grid-cols-[minmax(0,1fr)_auto] phone:gap-x-4 phone:pt-3",
+              ]}
+              style={`--delay: ${0.24 + i * 0.06}s`}
+            >
+              <span class="text-ink-muted phone:order-3 phone:text-right">
+                {month(item.from)} – {month(item.to)}
+              </span>
+              <span class="phone:order-1 phone:col-span-2">{item.role}</span>
+              <span class="text-ink-muted phone:order-2">{item.company}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <p class:list={[row, "mt-6 text-ink-muted [--delay:0.54s]"]}>
+        <span aria-hidden="true">$ cat ~/school</span>
+      </p>
+      <p
+        class:list={[
+          row,
+          "grid grid-cols-[19ch_minmax(0,1fr)_minmax(0,1fr)] gap-x-6 [--delay:0.6s] phone:grid-cols-[minmax(0,1fr)_auto] phone:gap-x-4 phone:pt-3",
+        ]}
+      >
+        <span class="text-ink-muted phone:order-3 phone:text-right">
+          {month(education.from)} – {month(education.to)}
+        </span>
+        <span class="phone:order-1 phone:col-span-2">{education.degree}</span>
+        <span class="text-ink-muted phone:order-2">{education.school}</span>
+      </p>
+      <p class:list={[row, "mt-6 [--delay:0.72s]"]}>
+        <a
+          class="link phone:inline-flex phone:min-h-11 phone:items-center"
+          href={links.resume}>$ open resume.pdf</a
+        >
+      </p>
+    </div>
+  </div>
+  <p
+    class="mt-[clamp(56px,7vw,112px)] font-serif text-[clamp(28px,2.9vw,50px)]/[1.15] tracking-[-0.02em] reveal [--delay:0.1s] phone:text-[7vw] unrevealed:-translate-x-8 unrevealed:opacity-0"
+  >
+    The one I keep redoing:
+    <a class="link" href="/index/this-website">this website</a>.
+    <span class="block text-ink-muted">{total} changes so far.</span>
+  </p>
+  {
+    weeks.length > 0 && (
+      <figure
+        class="-mx-(--gutter) mt-[clamp(24px,3vw,48px)] reveal [--delay:0.3s] unrevealed:opacity-0"
+        aria-hidden="true"
+      >
+        <div
+          class="flex h-[calc(60*var(--dot))] items-end gap-(--dot)"
+          style={`--cell: ${cell}`}
+        >
+          {weeks.map((week) => (
+            <div class="flex flex-1 flex-col-reverse gap-(--dot)">
+              {week.map((major) => (
+                <span
+                  class:list={[
+                    "block h-[calc(var(--cell)*var(--dot))]",
+                    major ? "bg-charcoal" : "dither-fill",
+                  ]}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+        <figcaption class="mt-3 flex justify-between px-(--gutter) text-[15px] text-ink-muted">
+          <span>{years[0]}</span>
+          <span>One column a week</span>
+          <span>{years[1]}</span>
+        </figcaption>
+      </figure>
+    )
+  }
+</section>

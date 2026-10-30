@@ -6,6 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   compressHTML: true,
+  prefetch: { prefetchAll: true },
   integrations: [react(), mdx()],
   vite: {
     plugins: [tailwindcss()],

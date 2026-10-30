@@ -27,26 +27,43 @@ src/
   layouts/Layout.astro       <html>, head metadata, fonts, skip link, footer
   components/
     Footer.astro             Colophon footer, on every page
-    ArchivePage.astro        Shared shell for /index and /about
+    ArchivePage.astro        Shared shell for /index
+    SiteNav.astro            Home link plus one page link, on /index and /about
+    Reveal.astro             Entrance setup for pages with [data-reveal] sections
+    DitherFrame.astro        Static dither frame plus the canvas that replaces it
+    about/                   About-only sections (Opener, Where, Work, Media, Tldr)
+                             and the shared Blurb and SectionHeading
     home/                    Homepage-only sections and pieces
       Hero.astro, HeroGlobe.astro, StatusStrip.astro
       About.astro, Favorites.astro, Recents.astro
-      Closing.astro, DitherApple.astro, DitherFrame.astro
+      Closing.astro, DitherApple.astro
   pages/
     index.astro              Homepage
     index/index.astro        /index
     about.astro              /about
   lib/
     entries.ts               getEntries(), formatEntryDate()
-    site.ts                  Personal details (`now`, `links`). Edit here, never inline
+    site.ts                  Personal details (`now`, `moves`, `links`, `work`,
+                             `education`, `opinions`, `questions`, the About copy
+                             in `about`, the Letterboxd feed). Edit here, never inline
     history.ts               The site's git log, read once per build
-    clock.ts                 Live clock shared by the ribbon and footer
+    letterboxd.ts            Recent films and dithered posters, read once per build;
+                             an unreachable feed yields no films, never a failed build
+    clock.ts                 Live clock shared by the ribbon and footer, and m:ss
+                             durations
+    motion.ts                The reduced-motion media query
     reveal.ts                One-time section entrances
-    dither/                  Shared threshold and sun (index.ts), canvas loop,
-                             globe, apple, and the generated land mask
+    sweep.ts                 Dithered page-to-page transition
+    dither/                  Shared threshold and sun (index.ts), palette, whole-dot
+                             canvas sizing (fit.ts), canvas loop,
+                             globe, apple, About portrait and record, the About map projection and
+                             flight route (where.ts, route.ts), build-time dithering of
+                             remote images (remote.ts) and the live poster canvas
+                             (poster.ts), and the generated land mask
   styles/global.css          Tailwind entry: theme, variants, base, utilities
 scripts/
-  dither.mjs                 Regenerate the static dither frames, or dither a photo
+  dither.mjs                 Regenerate the static dither frames (globe, apple, the
+                             About map, phone map, and record), or dither a photo
   land-mask.mjs              Regenerate src/lib/dither/land-mask.ts
   full-history.mjs           Unshallow CI checkouts so the git log is complete
 public/                      Static files (favicon, résumé, dither PNGs, _headers)
@@ -84,7 +101,8 @@ Everything is Tailwind. Write utilities inline on the element. Reach for
   - `enhanced:` and `running:` are for the status ribbon once JavaScript takes over.
 - **Utilities**: `paper` (light surface), `link` (underline that thickens on hover
   and focus), `paper-outline-[w]` (paper text stroke under the fill),
-  `paper-halo`, `dither-text` (dim dithered text fill), and `reveal`.
+  `paper-halo`, `dither-text` (dim dithered text fill), `dither-fill` (a
+  current-colour checker on the shared dot), and `reveal`.
 - **Base**: a small reset on top of Tailwind's preflight, plus focus and selection colours.
 
 Within a component, a repeated class string can live in a frontmatter constant (see

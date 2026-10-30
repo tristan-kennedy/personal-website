@@ -1,0 +1,218 @@
+---
+import Blurb from "./Blurb.astro";
+import { getFilms } from "../../lib/letterboxd";
+import { ditherRemote } from "../../lib/dither/remote";
+import { formatDuration } from "../../lib/clock";
+import DitherFrame from "../DitherFrame.astro";
+import { about, links, now } from "../../lib/site";
+
+const films = await getFilms();
+const listening = now.listening;
+const sleeve = await ditherRemote(listening.artwork, 100, 100).catch(
+  () => undefined,
+);
+const smallSleeve = await ditherRemote(listening.artwork, 80, 80).catch(
+  () => undefined,
+);
+const profile = links.profiles.find((item) => item.label === "Letterboxd");
+const stars = (rating: number) =>
+  "★".repeat(Math.floor(rating)) + (rating % 1 ? "½" : "");
+const formatWatched = (date: string) =>
+  new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(date));
+---
+
+<section
+  class="overflow-clip bg-charcoal pt-(--section-space) pr-(--gutter) pb-[clamp(16px,2vw,32px)] text-paper"
+  data-reveal
+  aria-labelledby="media-title"
+>
+  <div class="flex gap-[clamp(20px,3vw,56px)] phone:flex-col">
+    <h2
+      id="media-title"
+      class="flex-none rotate-180 self-start pl-(--gutter) font-display text-[clamp(96px,11vw,220px)]/[0.78] font-extrabold tracking-[-0.03em] uppercase reveal [writing-mode:vertical-rl] phone:rotate-0 phone:self-start phone:text-[calc((100vw-2*var(--gutter))/2.6)] phone:[writing-mode:horizontal-tb] unrevealed:translate-y-10 unrevealed:opacity-0"
+    >
+      Media.
+    </h2>
+    <div class="min-w-0 flex-auto phone:pl-(--gutter)">
+      <Blurb
+        class="mb-[clamp(32px,4vw,64px)] reveal [--delay:0.08s] unrevealed:opacity-0"
+      >
+        {about.films}
+      </Blurb>
+      {
+        films.length > 0 && (
+          <ol class="grid grid-cols-4 items-start gap-x-[calc(6*var(--dot))] phone:grid-cols-2 phone:gap-y-10">
+            {films.map((film, i) => (
+              <li
+                class="reveal unrevealed:translate-x-12 unrevealed:opacity-0"
+                style={`--delay: ${0.12 + i * 0.08}s`}
+              >
+                <a class="group block" href={film.href}>
+                  {film.poster && (
+                    <figure
+                      class="relative aspect-[2/3] overflow-hidden"
+                      data-poster
+                      data-source={film.poster.source}
+                    >
+                      <img
+                        class="absolute inset-0 size-full [image-rendering:pixelated] in-data-[enhanced=true]:invisible"
+                        src={film.poster.src}
+                        alt=""
+                        width={film.poster.width}
+                        height={film.poster.height}
+                      />
+                      <canvas class="absolute top-0 left-0 [image-rendering:pixelated]" />
+                    </figure>
+                  )}
+                  <span class="mt-4 block font-serif text-[clamp(18px,1.5vw,28px)]/[1.2] text-balance group-hover:underline group-hover:decoration-1 group-focus-visible:underline">
+                    {film.title}
+                  </span>
+                  <span class="mt-1 block font-mono text-[13px] tracking-[0.06em] text-muted">
+                    {film.rating > 0 && (
+                      <>
+                        <span
+                          role="img"
+                          aria-label={`Rated ${film.rating} out of 5`}
+                        >
+                          {stars(film.rating)}
+                        </span>{" "}
+                        ·{" "}
+                      </>
+                    )}
+                    <time datetime={film.watched}>
+                      {formatWatched(film.watched)}
+                    </time>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+      {
+        profile && (
+          <p class="mt-[clamp(28px,3vw,48px)] text-right text-[15px] reveal [--delay:0.5s] phone:text-left unrevealed:opacity-0">
+            <a
+              class="link phone:inline-flex phone:min-h-11 phone:items-center"
+              href={profile.href}
+            >
+              {films.length > 0
+                ? "Everything else on Letterboxd"
+                : "What I’ve been watching, on Letterboxd"}
+            </a>
+          </p>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<div
+  class="relative grid grid-cols-[minmax(0,1fr)_auto] bg-[linear-gradient(var(--color-charcoal)_calc(100%-var(--sleeve)*var(--dot)/2),var(--color-paper)_0)] pr-(--gutter) [--peek:44] [--sleeve:100] max-[479px]:[--peek:14] max-[479px]:[--sleeve:80] phone:mt-6 phone:[--peek:24]"
+  data-reveal
+  data-listening
+  data-seconds={listening.seconds}
+>
+  <div class="relative phone:contents">
+    <span
+      class="absolute inset-x-0 top-[calc(50%-3*var(--dot))] h-(--dot) bg-[linear-gradient(90deg,var(--muted)_50%,transparent_50%)] bg-size-[calc(2*var(--dot))_100%] reveal [--reveal-duration:0.6s,0.7s,0.7s,1.4s] motion-safe:[clip-path:inset(0_0_0_0)] phone:top-[calc(100%-var(--sleeve)*var(--dot)/2-3*var(--dot))] phone:right-[calc(var(--gutter)+(var(--sleeve)+var(--peek))*var(--dot))] unrevealed:[clip-path:inset(0_100%_0_0)]"
+      aria-hidden="true"
+    >
+      <span class="absolute inset-y-0 left-0 w-0 bg-paper" data-progress></span>
+    </span>
+    <p
+      class="absolute right-[calc(5*var(--dot))] bottom-[calc(50%+3*var(--dot))] left-(--gutter) flex flex-wrap items-baseline justify-end gap-x-[clamp(12px,1.4vw,24px)] pb-[clamp(8px,0.8vw,14px)] text-right text-paper reveal [--delay:0.9s] phone:static phone:col-span-2 phone:justify-start phone:pt-2 phone:pb-6 phone:pl-(--gutter) phone:text-left unrevealed:translate-y-2 unrevealed:opacity-0"
+    >
+      <a
+        class="font-serif text-[clamp(28px,3vw,56px)]/none tracking-[-0.02em] hover:underline hover:decoration-1 focus-visible:underline"
+        href={listening.href}
+        >{listening.track}<span
+          class="ml-[0.3em] text-[0.45em] text-muted"
+          lang="ja">{listening.original}</span
+        ></a
+      >
+      <span class="text-[15px] text-muted">
+        by {listening.artist}<span class="phone:hidden"
+          >, what I’m listening to lately</span
+        >
+      </span>
+      <span
+        class="font-mono text-[13px] text-muted tabular-nums"
+        aria-hidden="true"
+        ><span data-elapsed>0:00</span> / {
+          formatDuration(listening.seconds)
+        }</span
+      >
+    </p>
+  </div>
+  <a
+    class="group relative block w-[calc((var(--sleeve)+var(--peek))*var(--dot))] reveal [--delay:1.1s] phone:col-2 unrevealed:-translate-x-6 unrevealed:opacity-0"
+    href={listening.href}
+    aria-label={`${listening.track} by ${listening.artist}, on Apple Music`}
+  >
+    <figure
+      class="absolute top-0 left-[calc(var(--peek)*var(--dot))] w-[calc(var(--sleeve)*var(--dot))] transition-[translate] duration-500 ease-soft group-hover:translate-x-[calc(12*var(--dot))] group-focus-visible:translate-x-[calc(12*var(--dot))]"
+      aria-hidden="true"
+      data-record
+    >
+      <DitherFrame src="/dither/record.png" size={100} />
+    </figure>
+    {
+      sleeve ? (
+        <picture>
+          {smallSleeve && (
+            <source media="(max-width: 479px)" srcset={smallSleeve.src} />
+          )}
+          <img
+            class="relative block size-[calc(var(--sleeve)*var(--dot))] bg-charcoal [image-rendering:pixelated]"
+            src={sleeve.src}
+            alt=""
+            width={sleeve.width}
+            height={sleeve.height}
+          />
+        </picture>
+      ) : (
+        <span class="relative block size-[calc(var(--sleeve)*var(--dot))] border border-rule bg-charcoal" />
+      )
+    }
+  </a>
+</div>
+
+<script>
+  import { formatDuration } from "../../lib/clock";
+  import { mountDitherCanvas } from "../../lib/dither/canvas";
+  import { CHARCOAL, CLEAR, MUTED, opaque } from "../../lib/dither/palette";
+  import { mountPosters } from "../../lib/dither/poster";
+  import { angleAt, renderRecord } from "../../lib/dither/record";
+  import { reducedMotion } from "../../lib/motion";
+
+  mountPosters("[data-poster]");
+
+  const listening = document.querySelector<HTMLElement>("[data-listening]");
+  const elapsed = listening?.querySelector("[data-elapsed]");
+  const progress = listening?.querySelector<HTMLElement>("[data-progress]");
+  const length = Number(listening?.dataset.seconds) || 1;
+  if (listening && elapsed && progress && !reducedMotion().matches) {
+    let seconds = 0;
+    let playing = false;
+    new IntersectionObserver(([entry]) => {
+      playing = entry.isIntersecting;
+    }).observe(listening);
+    setInterval(() => {
+      if (!playing || document.hidden) return;
+      seconds = (seconds + 1) % length;
+      elapsed.textContent = formatDuration(seconds);
+      progress.style.width = `${(seconds / length) * 100}%`;
+    }, 1000);
+  }
+
+  mountDitherCanvas(
+    "[data-record]",
+    (size, seconds) => renderRecord(size, angleAt(seconds)),
+    [CLEAR, opaque(CHARCOAL), opaque(MUTED)],
+  );
+</script>

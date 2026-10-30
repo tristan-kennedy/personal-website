@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import SiteNav from "./SiteNav.astro";
 
 interface Props {
   title: string;
@@ -12,12 +13,7 @@ const { title, note, nav } = Astro.props;
 
 <Layout title={title}>
   <div class="px-(--gutter) pb-20 paper">
-    <nav
-      class="flex flex-wrap items-center justify-between gap-x-8 gap-y-4 py-6 text-[15px] [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center [&_a]:gap-3 [&_a]:underline"
-      aria-label="Site"
-    >
-      <a href="/">Tristan Kennedy</a><a href={nav.href}>{nav.label}</a>
-    </nav>
+    <SiteNav link={nav} />
     <header
       class="flex flex-wrap items-baseline justify-between gap-x-12 gap-y-5 pt-10 pb-18 phone:block phone:pt-8 phone:pb-12"
     >

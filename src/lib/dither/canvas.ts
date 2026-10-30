@@ -1,4 +1,7 @@
-type Rgba = [number, number, number, number];
+import { reducedMotion } from "../motion.ts";
+import { emptyGrid, fitGrid, sizeCanvas } from "./fit.ts";
+import type { Rgba } from "./palette.ts";
+
 type Render = (size: number, seconds: number) => Uint8Array;
 
 export function mountDitherCanvas(
@@ -11,10 +14,9 @@ export function mountDitherCanvas(
   const frame = canvas?.parentElement;
   const context = canvas?.getContext("2d");
   if (!figure || !canvas || !frame || !context) return;
-  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const motion = reducedMotion();
 
-  let cols = 0;
-  let rows = 0;
+  let grid = emptyGrid();
   let seconds = 0;
   let image: ImageData;
   let visible = false;
@@ -22,29 +24,17 @@ export function mountDitherCanvas(
   let last = 0;
 
   const draw = () => {
-    const pixels = render(cols, seconds);
+    const pixels = render(grid.cols, seconds);
     for (let i = 0; i < pixels.length; i++)
       image.data.set(palette[pixels[i]], i * 4);
     context.putImageData(image, 0, 0);
   };
   const resize = () => {
-    const dot =
-      parseFloat(getComputedStyle(frame).getPropertyValue("--dot")) || 3;
-    const nextCols = Math.floor(frame.clientWidth / dot);
-    const nextRows = Math.floor(frame.clientHeight / dot);
-    if (
-      (nextCols === cols && nextRows === rows) ||
-      nextCols < 16 ||
-      nextRows < 8
-    )
-      return;
-    cols = nextCols;
-    rows = nextRows;
-    canvas.width = cols;
-    canvas.height = rows;
-    canvas.style.width = `${cols * dot}px`;
-    canvas.style.height = `${rows * dot}px`;
-    image = context.createImageData(cols, rows);
+    const next = fitGrid(frame, grid, { minRows: 8 });
+    if (!next) return;
+    grid = next;
+    sizeCanvas(canvas, grid);
+    image = context.createImageData(grid.cols, grid.rows);
     draw();
     figure.dataset.enhanced = "true";
   };
@@ -58,7 +48,7 @@ export function mountDitherCanvas(
   };
   const sync = () => {
     cancelAnimationFrame(frameId);
-    if (visible && cols && !document.hidden && !reducedMotion.matches) {
+    if (visible && grid.cols && !document.hidden && !motion.matches) {
       last = performance.now();
       frameId = requestAnimationFrame(step);
     }
@@ -73,5 +63,5 @@ export function mountDitherCanvas(
     sync();
   }).observe(figure);
   document.addEventListener("visibilitychange", sync);
-  reducedMotion.addEventListener("change", sync);
+  motion.addEventListener("change", sync);
 }
