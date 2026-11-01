@@ -163,5 +163,6 @@ Workers Builds runs `pnpm build`, then `wrangler deploy` serves `dist/` per `wra
 
 Internal links end in a slash (`/index/`, `/about/`, `/index/<slug>/`), and Astro's
 `trailingSlash: "always"` holds dev to the same rule. Cloudflare treats `/index` as the
-root `index.html` and sends it to the homepage, while `/index/` serves the Index. Other
-pages only cost an extra redirect without the slash.
+root `index.html` and sends it to the homepage, while `/index/` serves the Index, so
+`public/_redirects` sends bare `/index` there for anyone typing it by hand. Other pages
+only cost an extra redirect without the slash.

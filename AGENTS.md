@@ -21,8 +21,8 @@ Tristan Kennedy's personal archive: Astro, Tailwind CSS v4, static on Cloudflare
 - Don't design entry pages, restore rejected ideas, or change an entry's Index scene without working through it with the owner section by section.
 - Call catalog records "entries" and their destinations "pages", never "worlds".
 - Don't invent content (trips, photos, stories, metrics).
-- No redirects, compatibility aliases, route-existence checks, or publication filters.
+- No redirects for retired pages, compatibility aliases, route-existence checks, or publication filters.
 - No tests unless asked. Run `pnpm build` and check the pages in a browser.
 - Keep changes scoped and preserve unrelated work.
-- Internal links end in a slash. On Cloudflare, `/index` without one goes to the homepage.
+- Internal links end in a slash. Cloudflare treats bare `/index` as the homepage, so `public/_redirects` sends it to `/index/`.
 - Commit subjects are public: the About log and the colophon show them. Make them short, plain-spoken, and a little fun, the way a person would say it. No forced jokes, puns, emoji, or dev-humor references. Example: "Taught the favorites to stand up straight on phones."

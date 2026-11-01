@@ -68,7 +68,7 @@ themed identity.
   and page live in the same folder, both optional.
 - No entry descriptions, fixed content types, or publication statuses. Every record
   is listed and has a page at `/index/<slug>`, a placeholder until it has its own. No
-  route-existence checks, redirects, or compatibility aliases.
+  route-existence checks, redirects for retired pages, or compatibility aliases.
 - The homepage takes four picks (by `featured`) that exclude the newest entry, plus
   the three newest entries for Recents, all from the same records as the index.
 - Catalog records are "entries"; their destinations are "pages". The owner rejected
