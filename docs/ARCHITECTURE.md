@@ -160,3 +160,8 @@ pnpm build   # résumé, full git history, astro build → dist/
 ```
 
 Workers Builds runs `pnpm build`, then `wrangler deploy` serves `dist/` per `wrangler.jsonc`.
+
+Internal links end in a slash (`/index/`, `/about/`, `/index/<slug>/`), and Astro's
+`trailingSlash: "always"` holds dev to the same rule. Cloudflare treats `/index` as the
+root `index.html` and sends it to the homepage, while `/index/` serves the Index. Other
+pages only cost an extra redirect without the slash.

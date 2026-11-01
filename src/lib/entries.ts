@@ -5,7 +5,7 @@ export type Entry = Awaited<ReturnType<typeof getEntries>>[number];
 export async function getEntries() {
   const entries = await getCollection("entries");
   return entries
-    .map((entry) => ({ ...entry, url: `/index/${entry.id}` }))
+    .map((entry) => ({ ...entry, url: `/index/${entry.id}/` }))
     .sort(
       (a, b) =>
         Date.parse(b.data.date) - Date.parse(a.data.date) ||

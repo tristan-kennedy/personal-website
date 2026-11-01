@@ -12,7 +12,7 @@ export const now = {
     artwork:
       "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/80/66/76/806676af-84ea-1f93-c6f2-7e6ef41c637f/4580789766954.png/600x600bb.jpg",
   },
-  workingOn: { text: "This website", href: "/index/this-website" },
+  workingOn: { text: "This website", href: "/index/this-website/" },
 };
 
 export const moves = [

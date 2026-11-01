@@ -22,7 +22,7 @@ export function mountPeeks(root: HTMLElement) {
     const link = row.querySelector("a")!;
     const accent = link.dataset.colour;
     const load =
-      effects[`../entries/${link.pathname.split("/").pop()}/effect.ts`];
+      effects[`../entries/${link.pathname.split("/").at(-2)}/effect.ts`];
     const effect = load ? (await load()).default : accent ? splat : undefined;
     await effect?.prepare?.();
     if (!effect || ticket !== opening) return;

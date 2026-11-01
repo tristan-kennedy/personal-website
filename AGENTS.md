@@ -24,4 +24,5 @@ Tristan Kennedy's personal archive: Astro, Tailwind CSS v4, static on Cloudflare
 - No redirects, compatibility aliases, route-existence checks, or publication filters.
 - No tests unless asked. Run `pnpm build` and check the pages in a browser.
 - Keep changes scoped and preserve unrelated work.
+- Internal links end in a slash. On Cloudflare, `/index` without one goes to the homepage.
 - Commit subjects are public: the About log and the colophon show them. Make them short, plain-spoken, and a little fun, the way a person would say it. No forced jokes, puns, emoji, or dev-humor references. Example: "Taught the favorites to stand up straight on phones."
