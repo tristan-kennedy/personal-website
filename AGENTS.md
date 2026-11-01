@@ -7,7 +7,7 @@ Tristan Kennedy's personal archive: Astro, Tailwind CSS v4, static on Cloudflare
 - `docs/PRODUCT.md`: what the site is for, the content model, and constraints.
 - `docs/DESIGN.md`: the visual system. Read it before any interface change.
 - `docs/ARCHITECTURE.md`: file layout, packages, and styling conventions.
-- `.impeccable/surfaces/src-pages-index-astro.md`: the homepage's composition and what was rejected.
+- `.impeccable/surfaces/`: each page's composition and what was rejected (`src-pages-index-astro.md` is the homepage, `src-pages-index-index-astro.md` is the Index, `src-pages-about-astro.md` is About).
 - Impeccable lives in `.agents/skills/impeccable/` (pinned by `skills-lock.json`, defaults in `.impeccable/config.json`). Follow its SKILL.md for design work. The owner's explicit instructions take precedence.
 
 ## Rules
@@ -16,8 +16,9 @@ Tristan Kennedy's personal archive: Astro, Tailwind CSS v4, static on Cloudflare
 - Keep comments to a minimum. Name things well instead.
 - Personal details live in `src/lib/site.ts`. Never hard-code them elsewhere.
 - Every dithered piece uses the shared threshold, sun, and `--dot`.
+- Everything for one entry lives in `src/entries/<slug>/`: `entry.json`, `effect.ts`, `Page.astro`, and its assets.
 - Keep keyboard focus, reduced-motion paths, and content before JavaScript working.
-- Don't design entry pages or restore the rejected pages and hover previews without working through them with the owner section by section.
+- Don't design entry pages, restore rejected ideas, or change an entry's Index scene without working through it with the owner section by section.
 - Call catalog records "entries" and their destinations "pages", never "worlds".
 - Don't invent content (trips, photos, stories, metrics).
 - No redirects, compatibility aliases, route-existence checks, or publication filters.

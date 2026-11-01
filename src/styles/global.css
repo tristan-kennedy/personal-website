@@ -218,6 +218,13 @@
   }
 }
 
+@utility charcoal-halo {
+  text-shadow:
+    0 0 2px var(--color-charcoal),
+    0 0 4px var(--color-charcoal),
+    0 0 8px var(--color-charcoal);
+}
+
 @utility dither-fill {
   background: repeating-conic-gradient(currentColor 0 25%, transparent 0 50%) 0
     0 / calc(var(--dot) * 2) calc(var(--dot) * 2);

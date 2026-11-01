@@ -11,7 +11,7 @@ pnpm build
 Cloudflare Workers Builds runs `pnpm build` and serves `dist/` (see `wrangler.jsonc`). The Typst résumé
 in `resume/` is compiled to `/resume.pdf` during the build.
 
-Entries are JSON files in `src/catalog/`:
+Each entry is a folder in `src/entries/`, with its metadata in `entry.json`:
 
 ```json
 {

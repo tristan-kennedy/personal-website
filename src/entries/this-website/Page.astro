@@ -1,0 +1,12 @@
+---
+import EntryStub from "../../components/EntryStub.astro";
+import type { Entry } from "../../lib/entries";
+
+interface Props {
+  entry: Entry;
+}
+
+const { entry } = Astro.props;
+---
+
+<EntryStub entry={entry} />

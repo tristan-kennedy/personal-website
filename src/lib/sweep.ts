@@ -1,6 +1,8 @@
 import { threshold } from "./dither/index.ts";
 import { readDot } from "./dither/fit.ts";
-import { CHARCOAL } from "./dither/palette.ts";
+import { WIPE, fromHex } from "./dither/palette.ts";
+import { splotch } from "./dither/splotch.ts";
+import { hash } from "./hash.ts";
 import { reducedMotion } from "./motion.ts";
 
 const COVER = 320;
@@ -8,8 +10,11 @@ const CLEAR = 480;
 const STALLED = 4000;
 const LONGEST_FRAME = 1000 / 30;
 const KEY = "sweep";
+const COLOUR_KEY = "sweep-colour";
+const SPREAD_KEY = "sweep-spread";
 
 type Direction = 1 | -1;
+type Spread = { x: number; y: number; seed: number; opening?: boolean };
 
 type Curtain = ReturnType<typeof curtain>;
 
@@ -18,7 +23,13 @@ let leaving: (Curtain & { stalled: number }) | undefined;
 const easeIn = (t: number) => t * t * t;
 const easeOut = (t: number) => 1 - (1 - t) ** 3;
 
-function curtain(direction: Direction) {
+function forget() {
+  sessionStorage.removeItem(KEY);
+  sessionStorage.removeItem(COLOUR_KEY);
+  sessionStorage.removeItem(SPREAD_KEY);
+}
+
+function curtain(direction: Direction, colour = WIPE, spread?: Spread) {
   const root = document.documentElement;
   const dot = readDot(root);
   const { clientWidth, clientHeight } = root;
@@ -34,12 +45,16 @@ function curtain(direction: Direction) {
 
   const context = canvas.getContext("2d")!;
   const image = context.createImageData(cols, rows);
-  const order = new Float32Array(cols * rows);
+  const order = spread
+    ? splotch(cols, rows, spread.x / dot, spread.y / dot, spread.seed)
+    : new Float32Array(cols * rows);
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
       const across = direction === 1 ? x / cols : 1 - x / cols;
-      order[y * cols + x] = across * 0.6 + threshold(x, y) * 0.4;
-      image.data.set(CHARCOAL, (y * cols + x) * 4);
+      const i = y * cols + x;
+      if (!spread) order[i] = across * 0.6 + threshold(x, y) * 0.4;
+      else if (spread.opening) order[i] = 1 - order[i];
+      image.data.set(colour, i * 4);
     }
   }
 
@@ -84,18 +99,33 @@ function sweepable(event: MouseEvent) {
   if (/\.[a-z0-9]+$/i.test(url.pathname)) return;
   if (url.pathname === location.pathname && url.search === location.search)
     return;
-  return url;
+  return { url, link };
 }
 
-async function leave(url: URL) {
+async function leave(url: URL, link: HTMLAnchorElement, event: MouseEvent) {
   const direction: Direction = url.pathname === "/" ? -1 : 1;
+  const accent = link.dataset.colour;
+  const [x, y] = link.dataset.origin?.split(",").map(Number) ?? [
+    event.clientX,
+    event.clientY,
+  ];
+  const spread = accent ? { x, y, seed: hash(url.pathname) } : undefined;
+  forget();
   sessionStorage.setItem(KEY, String(direction));
-  const cover = curtain(direction);
+  if (accent) {
+    sessionStorage.setItem(COLOUR_KEY, accent);
+    sessionStorage.setItem(SPREAD_KEY, JSON.stringify(spread));
+  }
+  const cover = curtain(
+    direction,
+    accent ? fromHex(accent) : undefined,
+    spread,
+  );
   leaving = { ...cover, stalled: 0 };
   await play(COVER, (t) => cover.draw(easeIn(t)));
   location.href = url.href;
   leaving.stalled = window.setTimeout(() => {
-    sessionStorage.removeItem(KEY);
+    forget();
     leaving = undefined;
     uncover(cover);
   }, STALLED);
@@ -112,19 +142,26 @@ async function uncover({ canvas, draw }: Curtain) {
 
 function arrive() {
   const direction = Number(document.documentElement.dataset.sweep);
-  sessionStorage.removeItem(KEY);
+  const colour = sessionStorage.getItem(COLOUR_KEY);
+  const spread = sessionStorage.getItem(SPREAD_KEY);
+  forget();
   if (direction !== 1 && direction !== -1) return;
-  uncover(curtain(-direction as Direction));
+  uncover(
+    curtain(
+      -direction as Direction,
+      colour ? fromHex(colour) : undefined,
+      spread ? { ...(JSON.parse(spread) as Spread), opening: true } : undefined,
+    ),
+  );
 }
 
 function returned(event: PageTransitionEvent) {
   if (!event.persisted) return;
-  sessionStorage.removeItem(KEY);
-  const cover = leaving;
+  forget();
+  if (!leaving) return;
+  clearTimeout(leaving.stalled);
+  leaving.canvas.remove();
   leaving = undefined;
-  if (cover) clearTimeout(cover.stalled);
-  if (reducedMotion().matches) cover?.canvas.remove();
-  else uncover(cover ?? curtain(1));
 }
 
 export function mountSweep() {
@@ -132,9 +169,9 @@ export function mountSweep() {
   addEventListener("pageshow", returned);
   document.addEventListener("click", (event) => {
     if (reducedMotion().matches) return;
-    const url = sweepable(event);
-    if (!url) return;
+    const target = sweepable(event);
+    if (!target) return;
     event.preventDefault();
-    if (!leaving) leave(url);
+    if (!leaving) leave(target.url, target.link, event);
   });
 }

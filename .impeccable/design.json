@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-29T22:38:24.418Z",
+  "generatedAt": "2026-10-31T00:00:00.000Z",
   "title": "Design System: Tristan Kennedy",
   "extensions": {
     "colorMeta": {
@@ -101,6 +101,10 @@
           "oklch(84% 0.008 95)",
           "oklch(95% 0.008 95)"
         ]
+      },
+      "wipe": {
+        "displayName": "Wipe",
+        "role": "Every plain page transition"
       }
     },
     "typographyMeta": {
@@ -232,14 +236,14 @@
   ],
   "narrative": {
     "northStar": "The Printed Archive",
-    "overview": "Typography carries the identity. Heavy condensed caps and an upright serif give\nordinary titles their own compositions, while quiet body copy and small labels keep\nthe reading path clear. Warm charcoal and paper surfaces sit beneath dramatic\nchanges in scale and alignment. Character comes from the material Tristan\npublishes, a few dithered images, and small printed-matter details such as a\ncolophon, a ruled frame, and a terminal listing. It never comes from a themed\ncostume.\n\nThe homepage and index share this system. Entry pages own their own visual systems\nand are designed with the owner one section at a time.",
+    "overview": "Typography carries the identity. Heavy condensed caps and an upright serif give\nordinary titles their own compositions, while quiet body copy and small labels keep\nthe reading path clear. Warm charcoal and paper surfaces sit beneath dramatic\nchanges in scale and alignment. Character comes from the material Tristan\npublishes, a few dithered images, and small printed-matter details such as a\ncolophon, a ruled frame, and a terminal listing. It never comes from a themed\ncostume.\n\nThe homepage, About, and the Index share this system. Colour belongs to entries: the\nIndex stays monochrome until a row opens its own small scene. Entry pages own their\nown visual systems and are designed with the owner one section at a time.",
     "keyCharacteristics": [
       "Dramatic scale contrast between Barlow Condensed caps and upright Marcellus.",
       "Two surfaces, charcoal and paper, with monochrome resting states.",
       "Fluid gutters, full width, one four-column grid, controlled asymmetry.",
       "Flat, square geometry. Rules mark meaningful boundaries.",
       "Dithered imagery that shares one dot, one pattern, and one sun.",
-      "Motion that is mostly sideways, plays once, and disappears with reduced motion."
+      "Motion that is mostly sideways, plays once, and disappears with reduced motion. Index scenes are the deliberate exception: they loop while their row is active."
     ],
     "rules": [
       {

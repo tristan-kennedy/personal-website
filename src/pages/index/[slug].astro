@@ -1,0 +1,27 @@
+---
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+import EntryStub from "../../components/EntryStub.astro";
+import { getEntries, type Entry } from "../../lib/entries";
+
+interface Props {
+  entry: Entry;
+}
+
+export async function getStaticPaths() {
+  const entries = await getEntries();
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const pages = import.meta.glob<AstroComponentFactory>(
+  "../../entries/*/Page.astro",
+  { eager: true, import: "default" },
+);
+
+const { entry } = Astro.props;
+const Page = pages[`../../entries/${entry.id}/Page.astro`] ?? EntryStub;
+---
+
+<Page entry={entry} />

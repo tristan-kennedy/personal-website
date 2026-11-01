@@ -3,7 +3,11 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 const entries = defineCollection({
-  loader: glob({ pattern: "*.json", base: "./src/catalog" }),
+  loader: glob({
+    pattern: "*/entry.json",
+    base: "./src/entries",
+    generateId: ({ entry }) => entry.split("/")[0],
+  }),
   schema: z.object({
     title: z.string(),
     date: z
@@ -17,6 +21,10 @@ const entries = defineCollection({
     link: z.url().optional(),
     readingTime: z.string().optional(),
     featured: z.number().int().positive().optional(),
+    colour: z
+      .string()
+      .regex(/^#[0-9a-f]{6}$/i)
+      .optional(),
   }),
 });
 

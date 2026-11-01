@@ -5,8 +5,14 @@ export const CHARCOAL: Rgb = [0x29, 0x28, 0x24];
 export const PAPER: Rgb = [0xf2, 0xf0, 0xe9];
 export const MUTED: Rgb = [0xb8, 0xb5, 0xaa];
 export const RULE_ON_PAPER: Rgb = [0xc9, 0xc6, 0xbb];
+export const WIPE: Rgb = [0x55, 0x53, 0x4b];
 
 export const CLEAR: Rgba = [0, 0, 0, 0];
 export const opaque = ([r, g, b]: Rgb): Rgba => [r, g, b, 255];
 export const hex = (rgb: Rgb) =>
   `#${rgb.map((c) => c.toString(16).padStart(2, "0")).join("")}`;
+export const fromHex = (value: string): Rgb => [
+  parseInt(value.slice(1, 3), 16),
+  parseInt(value.slice(3, 5), 16),
+  parseInt(value.slice(5, 7), 16),
+];

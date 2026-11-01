@@ -1,0 +1,75 @@
+---
+import type { Entry } from "../../lib/entries";
+import { formatEntryDate } from "../../lib/entries";
+import type { Place, Tier } from "../../lib/scatter";
+import EntryMeta from "./EntryMeta.astro";
+
+interface Props {
+  entry: Entry;
+  tier: Tier;
+  place: Place;
+}
+
+const { entry, tier, place } = Astro.props;
+const { title, date, keywords, colour } = entry.data;
+const search = [title, ...keywords, date, formatEntryDate(date)]
+  .join(" ")
+  .toLowerCase();
+const longestWord = Math.max(...title.split(" ").map((word) => word.length));
+const style = [
+  "--size: " + place.size + "cqi",
+  "--w: " + longestWord,
+  "--offset: " + place.offset + "cqi",
+  "--ink: " + (colour ?? "var(--color-dim)"),
+].join("; ");
+const face = place.flipped
+  ? "font-serif tracking-[-0.03em] [--fs:max(18px,var(--size))] phone:[--fs:max(18px,min(calc(var(--size)*1.9),calc(0.8*216cqi/var(--w))))]"
+  : "font-display font-extrabold tracking-[-0.035em] uppercase [--fs:max(18px,var(--size))] phone:[--fs:max(18px,min(calc(var(--size)*1.9),calc(0.8*240cqi/var(--w))))]";
+---
+
+<li
+  class="relative [@media(hover:hover)]:pointer-events-none"
+  style={style}
+  data-row
+  data-reveal={tier === "poster" ? "" : undefined}
+  data-search={search}
+>
+  <a
+    class:list={[
+      "group relative z-1 block text-(length:--fs) wrap-anywhere",
+      face,
+      place.flipped
+        ? "pr-(--offset) text-right phone:pr-0"
+        : "pl-(--offset) phone:pl-0",
+      tier === "poster" &&
+        "py-[clamp(10px,1.4vw,26px)] leading-[0.92] reveal phone:py-5 unrevealed:opacity-0",
+      tier === "poster" &&
+        (place.flipped
+          ? "phone:pl-9 unrevealed:translate-x-12"
+          : "phone:pr-9 unrevealed:-translate-x-12"),
+      tier === "title" &&
+        "py-[clamp(8px,0.9vw,16px)] leading-[1.04] phone:py-3",
+      tier === "scrap" && "min-h-11 py-1.5 leading-[1.04]",
+      tier === "scrap" && place.quiet && "text-muted",
+    ]}
+    href={entry.url}
+    data-colour={colour}
+  >
+    <span
+      class="pointer-events-none absolute inset-0 [translate:0.02em_0.03em] [padding:inherit] opacity-0 [--color-dim:var(--ink)] [transition:opacity_0.3s_ease,translate_0.45s_var(--ease-soft)] in-data-active:[translate:0.06em_0.07em] in-data-active:opacity-100"
+      aria-hidden="true"
+    >
+      <span class="dither-text">{title}</span>
+      <span class="invisible"
+        ><EntryMeta entry={entry} tier={tier} place={place} /></span
+      >
+    </span>
+    <h2
+      class="pointer-events-auto relative z-1 inline font-[inherit] text-[length:inherit]/[inherit] tracking-[inherit] [-webkit-text-stroke:0.05em_var(--color-charcoal)] [paint-order:stroke_fill] [transition:color_0.3s_ease] in-data-dimmed:not-in-data-active:text-(--dimmed)"
+      data-title
+    >
+      {title}
+    </h2>
+    <EntryMeta entry={entry} tier={tier} place={place} />
+  </a>
+</li>

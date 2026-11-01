@@ -2,19 +2,20 @@
 interface Props {
   src: string;
   size: number;
+  height?: number;
 }
 
-const { src, size } = Astro.props;
+const { src, size, height = size } = Astro.props;
 const layer = "absolute top-0 left-0 size-full [image-rendering:pixelated]";
 ---
 
-<div class="relative aspect-square">
+<div class="relative" style={`aspect-ratio: ${size} / ${height}`}>
   <img
     class:list={[layer, "in-data-[enhanced=true]:invisible"]}
     src={src}
     alt=""
     width={size}
-    height={size}
+    height={height}
   />
   <canvas class={layer}></canvas>
 </div>

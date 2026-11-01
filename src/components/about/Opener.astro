@@ -12,10 +12,10 @@ import { about } from "../../lib/site";
 >
   <SiteNav link={{ href: "/index", label: "Index" }} />
   <div
-    class="grid grid-cols-4 items-end pt-[clamp(16px,3vw,56px)] phone:grid-cols-1"
+    class="grid min-h-[calc(100svh-100px-0.66*clamp(100px,min(14vw,23svh),270px))] grid-cols-4 items-end phone:min-h-[calc(100svh-104px-16vw)] phone:grid-cols-1 phone:content-end phone:pt-4"
   >
     <figure
-      class="col-[3/5] row-1 mb-[clamp(6px,0.8vw,14px)] ml-[calc(var(--col-inset)*-3)] reveal [--delay:0.1s] phone:col-1 phone:mr-[-14vw] phone:ml-[22vw] unrevealed:opacity-0"
+      class="col-[3/5] row-1 mb-[clamp(6px,0.8vw,14px)] ml-[calc(var(--col-inset)*-3)] w-[min(calc(100%+var(--col-inset)*3),calc(100svh-250px))] justify-self-end reveal [--delay:0.1s] phone:col-1 phone:mr-[-14vw] phone:ml-[22vw] phone:w-auto phone:justify-self-stretch unrevealed:opacity-0"
       aria-hidden="true"
       data-portrait
     >
@@ -30,11 +30,11 @@ import { about } from "../../lib/site";
         aria-label="Me, at length."
       >
         <span
-          class="block font-serif text-[clamp(150px,23vw,440px)]/[0.78] tracking-[-0.04em] phone:text-[52vw]"
+          class="block font-serif text-[clamp(150px,min(23vw,38svh),440px)]/[0.78] tracking-[-0.04em] phone:text-[52vw]"
           aria-hidden="true">Me,</span
         >
         <span
-          class="absolute top-[64%] left-[50%] [transform:rotate(-4deg)] font-script text-[clamp(100px,14vw,270px)]/none whitespace-nowrap text-charcoal paper-outline-[clamp(4px,0.5vw,8px)] phone:top-[76%] phone:left-[22%] phone:text-[21vw]"
+          class="absolute top-[64%] left-[50%] [transform:rotate(-4deg)] font-script text-[clamp(100px,min(14vw,23svh),270px)]/none whitespace-nowrap text-charcoal paper-outline-[clamp(4px,0.5vw,8px)] phone:top-[76%] phone:left-[22%] phone:text-[21vw]"
           aria-hidden="true">at length</span
         >
       </h1>
@@ -44,7 +44,7 @@ import { about } from "../../lib/site";
     </div>
   </div>
   <div
-    class="mt-[clamp(48px,6vw,112px)] grid grid-cols-4 items-start gap-y-6 phone:mt-[16vw] phone:grid-cols-1"
+    class="mt-[clamp(96px,10vw,176px)] grid grid-cols-4 items-start gap-y-6 phone:mt-[28vw] phone:grid-cols-1"
   >
     <Blurb
       class="col-[3/5] pl-(--col-inset) reveal [--delay:0.2s] phone:col-1 phone:pl-0 unrevealed:translate-x-6 unrevealed:opacity-0"

@@ -2,7 +2,14 @@
 version: 1
 slug: src-pages-about-astro
 primary_target: src/pages/about.astro
-related_targets: [src/components/about/, src/lib/site.ts, src/lib/history.ts, src/lib/dither/, scripts/dither.mjs]
+related_targets:
+  [
+    src/components/about/,
+    src/lib/site.ts,
+    src/lib/history.ts,
+    src/lib/dither/,
+    scripts/dither.mjs,
+  ]
 ---
 
 # About
@@ -51,7 +58,7 @@ SURFACES: Paper everywhere except the Media band (charcoal) and the footer.
   rule, the way "briefly" crosses "Me," on the homepage. The rule runs to the
   right edge. The portrait (charcoal dither on a paper silhouette, cut at the
   shoulders) stands on the rule from columns 3–4, its head rising above the top
-  of "Me,". Below, one blurb in columns 3–4, under the portrait like a caption.
+  of "Me,". The lockup is locked to the foot of the first screen, like the Index, leaving room for the script's tail, and the portrait and heading are capped by the screen's height so it fits on laptops. The blurb starts past the fold. Below, one blurb in columns 3–4, under the portrait like a caption.
   On phones the portrait goes full width beneath "Me," and the blurb follows.
 - **Where.** The coordinates from `site.ts` set huge in Marcellus, over a
   dithered map of the eastern US in muted ink (`src/lib/dither/where.ts` holds the
@@ -102,8 +109,10 @@ SURFACES: Paper everywhere except the Media band (charcoal) and the footer.
   wrapped into a column too narrow to read), and the line still runs along the
   edge into it. Rejected: a record and
   tonearm beside a plain sentence (clip art), a large sleeve with the track set
-  huge inside the section (too much room for one song), and a small row inside
-  the section (the line wants to be the boundary). Static frame
+  huge inside the section (too much room for one song), a small row inside
+  the section (the line wants to be the boundary), and moving Media onto paper with
+  charcoal-ink posters and the music on the poster grid (tried and undone 2026-10-31;
+  the charcoal band looks better). Static frame
   `public/dither/record.png`; reduced motion keeps the record and clock still.
   If the feed or artwork fails at build, the section keeps what it can; the
   build never fails over it.
@@ -132,7 +141,7 @@ SURFACES: Paper everywhere except the Media band (charcoal) and the footer.
 Phones keep every idea at full strength without letting the page sprawl:
 section headings at 16vw, the coordinates at 19vw, and "Me," at 52vw with "at
 length" hanging below it (the heavy rule is dropped; it was a stub at that
-width).  Each job in
+width). Each job in
 the terminal listing is two lines (role; company with the dates on the
 right), and the stop list is tighter. MEDIA. runs in caps across the top of
 the dark room, and the Where map is swapped for its phone version.

@@ -1,0 +1,53 @@
+---
+import Layout from "../layouts/Layout.astro";
+import type { Entry } from "../lib/entries";
+
+interface Props {
+  entry: Entry;
+}
+
+const { entry } = Astro.props;
+const { title, date, keywords, link } = entry.data;
+const line = "font-mono text-[clamp(14px,1.1vw,18px)]/[2] text-muted";
+---
+
+<Layout title={title}>
+  <article
+    class="flex min-h-dvh flex-col justify-between gap-16 bg-charcoal px-(--gutter) py-(--section-space) text-paper"
+  >
+    <p class={line}>
+      <a
+        class="text-paper link phone:inline-flex phone:min-h-11 phone:items-center"
+        href="/index"
+      >
+        $ cd ..
+      </a>
+    </p>
+    <div>
+      <h1
+        class="font-display text-[clamp(64px,14vw,336px)]/[0.9] font-extrabold tracking-[-0.035em] wrap-anywhere uppercase"
+      >
+        {title}
+      </h1>
+      <p class:list={[line, "mt-6"]}>
+        <time datetime={date}>{date}</time>
+        {keywords.length > 0 && ` ${keywords.join(" ").toLowerCase()}`}
+      </p>
+    </div>
+    <div class={line}>
+      <p>Nothing here yet.</p>
+      {
+        link && (
+          <p>
+            <a
+              class="text-paper link phone:inline-flex phone:min-h-11 phone:items-center"
+              href={link}
+            >
+              $ open {link.replace(/^https?:\/\//, "")}
+            </a>
+          </p>
+        )
+      }
+    </div>
+  </article>
+</Layout>

@@ -37,7 +37,7 @@ const pageTitle = home ? title : `${title} — Tristan Kennedy`;
         position: fixed;
         inset: 0;
         z-index: 1000;
-        background: #292824;
+        background: var(--sweep-colour, #55534b);
       }
       html[data-sweep] * {
         animation-play-state: paused !important;
@@ -48,9 +48,16 @@ const pageTitle = home ? title : `${title} — Tristan Kennedy`;
         const returning =
           performance.getEntriesByType("navigation")[0]?.type ===
           "back_forward";
-        const sweep = sessionStorage.getItem("sweep") || (returning && "-1");
-        if (sweep && !matchMedia("(prefers-reduced-motion: reduce)").matches)
+        const sweep = !returning && sessionStorage.getItem("sweep");
+        const colour = sessionStorage.getItem("sweep-colour");
+        if (sweep && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
           document.documentElement.dataset.sweep = sweep;
+          if (colour)
+            document.documentElement.style.setProperty(
+              "--sweep-colour",
+              colour,
+            );
+        }
       } catch {}
     </script>
   </head>
