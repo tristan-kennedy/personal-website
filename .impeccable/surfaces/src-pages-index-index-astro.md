@@ -8,7 +8,6 @@ related_targets:
     src/entries/,
     src/lib/peek.ts,
     src/lib/scatter.ts,
-    src/lib/index-bar.ts,
     src/lib/dither/effect.ts,
     src/lib/sweep.ts,
   ]
@@ -56,14 +55,14 @@ and let its colour fill the screen.
   longest word inside the row, with vertical keywords on the biggest rows. With a mouse, only the text
   hovers and clicks, so moving across the page stays calm. On touch screens the whole
   row is the tap target.
+- **Rhythm.** The space around each row is 36% of its type size (20px to 76px), so big
+  rows breathe and the oldest tighten with the curve. The list opens with one section
+  space and closes with one and a half.
 - **Time.** One unbroken scroll. There are no year headings or dividers; each row's
   date carries the time.
-- **Bar.** Pinned to the foot of the list and ending at the footer: `$ grep` followed
-  by a blinking block cursor and a plain placeholder, like a live command line with no
-  box (`/` focuses it, Escape clears it), and `random` (jumps to a row, which opens
-  it). The bar needs JavaScript and stays hidden without it.
 
-There is no blurb under the heading. The hand already says what the page is.
+There is no blurb under the heading, and nothing pinned over the first screen. The hand
+already says what the page is.
 
 ## Scenes
 
@@ -113,8 +112,10 @@ Each has its own `src/entries/<slug>/effect.ts`:
 - A solid shadow in place of the dithered echo, and underlined titles.
 - Any year separation: a huge sticky vertical year, bold Barlow years with a hairline,
   `$ cd ../2025 # -----` lines, and a dashed rule.
-- A `years` jump menu, a bordered search field, and a desktop strip with one column per
-  month.
+- A pinned bottom bar in every form: `$ grep` search and `random` (it spoiled the poster
+  opening and looked bad on phones), a `years` jump menu, a bordered search field, and a
+  strip with one column per month. Search can return around 50 entries, in the page
+  rather than pinned over it.
 - A blurb under the heading.
 - Whole rows as hover targets on desktop, which made moving across the page chaotic.
 

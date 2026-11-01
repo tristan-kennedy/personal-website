@@ -10,7 +10,6 @@ const READING_LINE = 0.4;
 const effects = import.meta.glob<{ default: Effect }>("../entries/*/effect.ts");
 
 export function mountPeeks(root: HTMLElement) {
-  const rows = [...root.querySelectorAll<HTMLElement>("[data-row]")];
   const touch = matchMedia("(hover: none)");
   let active: HTMLElement | undefined;
   let waiting = 0;
@@ -97,16 +96,5 @@ export function mountPeeks(root: HTMLElement) {
       rootMargin: `-${READING_LINE * 100}% 0px -${(1 - READING_LINE) * 100}% 0px`,
     },
   );
-  rows.forEach((row) => line.observe(row));
-
-  return {
-    jumpTo(row: HTMLElement) {
-      const { top, height } = row.getBoundingClientRect();
-      scrollTo({
-        top: scrollY + top + height / 2 - innerHeight * READING_LINE,
-      });
-      if (!touch.matches) activate(row);
-    },
-    rows,
-  };
+  root.querySelectorAll("[data-row]").forEach((row) => line.observe(row));
 }

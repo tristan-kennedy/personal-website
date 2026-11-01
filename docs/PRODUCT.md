@@ -45,10 +45,9 @@ themed identity.
   colophon footer. Its composition lives in the homepage surface brief,
   `.impeccable/surfaces/src-pages-index-astro.md`.
 - **Index (`/index`)**: the heart of the site. One long scroll of every entry, newest first, read like a
-  retelling of a life, with no year breaks. Search covers titles, keywords, and dates,
-  and `random` jumps to an entry. Its composition lives in
-  `.impeccable/surfaces/src-pages-index-index-astro.md`. Search over entry content
-  can come later, once entry pages have content.
+  retelling of a life, with no year breaks and no search. Its composition lives in
+  `.impeccable/surfaces/src-pages-index-index-astro.md`. Search can come back
+  around 50 entries, in the page rather than pinned over it.
 - **Entry pages (`/index/<slug>`)**: one per entry, each free to define its own
   typography, colour, layout, and interaction to suit the material. The only shared
   requirement is an obvious way back. They're placeholders for now; each will be designed
@@ -57,6 +56,9 @@ themed identity.
   portrait, where Tristan has lived, work, recent films and music, and what he's
   settled on versus still wondering about. Its composition lives in
   `.impeccable/surfaces/src-pages-about-astro.md`.
+- **Not found (`404.astro`)**: a blank paper page reading "This page intentionally left
+  blank." Its composition lives in
+  `.impeccable/surfaces/src-pages-404-astro.md`.
 - Publishing happens through the repository. Cloudflare Workers builds and hosts it.
 
 ## Capabilities and Constraints

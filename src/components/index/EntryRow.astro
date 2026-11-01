@@ -1,6 +1,5 @@
 ---
 import type { Entry } from "../../lib/entries";
-import { formatEntryDate } from "../../lib/entries";
 import type { Place, Tier } from "../../lib/scatter";
 import EntryMeta from "./EntryMeta.astro";
 
@@ -11,10 +10,7 @@ interface Props {
 }
 
 const { entry, tier, place } = Astro.props;
-const { title, date, keywords, colour } = entry.data;
-const search = [title, ...keywords, date, formatEntryDate(date)]
-  .join(" ")
-  .toLowerCase();
+const { title, colour } = entry.data;
 const longestWord = Math.max(...title.split(" ").map((word) => word.length));
 const style = [
   "--size: " + place.size + "cqi",
@@ -32,24 +28,21 @@ const face = place.flipped
   style={style}
   data-row
   data-reveal={tier === "poster" ? "" : undefined}
-  data-search={search}
 >
   <a
     class:list={[
-      "group relative z-1 block text-(length:--fs) wrap-anywhere",
+      "group relative z-1 block py-(--gap) text-(length:--fs) wrap-anywhere [--gap:clamp(20px,calc(var(--fs)*0.36),76px)]",
       face,
       place.flipped
         ? "pr-(--offset) text-right phone:pr-0"
         : "pl-(--offset) phone:pl-0",
-      tier === "poster" &&
-        "py-[clamp(10px,1.4vw,26px)] leading-[0.92] reveal phone:py-5 unrevealed:opacity-0",
+      tier === "poster"
+        ? "leading-[0.92] reveal unrevealed:opacity-0"
+        : "leading-[1.04]",
       tier === "poster" &&
         (place.flipped
           ? "phone:pl-9 unrevealed:translate-x-12"
           : "phone:pr-9 unrevealed:-translate-x-12"),
-      tier === "title" &&
-        "py-[clamp(8px,0.9vw,16px)] leading-[1.04] phone:py-3",
-      tier === "scrap" && "min-h-11 py-1.5 leading-[1.04]",
       tier === "scrap" && place.quiet && "text-muted",
     ]}
     href={entry.url}

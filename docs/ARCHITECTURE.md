@@ -41,19 +41,18 @@ src/
       Hero.astro, HeroGlobe.astro, StatusStrip.astro
       About.astro, Favorites.astro, Recents.astro
       Closing.astro, DitherApple.astro
-    index/                   EntryRow.astro and EntryMeta.astro (one entry per line) and
-                             IndexBar.astro (search and random)
+    index/                   EntryRow.astro and EntryMeta.astro (one entry per line)
   pages/
     index.astro              Homepage
     index/index.astro        /index
     index/[slug].astro       Serves each entry's own Page.astro
     about.astro              /about
+    404.astro                Served by Cloudflare for any missing path
   lib/
     entries.ts               getEntries(), formatEntryDate()
     scatter.ts               Row tiers by age and each entry's stable placement
     hash.ts                  Stable seed from a string
     peek.ts                  Picks the active row and opens its effect
-    index-bar.ts             Search and random on /index
     site.ts                  Personal details (`now`, `moves`, `links`, `work`,
                              `education`, `opinions`, `questions`, the About copy
                              in `about`, the Letterboxd feed). Edit here, never inline

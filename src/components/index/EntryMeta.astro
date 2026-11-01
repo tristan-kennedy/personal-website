@@ -21,7 +21,7 @@ const small =
     <span
       class:list={[
         "pointer-events-auto relative top-[calc(var(--fs)*0.1)] z-1 ml-[clamp(12px,1.2vw,24px)] inline-flex flex-col gap-0.5 text-left align-top font-mono text-[13px]/[1.45] font-normal tracking-normal text-muted normal-case",
-        "phone:absolute phone:top-5 phone:bottom-5 phone:m-0 phone:w-max phone:rotate-180 phone:flex-row phone:flex-wrap phone:content-start phone:justify-end phone:gap-x-3 phone:gap-y-1 phone:[writing-mode:vertical-rl]",
+        "phone:absolute phone:top-(--gap) phone:bottom-(--gap) phone:m-0 phone:w-max phone:rotate-180 phone:flex-row phone:flex-wrap phone:content-start phone:justify-end phone:gap-x-3 phone:gap-y-1 phone:[writing-mode:vertical-rl]",
         place.flipped ? "phone:left-0" : "phone:right-0",
         onInk,
       ]}

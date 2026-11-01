@@ -1,5 +1,4 @@
 ---
-import IndexBar from "../../components/index/IndexBar.astro";
 import EntryRow from "../../components/index/EntryRow.astro";
 import DitherFrame from "../../components/DitherFrame.astro";
 import Layout from "../../layouts/Layout.astro";
@@ -26,7 +25,7 @@ const rows = entries.map((entry, i) => ({
       <SiteNav link={{ href: "/about/", label: "About me" }} />
     </div>
     <header
-      class="relative z-1 flex min-h-[calc(100svh-162px)] flex-col justify-end pb-[clamp(20px,3vw,48px)]"
+      class="relative z-1 flex min-h-[calc(100svh-92px)] flex-col justify-end pb-[clamp(20px,3vw,48px)]"
       data-reveal
     >
       <div
@@ -60,27 +59,24 @@ const rows = entries.map((entry, i) => ({
         </p>
       )
     }
-    <ol class="@container min-w-0 px-(--gutter) pb-(--section-space)">
+    <ol
+      class="@container min-w-0 px-(--gutter) pt-(--section-space) pb-[calc(var(--section-space)*1.5)]"
+    >
       {
         rows.map(({ entry, tier, place }) => (
           <EntryRow entry={entry} tier={tier} place={place} />
         ))
       }
     </ol>
-    {entries.length > 0 && <IndexBar />}
   </div>
 </Layout>
 
 <script>
   import { mountPortrait } from "../../lib/dither/portrait";
-  import { mountIndexBar } from "../../lib/index-bar";
   import { mountPeeks } from "../../lib/peek";
 
   mountPortrait("[data-hand]", "/dither/hand-source.png");
 
   const root = document.querySelector<HTMLElement>("[data-index]");
-  if (root && root.querySelector("[data-row]")) {
-    const { jumpTo, rows } = mountPeeks(root);
-    mountIndexBar(root, rows, jumpTo);
-  }
+  if (root) mountPeeks(root);
 </script>
