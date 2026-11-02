@@ -1,12 +1,187 @@
 ---
-import EntryStub from "../../components/EntryStub.astro";
+import Layout from "../../layouts/Layout.astro";
 import type { Entry } from "../../lib/entries";
+import cover from "./assets/door.png";
 
 interface Props {
   entry: Entry;
 }
 
 const { entry } = Astro.props;
+const { title, date, keywords } = entry.data;
+
+const band = "px-(--gutter) py-[clamp(120px,14vw,220px)]";
+const column = "mx-auto max-w-[34em] space-y-[1.1em] font-serif";
+const large =
+  "mx-auto mb-[clamp(56px,7vw,112px)] max-w-[12em] text-center font-serif text-[clamp(44px,7vw,132px)]/[1.04] tracking-[-0.02em] text-balance";
 ---
 
-<EntryStub entry={entry} />
+<Layout
+  title={title}
+  description="Is escapism even bad? And how would you know if you were doing it?"
+>
+  <article class="overflow-x-clip">
+    <div data-door class="peer relative h-dvh data-[walk=true]:h-[260dvh]">
+      <div
+        data-stage
+        class="sticky top-0 h-dvh overflow-hidden paper [--box:max(110vw,154dvh)] [--open:0] [--shut:1]"
+      >
+        <p
+          class="relative flex justify-between gap-6 px-(--gutter) pt-(--col-inset) font-mono text-[clamp(14px,1.1vw,18px)]/[2] text-muted"
+        >
+          <a
+            class="text-charcoal link phone:inline-flex phone:min-h-11 phone:items-center"
+            href="/index/"
+          >
+            $ cd ..
+          </a>
+          <span class="phone:hidden">
+            <time datetime={date}>{date}</time>
+            {` ${keywords.join(" ").toLowerCase()}`}
+          </span>
+        </p>
+
+        <h1
+          class="pointer-events-none absolute inset-0 grid grid-cols-[1fr_calc(var(--box)*0.23*var(--shut))_1fr] items-center gap-x-[clamp(16px,2vw,40px)] px-(--gutter) font-serif text-[min(calc(((100vw-var(--box)*0.23*var(--shut))/2-var(--gutter)-40px)/3.9),220px)]/[1] tracking-[-0.02em] [@media(max-aspect-ratio:1/1)]:grid-cols-1 [@media(max-aspect-ratio:1/1)]:grid-rows-[1fr_calc(var(--box)*0.326*var(--shut))_1fr] [@media(max-aspect-ratio:1/1)]:gap-y-[clamp(20px,3vh,40px)] [@media(max-aspect-ratio:1/1)]:text-center [@media(max-aspect-ratio:1/1)]:text-[clamp(44px,12vw,120px)]"
+        >
+          <span
+            class="text-right [@media(max-aspect-ratio:1/1)]:self-end [@media(max-aspect-ratio:1/1)]:text-center"
+            >Escapism</span
+          >
+          <span aria-hidden="true"></span>
+          <span class="[@media(max-aspect-ratio:1/1)]:self-start"
+            >as escapism</span
+          >
+        </h1>
+
+        <img
+          data-cover
+          src={cover.src}
+          width={cover.width}
+          height={cover.height}
+          alt="A lone door standing open in a dark field under a crescent moon. Through it, a road runs to the horizon and ends at another door."
+          class="absolute top-[calc(50%-var(--box)*0.327)] left-[calc(50%-var(--box)*0.455)] w-(--box) max-w-none origin-[45.5%_49%] scale-[calc(var(--shut)+(1.1-var(--shut))*var(--open))] [clip-path:inset(calc(24.8%*(1-var(--open)))_calc(43.2%*(1-var(--open)))_calc(26.3%*(1-var(--open)))_calc(33.8%*(1-var(--open))))] [image-rendering:pixelated]"
+        />
+      </div>
+    </div>
+
+    <section
+      class:list={[
+        band,
+        "relative bg-linear-to-b from-paper to-[#2a2a5e] to-[180px] text-[clamp(21px,1.7vw,28px)]/[1.6] text-paper peer-data-[walk=true]:-mt-[60dvh] peer-data-[walk=true]:from-transparent peer-data-[walk=true]:to-[60dvh] peer-data-[walk=true]:pt-[calc(60dvh+clamp(40px,6vw,96px))]",
+      ]}
+    >
+      <h2 class={large}>Is escapism even bad?</h2>
+      <div class={column}>
+        <p>
+          I don’t know why we’re all so sure it is. Call something escapism and
+          you’ve already said it’s a waste of time, even if you can’t say what
+          the time was supposed to be for.
+        </p>
+        <p>
+          Reading a novel all afternoon is fine. Playing a video game all
+          afternoon is a problem. Both are hours spent somewhere other than your
+          life, and I’ve never heard an explanation for the difference that
+          wasn’t mostly about which one sounds better.
+        </p>
+      </div>
+    </section>
+
+    <section
+      class:list={[
+        band,
+        "bg-linear-to-b from-[#2a2a5e] to-[#4f458f] to-[140px] text-[clamp(21px,1.8vw,29px)]/[1.55] text-paper",
+      ]}
+    >
+      <div class={column}>
+        <p>
+          The best test I have is what’s left afterward. Some things leave me
+          clearer than I was. Others leave me numb, and I go back the next night
+          anyway.
+        </p>
+        <p>
+          The problem is I usually can’t tell until later, and sometimes not
+          even then. The bad ones don’t feel bad while they’re happening. That’s
+          more or less why people do them.
+        </p>
+      </div>
+    </section>
+
+    <section
+      class:list={[
+        band,
+        "bg-linear-to-b from-[#4f458f] to-[#8a4a8c] to-[140px] text-[clamp(22px,1.9vw,30px)]/[1.55] text-paper",
+      ]}
+    >
+      <div class={column}>
+        <p>
+          Some of it is plainly hiding. It’s not hard to call that self-care, or
+          to leave every time things are about to get difficult and say you
+          needed a break.
+        </p>
+        <p>
+          Some of it might be the only reason a person gets through the week.
+          From the outside those two look identical, and I’m not convinced they
+          always feel different from the inside.
+        </p>
+      </div>
+    </section>
+
+    <section
+      class:list={[
+        band,
+        "bg-linear-to-b from-[#8a4a8c] to-[#f08a76] to-[180px] text-[clamp(22px,2vw,31px)]/[1.5] text-charcoal",
+      ]}
+    >
+      <div class={column}>
+        <p>
+          Maybe the word is covering at least three things: disappearing and
+          feeling worse for it, stepping away and coming back better, and
+          wandering off and finding something you weren’t looking for. Only the
+          first one seems like a problem. I don’t know how reliably anyone can
+          tell which one they’re doing.
+        </p>
+      </div>
+    </section>
+
+    <section
+      class:list={[
+        band,
+        "bg-linear-to-b from-[#f08a76] to-paper to-[200px] text-[clamp(23px,2.1vw,33px)]/[1.5] text-charcoal",
+      ]}
+    >
+      <div class={column}>
+        <p>
+          I used to feel guilty about any time that wasn’t getting me somewhere.
+          I feel that less now, though I couldn’t tell you whether that’s
+          because I figured something out or because I got better at excusing
+          myself.
+        </p>
+      </div>
+      <p
+        class:list={[
+          large,
+          "mt-[clamp(72px,10vw,160px)] mb-[clamp(72px,10vw,160px)] max-w-[15em]",
+        ]}
+      >
+        I can’t tell if this is a defense of escapism or just more of it.
+      </p>
+      <p class="text-center font-mono text-[clamp(14px,1.1vw,18px)]/[2]">
+        <a
+          class="link phone:inline-flex phone:min-h-11 phone:items-center"
+          href="/index/"
+        >
+          $ cd ..
+        </a>
+      </p>
+    </section>
+  </article>
+</Layout>
+
+<script>
+  import { openDoorOnScroll } from "./components/door";
+  import { paintScene } from "./components/scene";
+
+  paintScene();
+  openDoorOnScroll();
+</script>
