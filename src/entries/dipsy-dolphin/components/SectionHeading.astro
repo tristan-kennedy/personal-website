@@ -1,0 +1,45 @@
+---
+interface Props {
+  number: number;
+  id: string;
+  lines: string[];
+  face: "caps" | "serif";
+}
+
+const { number, id, lines, face } = Astro.props;
+const serif =
+  "font-serif text-[clamp(44px,6.2vw,150px)]/[1.02] tracking-[-0.02em]";
+const title = "col-span-3 block pl-(--col-inset) phone:pl-0";
+---
+
+<h2
+  id={id}
+  class="col-span-4 grid scroll-mt-10 grid-cols-subgrid items-baseline phone:block"
+>
+  <span class:list={[serif, "block text-muted phone:mb-2"]}>{number}</span>
+  {
+    face === "serif" ? (
+      <span class:list={[serif, title, "text-balance"]}>
+        {lines.join(" ")}.
+      </span>
+    ) : (
+      <span
+        class:list={[
+          title,
+          "font-display text-[clamp(60px,9.5vw,228px)]/[0.86] font-extrabold tracking-[-0.03em] uppercase",
+        ]}
+      >
+        {lines.slice(0, -1).map((line) => (
+          <span class="block">{line}</span>
+        ))}
+        <span class="flex items-end">
+          {lines.at(-1)}
+          <span
+            aria-hidden="true"
+            class="-mr-(--gutter) mb-[0.1em] ml-[0.12em] h-[clamp(6px,0.8vw,14px)] grow bg-charcoal phone:hidden"
+          />
+        </span>
+      </span>
+    )
+  }
+</h2>

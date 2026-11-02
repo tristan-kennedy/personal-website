@@ -1,12 +1,867 @@
 ---
-import EntryStub from "../../components/EntryStub.astro";
+import Reveal from "../../components/Reveal.astro";
+import Layout from "../../layouts/Layout.astro";
 import type { Entry } from "../../lib/entries";
+import { BUBBLES } from "./components/bubbles";
+import desktop from "./assets/desktop.webp";
+import idleStrip from "./assets/idle-strip.png";
+import joke from "./assets/joke.webp";
+import search from "./assets/search.webp";
+import SectionHeading from "./components/SectionHeading.astro";
+import talkStrip from "./assets/talk-strip.png";
 
 interface Props {
   entry: Entry;
 }
 
 const { entry } = Astro.props;
+const { title, date, keywords, link } = entry.data;
+const release =
+  "https://github.com/tristan-kennedy/virtual-desktop-assistant/releases/tag/v1.0.0";
+
+const mono = "font-mono text-[clamp(14px,1.1vw,18px)]/[2]";
+const grid = "grid grid-cols-4 gap-x-0 px-(--gutter) phone:block";
+const prose =
+  "col-span-2 col-start-2 max-w-[68ch] space-y-6 pl-(--col-inset) text-body/[1.65] phone:pl-0 [&_p]:leading-[1.65]";
+const headingGap = "mt-[clamp(32px,4vw,64px)]";
+const sectionGap = "pt-[calc(var(--section-space)*1.5)]";
+const caption = "text-[15px]/[1.5] text-muted phone:mt-3 phone:max-w-[60ch]";
+const figureRight =
+  "col-span-3 col-start-2 row-start-1 -mr-(--gutter) pl-(--col-inset) reveal phone:-mx-(--gutter) phone:pl-0 unrevealed:translate-x-16 unrevealed:opacity-0";
+const figureLeft =
+  "col-span-3 row-start-1 -ml-(--gutter) reveal phone:-mx-(--gutter) unrevealed:-translate-x-16 unrevealed:opacity-0";
+const code = "font-mono text-[0.88em]";
+const bubbleFont = "font-[Segoe_UI,Tahoma,Arial,sans-serif]";
+const sprite = "bg-size-[2400%_100%] bg-no-repeat [image-rendering:pixelated]";
+const moving =
+  "motion-safe:animate-[dipsy-frames_2.4s_steps(24,jump-none)_infinite]";
+const strips = `--idle:url(${idleStrip.src});--talk:url(${talkStrip.src})`;
+
+const rules = [
+  "You run it by talking to it.",
+  "It stays on stage, and never slips off into background automation.",
+  "Whatever the model says gets parsed into structured data before the app touches it.",
+  "Desktop actions stay bounded and explicit. No ad hoc shell commands.",
+];
+
+const owners = [
+  ["ui/", "The show", "The window, chat box, bubble, timers, and sprites."],
+  [
+    "core/",
+    "The controller",
+    "Decides what happens next. Also holds session state, memory, emotion, and scenes.",
+  ],
+  [
+    "llm/",
+    "The model",
+    "The prompt contract, the provider, model discovery, and the parser.",
+  ],
+  [
+    "actions/",
+    "The stage list",
+    "Everything Dipsy is allowed to do, and the only road to the operating system.",
+  ],
+  ["storage/", "The notebook", "A local profile and memory, saved as JSON."],
+  [
+    "voice/",
+    "The voice",
+    "Optional Windows speech, tuned to the most retro voice it can find.",
+  ],
+];
+
+const actions = [
+  ["focus_or_open_app", "browser, Terminal, Explorer, Notepad, or Settings"],
+  ["browser_search", "a query of up to 240 characters"],
+  ["open_url", "http or https only"],
+  ["open_path", "only if the path already exists"],
+  ["roam_somewhere", "move to another spot on the screen"],
+  ["idle", "stay put"],
+  ["quit_app", "close Dipsy"],
+];
+
+const poses = [
+  { name: "idle", drawn: true },
+  { name: "talk", drawn: true },
+  { name: "walk" },
+  { name: "laugh" },
+  { name: "surprised" },
+  { name: "sad" },
+  { name: "excited" },
+];
+
+const sections = [
+  { id: "character-first", lines: ["Character first"], face: "caps" },
+  {
+    id: "own-job",
+    lines: ["Everyone keeps to their own job"],
+    face: "serif",
+  },
+  {
+    id: "never-trust",
+    lines: ["Never trust", "the dolphin"],
+    face: "caps",
+  },
+  { id: "two-poses", lines: ["Two poses"], face: "serif" },
+  { id: "one-installer", lines: ["One installer"], face: "caps" },
+  { id: "what-id-keep", lines: ["What I’d keep"], face: "serif" },
+] as const;
+const [character, ownJob, neverTrust, twoPoses, oneInstaller, whatIdKeep] =
+  sections.map((section, index) => ({
+    ...section,
+    lines: [...section.lines],
+    number: index + 1,
+  }));
+
+const commits = [
+  ["2026-03-20", "Beginnings"],
+  ["2026-03-20", "Testing github workflows"],
+  ["2026-03-20", "Switch to uv"],
+  ["2026-03-20", "Remove unnecessary nesting and test no versioning"],
+  ["2026-03-20", "Remove main.py to look professional"],
+  ["2026-03-20", "Asset layer transition"],
+  ["2026-03-23", "Add LLM"],
+  ["2026-03-23", "Fix build"],
+  ["2026-03-23", "Fix build 2"],
+  ["2026-03-24", "Seeing how versioning works with this"],
+  ["2026-03-24", "So much new stuff"],
+  ["2026-03-26", "More stuff"],
+  ["2026-03-27", "Guy can do a little stuff now"],
+  ["2026-04-03", "New graphics who dis"],
+  ["2026-04-04", "1.0.0"],
+];
+
+const parserSnippet = `animation = str(parsed.get("animation", "")).strip().lower()
+if animation and animation not in ALLOWED_ANIMATIONS:
+    animation = ""
+
+cooldown_ms = _bounded_int(parsed.get("cooldown_ms", 12000), minimum=4000, maximum=30000)
+
+action_payload = parsed.get("action")
+action = None
+if isinstance(action_payload, dict):
+    action = sanitize_action_request(
+        str(action_payload.get("action_id", "")).strip() or None,
+        action_payload.get("args") if isinstance(action_payload.get("args"), dict) else None,
+    )`;
 ---
 
-<EntryStub entry={entry} />
+<Layout
+  title={title}
+  description="A local-first Windows desktop companion, and what it taught me about how far a local LLM can go."
+>
+  <Reveal />
+  <article class="overflow-x-clip">
+    <div class="pb-(--section-space) paper">
+      <header
+        class="flex min-h-dvh flex-col justify-between px-(--gutter) pt-(--col-inset) phone:min-h-0"
+      >
+        <p class:list={[mono, "flex justify-between gap-6 text-muted"]}>
+          <a
+            class="text-charcoal link phone:inline-flex phone:min-h-11 phone:items-center"
+            href="/index/"
+          >
+            $ cd ..
+          </a>
+          <span class="phone:hidden">
+            <time datetime={date}>{date}</time>
+            {` ${keywords.join(" ").toLowerCase()}`}
+          </span>
+        </p>
+
+        <div
+          class="relative mt-10 pb-[clamp(10px,1.4vw,24px)] text-[min(23vw,552px,35dvh)] phone:mt-[calc(0.7em+112px)] phone:text-[calc((100vw-48px)/2.9)]"
+        >
+          <h1
+            class="font-display text-[1em]/[0.8] font-extrabold tracking-[-0.035em] uppercase"
+          >
+            <span class="block motion-safe:animate-wipe-left">Dipsy</span>
+            <span class="flex items-end">
+              <span class="motion-safe:animate-wipe-right">Dolphin</span>
+              <span
+                aria-hidden="true"
+                class="-mr-(--gutter) mb-[0.075em] ml-[0.1em] h-[clamp(6px,0.8vw,14px)] grow bg-charcoal phone:hidden"
+              ></span>
+            </span>
+          </h1>
+
+          <div
+            role="img"
+            data-stand
+            aria-label="Dipsy, a pixel-art cartoon dolphin in blue and white, standing on the title and talking."
+            class:list={[
+              sprite,
+              "absolute bottom-[0.54em] left-[1.68em] size-[1.9em] [background-image:var(--talk)] motion-safe:animate-[dipsy-frames_2.4s_steps(24,jump-none)_infinite,dipsy-settle_1ms_4.8s_forwards]",
+            ]}
+            style={strips}
+          >
+          </div>
+
+          <div
+            class="absolute bottom-[2.28em] left-[2.66em] w-0 phone:right-0 phone:left-auto phone:w-full"
+          >
+            <p
+              class="relative ml-auto w-[clamp(240px,23vw,380px)] -translate-x-1/2 rounded-xl border-2 border-[#5c7c2f] bg-[#f4f7d0] px-4 py-3 font-[Segoe_UI,Tahoma,Arial,sans-serif] text-[clamp(15px,1.15vw,19px)]/[1.4] text-[#23310d] phone:w-[66vw] phone:translate-x-0 phone:text-[15px]"
+            >
+              Well hello there, so! I’m Dipsy, ready to splash some fun on your
+              desktop!
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 14"
+                class="absolute top-full left-1/2 -mt-0.5 h-3.5 w-6 -translate-x-1/2 phone:right-[12vw] phone:left-auto phone:translate-x-0"
+              >
+                <path
+                  d="M1 0 L12 12 L23 0"
+                  fill="#f4f7d0"
+                  stroke="#5c7c2f"
+                  stroke-width="2"></path>
+              </svg>
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <section class:list={[grid, "pt-(--section-space)"]}>
+        <p
+          class="col-span-3 font-serif text-[clamp(28px,2.9vw,50px)]/[1.15] tracking-[-0.02em]"
+        >
+          A tiny performer that lives on your Windows desktop, tells jokes, and
+          runs on your own machine. I built it to find out how much a local LLM
+          can really do.
+        </p>
+        <nav
+          aria-label="Contents"
+          class:list={[
+            headingGap,
+            "col-start-1 row-start-2 self-start pr-8 phone:pr-0",
+          ]}
+        >
+          <p
+            class="mb-3 font-mono text-[13px] tracking-[0.14em] text-muted uppercase"
+          >
+            Contents
+          </p>
+          <ol class="border-t border-rule">
+            {
+              sections.map(({ id, lines }, index) => (
+                <li class="border-b border-rule">
+                  <a
+                    href={`#${id}`}
+                    class="flex min-h-11 items-baseline gap-3 py-2.5 text-[17px]/[1.35]"
+                  >
+                    <span class="font-mono text-[15px] text-muted">
+                      {index + 1}
+                    </span>
+                    <span class="link">{lines.join(" ")}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </nav>
+        <div class:list={[prose, headingGap, "row-start-2"]}>
+          <p>
+            Dipsy Dolphin is a desktop companion in the tradition of BonziBuddy:
+            a cartoon animal that stands on your screen, talks with too much
+            personality, and can occasionally do something useful. You can drag
+            it around, double-click it to chat, and ask it to run a search or
+            open Notepad. There’s no invisible daemon. If Dipsy is doing
+            something, you’re watching it happen.
+          </p>
+          <p>
+            The deeper reason I built it was to see what local LLMs could do
+            once they were placed inside a product with real constraints. I was
+            less interested in benchmarking prompts than in one concrete
+            question: if the model runs on a real Windows machine, behind a
+            character you can see, how useful can it get before the experience
+            starts to feel unreliable, vague, or fake?
+          </p>
+          <p>
+            So Dipsy is a testbed for local inference, structured responses,
+            constrained actions, and desktop UX, in a dolphin suit. I wanted it
+            lively enough to be fun, coherent enough to be believable, and
+            bounded enough to trust. Those three pull against each other, and
+            that pull shaped almost every decision in the project.
+          </p>
+          <p>
+            The brain is Qwen 3.5 9B, a 5.7 GB model running through llama.cpp
+            on a server bound to your own machine. There’s no remote API behind
+            it.
+          </p>
+          <p class="text-[15px]/[1.5] text-muted">
+            That’s the real sprite on the title, and it’ll follow you down the
+            page. Drag it, click it, or press Esc to make it leave, same as the
+            app. It has no brain here, because this page doesn’t run a model.
+            Its hello, the beach ball joke, and the horoscope line are real
+            output. Everything else it says is scripted.
+          </p>
+        </div>
+      </section>
+
+      <figure data-reveal class:list={[grid, "pt-(--section-space)"]}>
+        <div class={figureRight}>
+          <img
+            src={desktop.src}
+            width={desktop.width}
+            height={desktop.height}
+            loading="lazy"
+            alt="Dipsy Dolphin standing on a green hill and blue sky wallpaper, greeting the user in a speech bubble."
+            class="ml-auto w-full max-w-[1400px]"
+          />
+        </div>
+        <figcaption
+          class:list={[
+            caption,
+            "col-start-1 row-start-1 self-end pr-6 phone:pr-0",
+          ]}
+        >
+          First contact. That line came from the model, live, so “splash some
+          fun” is entirely its own idea.
+        </figcaption>
+      </figure>
+
+      <section
+        data-remark="Idle presence is part of the product. I'm doing it right now."
+        class:list={[grid, sectionGap]}
+      >
+        <SectionHeading {...character} />
+        <div class:list={[prose, headingGap]}>
+          <p>
+            I framed Dipsy as a companion first and a capability surface second,
+            because that changes what counts as success. A utility can get away
+            with being invisible. A character can’t. Dipsy has to feel present
+            when it’s doing nothing, and stay interruptible and understandable
+            when it’s doing something.
+          </p>
+          <p>
+            That ruled out a chat window with a mascot attached. If the only
+            impressive thing in the system was that the model answered a
+            question, the product would feel hollow. The bubble had to matter.
+            The timing had to matter. Even the moments where Dipsy does nothing
+            had to feel intentional, because idling is part of the product, not
+            dead space between prompts.
+          </p>
+          <p>
+            I also wanted a practical answer about where local models are strong
+            enough right now. The answer, at least here, isn’t “everywhere.” The
+            model does best with a clear prompt contract, a narrow execution
+            surface, and a visible loop that makes its decisions legible. Dipsy
+            works because nothing asks the model to be magical. It only has to
+            be structured, situational, and consistent.
+          </p>
+          <p>That led to four hard rules:</p>
+        </div>
+        <ul class="col-span-4 mt-[clamp(32px,4vw,64px)] border-t border-rule">
+          {
+            rules.map((rule) => (
+              <li class="border-b border-rule py-[clamp(18px,2vw,32px)] pr-[25%] pl-[calc(25%+var(--col-inset))] font-serif text-[clamp(26px,3vw,50px)]/[1.15] tracking-[-0.015em] text-balance phone:px-0">
+                {rule}
+              </li>
+            ))
+          }
+        </ul>
+        <div class:list={[prose, "mt-[clamp(32px,4vw,64px)]"]}>
+          <p>
+            The product brief ends with one test for any new feature, which I
+            still like: “Does this make Dipsy feel more alive, more theatrical,
+            more helpful, and still clearly under the user’s control?”
+          </p>
+        </div>
+      </section>
+
+      <figure data-reveal class:list={[grid, "pt-(--section-space)"]}>
+        <div class={figureLeft}>
+          <img
+            src={joke.src}
+            width={joke.width}
+            height={joke.height}
+            loading="lazy"
+            alt="Dipsy standing on a page of beach image search results, telling a joke about a beach ball in an amber bubble."
+            class="w-full max-w-[1400px]"
+          />
+        </div>
+        <figcaption
+          class:list={[
+            caption,
+            "col-start-4 row-start-1 self-end pl-(--col-inset) phone:pl-0",
+          ]}
+        >
+          A joke is a performance, delivered on top of whatever you were doing.
+          The whole idea is that it’s a character on your desktop, not a local
+          model hidden behind a text box.
+        </figcaption>
+      </figure>
+
+      <section
+        data-remark="Nobody asked me about this org chart."
+        class:list={[grid, sectionGap]}
+      >
+        <SectionHeading {...ownJob} />
+        <div class:list={[prose, headingGap]}>
+          <p>
+            The architecture is deliberately direct. A PySide6 shell owns the
+            window. A controller owns decisions. A provider finds the model and
+            runs it. A parser turns its replies into validated turns. If the
+            model asks for an action, that request goes through a registry
+            before anything touches the operating system.
+          </p>
+        </div>
+        <dl class="col-span-4 mt-[clamp(32px,4vw,64px)] border-t border-rule">
+          {
+            owners.map(([folder, job, detail]) => (
+              <div class="grid grid-cols-4 items-baseline border-b border-rule py-3.5 phone:block">
+                <dt class="font-mono text-[16px] text-muted">{folder}</dt>
+                <dd class="col-span-1 pl-(--col-inset) font-display text-[clamp(26px,2.4vw,40px)]/[1.1] font-extrabold uppercase phone:mt-1 phone:pl-0">
+                  {job}
+                </dd>
+                <dd class="col-span-2 pl-(--col-inset) text-[17px]/[1.5] phone:mt-1 phone:pl-0">
+                  {detail}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+        <div class:list={[prose, "mt-[clamp(32px,4vw,64px)]"]}>
+          <p>
+            That separation is the most important technical decision in the
+            repo, and it matters more here than in a normal app. Once a
+            character is standing on your desktop, people read intent into tiny
+            things. A delayed reply, a mistimed animation, or a badly scoped
+            action is much more obvious than it would be in a utility. Keeping
+            the layers apart helps the whole thing feel deliberate instead of
+            chaotic.
+          </p>
+          <p>
+            This is also where the experiment gets real. A lot of local-model
+            demos stop at “it generated text.” Dipsy’s model gets event context,
+            session state, memory summaries, and scene opportunities, then has
+            to return a turn the rest of the system can validate and stage.
+            Startup, onboarding, chat, and inactivity all run through that same
+            path, so they don’t fragment into special cases across the UI.
+          </p>
+          <p>
+            It also gave me better questions than “was that clever?” Did it pick
+            a sensible animation? Did it stay inside the dialogue contract? Did
+            it avoid repeating itself? Did it return something the UI could
+            actually stage? Those are product questions, and a model can fail
+            them while sounding great.
+          </p>
+        </div>
+      </section>
+
+      <section
+        data-remark="The next part is about how nobody trusts me."
+        data-remark-style="alert"
+        class:list={[grid, sectionGap]}
+      >
+        <SectionHeading {...neverTrust} />
+        <div class:list={[prose, headingGap]}>
+          <p>
+            The model isn’t trusted to produce anything executable. It’s asked
+            for JSON, and that JSON gets normalized into a tightly constrained
+            turn before the rest of the app sees it. Animation names get
+            validated, dialogue categories normalized, cooldowns clamped, action
+            requests sanitized, and memory and emotion updates only survive if
+            they match the contract.
+          </p>
+          <p>
+            This is the core of the whole experiment. I didn’t want Dipsy to
+            work in the loose demo sense, where a model says something plausible
+            and a person mentally fills in the gaps. I wanted it to work in the
+            product sense, where the app can confidently use what comes back.
+            That meant treating the LLM as a probabilistic component inside a
+            typed system rather than a mystical brain.
+          </p>
+          <p>
+            Once I framed it that way, a lot of choices got easier. Allowed
+            actions could be enumerated. Emotion could be six bounded numbers
+            instead of hand-wavy flavor. That discipline doesn’t make the
+            character less fun. It makes the fun shippable.
+          </p>
+        </div>
+        <pre
+          class="col-span-3 col-start-2 mt-[clamp(32px,4vw,64px)] -mr-(--gutter) overflow-x-auto bg-charcoal py-[clamp(24px,3vw,48px)] pr-(--gutter) pl-(--col-inset) font-mono text-[clamp(13px,1.08vw,18px)]/[1.7] text-paper selection:bg-paper selection:text-charcoal phone:-mx-(--gutter) phone:pl-(--gutter)"
+          tabindex="0"
+          aria-label="An excerpt of parse_assistant_turn in Python"
+          set:text={parserSnippet}
+        />
+        <div class:list={[prose, "mt-[clamp(32px,4vw,64px)]"]}>
+          <p>
+            That keeps the model in a planning role. It can ask for seven
+            things, and each one is checked against the registry first:
+          </p>
+        </div>
+        <ul
+          class="col-span-2 col-start-2 mt-6 max-w-[68ch] pl-(--col-inset) phone:pl-0"
+        >
+          {
+            actions.map(([id, detail]) => (
+              <li class="grid grid-cols-2 items-baseline gap-x-6 border-b border-rule py-2.5 first:border-t phone:block">
+                <code class="font-mono text-[16px]">{id}</code>
+                <span class="text-[16px]/[1.5] text-muted phone:block">
+                  {detail}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <div class:list={[prose, "mt-[clamp(32px,4vw,64px)]"]}>
+          <p>
+            Anything else gets a line straight from the source: “That routine is
+            not on Dipsy’s approved stage list.” A character app should be
+            surprising in what it says and predictable in what it’s allowed to
+            do.
+          </p>
+        </div>
+      </section>
+
+      <figure data-reveal class:list={[grid, "pt-(--section-space)"]}>
+        <div class={figureRight}>
+          <img
+            src={search.src}
+            width={search.width}
+            height={search.height}
+            loading="lazy"
+            alt="Dipsy standing over a browser with a Google search for Triple Leo horoscope today, announcing that the horoscope is loading."
+            class="ml-auto w-full max-w-[1400px]"
+          />
+        </div>
+        <figcaption
+          class:list={[
+            caption,
+            "col-start-1 row-start-1 self-end pr-6 phone:pr-0",
+          ]}
+        >
+          A natural request becomes one bounded{" "}
+          <code class={code}>browser_search</code>. The model decides. The
+          runtime does the searching.
+        </figcaption>
+      </figure>
+
+      <section class:list={[grid, "pt-(--section-space)"]}>
+        <div class={prose}>
+          <p>
+            That’s the difference between a fun demo and a releasable feature. A
+            demo can imply capability. A product has to define it. Dipsy can’t
+            invent a tool. The request stays inside a known contract, the
+            runtime honors it or rejects it cleanly, and Dipsy’s follow-up line
+            reacts to what really happened. That makes the whole system feel
+            more honest.
+          </p>
+        </div>
+      </section>
+
+      <section
+        data-remark="Seven animations in the contract. I own two. Please don't look too closely."
+        data-remark-style="status"
+        class:list={[grid, sectionGap]}
+      >
+        <SectionHeading {...twoPoses} />
+        <div class:list={[prose, headingGap]}>
+          <p>
+            I wanted Dipsy to feel like a real Windows application, not a script
+            that happened to open a window. PySide6 gave it room for actual
+            staging: an always-on-top window, sprite rendering, bubble
+            placement, dialogue timing, and animation states that make it feel
+            embodied.
+          </p>
+          <p>
+            The plan was for the character to visibly react to what the model
+            decided, and the wiring is there. The contract has seven animations,
+            and the state machine knows nine. The sprite folder has two:{" "}
+            <code class={code}>idle</code> and <code class={code}>talk</code>,
+            24 frames each. Ask for <code class={code}>laugh</code> and Dipsy falls
+            back on what it’s got.
+          </p>
+        </div>
+        <figure
+          class="col-span-4 mt-[clamp(32px,4vw,64px)] -mr-(--gutter) phone:mr-0"
+        >
+          <ul
+            class="grid grid-cols-7 phone:grid-cols-6"
+            aria-label="The seven animations in the contract. Idle and talk have sprites. Walk, laugh, surprised, sad, and excited don't."
+            style={strips}
+          >
+            {
+              poses.map(({ name, drawn }, index) => (
+                <li
+                  class:list={[
+                    index < 2 ? "phone:col-span-3" : "phone:col-span-2",
+                  ]}
+                >
+                  <div class="box-content aspect-[1/0.883] overflow-hidden border-b-[clamp(6px,0.8vw,14px)] border-charcoal">
+                    {drawn ? (
+                      <div
+                        class:list={[sprite, moving, "aspect-square"]}
+                        style={`background-image:var(--${name})`}
+                      />
+                    ) : (
+                      <div class="aspect-square text-muted [mask:var(--idle)_0_0/2400%_100%_no-repeat] dither-fill" />
+                    )}
+                  </div>
+                  <p class="mt-3 font-mono text-[15px]/[1.4]">{name}</p>
+                  <p class="text-[15px]/[1.4] text-muted">
+                    {drawn ? "24 frames" : "no sprite"}
+                  </p>
+                </li>
+              ))
+            }
+          </ul>
+        </figure>
+        <div class:list={[prose, "mt-[clamp(32px,4vw,64px)]"]}>
+          <p>
+            So the bubbles do most of the acting. There are seven dialogue
+            categories, and each has its own colours, reveal speed, hold time,
+            and rules for interrupting whatever’s on screen.
+          </p>
+        </div>
+        <ul
+          class="col-span-4 mt-[clamp(32px,4vw,64px)] grid grid-cols-4 gap-x-[clamp(12px,1.6vw,28px)] gap-y-8 phone:grid-cols-2"
+        >
+          {
+            Object.entries(BUBBLES).map(
+              ([name, { fill, edge, ink, hold, instant, dashed }]) => (
+                <li>
+                  <div
+                    class:list={[
+                      bubbleFont,
+                      "relative rounded-xl border-2 px-4 py-3 text-[clamp(15px,1.15vw,19px)]/[1.35]",
+                    ]}
+                    style={`background:${fill};border-color:${edge};color:${ink};border-style:${dashed ? "dashed" : "solid"}`}
+                  >
+                    <p class="font-bold">{name}</p>
+                    <p>
+                      {instant ? "instant" : "staged"},{" "}
+                      {(hold / 1000).toFixed(1)}s hold
+                    </p>
+                    <svg
+                      aria-hidden="true"
+                      viewBox="0 0 24 14"
+                      class="absolute top-full left-6 -mt-0.5 h-3.5 w-6"
+                    >
+                      <path
+                        d="M1 0 L12 12 L23 0"
+                        fill={fill}
+                        stroke={edge}
+                        stroke-width="2"
+                        stroke-dasharray={dashed ? "5 3" : undefined}
+                      />
+                    </svg>
+                  </div>
+                </li>
+              ),
+            )
+          }
+        </ul>
+        <div class:list={[prose, "mt-[clamp(32px,4vw,64px)]"]}>
+          <p>
+            The voice is optional, and it’s my favourite small detail in the
+            repo. It ranks your installed Windows voices and goes looking by
+            name for Microsoft Sam, Mike, Mary, TruVoice, and yes, Bonzi, before
+            falling back to something bright.
+          </p>
+        </div>
+      </section>
+
+      <section class:list={[grid, sectionGap]}>
+        <SectionHeading {...oneInstaller} />
+        <div class:list={[prose, headingGap]}>
+          <p>
+            On the release side, a version bump on{" "}
+            <code class={code}>main</code> runs the packaging tests, builds an Inno
+            Setup installer, smoke-tests it, and publishes with curated notes. The
+            installer is about 35 MB. It then downloads the 5.7 GB model and the llama.cpp
+            runtime during setup, which keeps the release to a single file.
+          </p>
+          <p>
+            That’s part of the research too. It’s easy to overestimate a local
+            LLM in a hand-tuned dev environment. Once you package the app and
+            make the install story explicit, you stop thinking about impressive
+            one-off outputs and start thinking about repeatable behavior. The
+            interesting question was never whether a local model could say
+            something entertaining once. It was whether it could carry a whole
+            product loop: startup, onboarding, memory, idle presence,
+            constrained actions, and visual feedback.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <section class="bg-charcoal text-paper">
+      <div class:list={[grid, "py-(--section-space)"]}>
+        <p
+          class="col-span-1 font-serif text-[clamp(28px,3vw,48px)]/[1.15] tracking-[-0.015em] phone:mb-8"
+        >
+          Fifteen commits, March 20 to April 4.
+        </p>
+        <div class="col-span-3 pl-(--col-inset) phone:pl-0">
+          <p class={mono}>$ git log --reverse --format="%ad %s" --date=short</p>
+          <ol class:list={[mono, "mt-2 text-muted"]}>
+            {
+              commits.map(([day, subject]) => (
+                <li class="grid grid-cols-[11ch_1fr] gap-x-2">
+                  <time datetime={day}>{day}</time>
+                  <span class="text-paper">{subject}</span>
+                </li>
+              ))
+            }
+          </ol>
+          <p class:list={[mono, "mt-2"]}>
+            $ <span
+              aria-hidden="true"
+              class="inline-block h-[1.05em] w-[0.6em] translate-y-[0.18em] bg-paper motion-safe:animate-blink"
+            ></span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="relative paper">
+      <section
+        data-remark="138 tests, and not one of them laughed."
+        data-remark-style="joke"
+        class:list={[
+          grid,
+          "pt-(--section-space) pb-[calc(var(--section-space)+clamp(64px,8vw,96px))]",
+        ]}
+      >
+        <SectionHeading {...whatIdKeep} />
+        <div class:list={[prose, headingGap]}>
+          <p>
+            The 138 tests aren’t there to chase coverage. They sit on the
+            contracts that matter: controller behavior, output parsing,
+            packaging helpers, profile persistence, animation rules, and
+            presentation coordination. Those are the places where state, model
+            output, and UI run into each other, so that’s where the risk is.
+          </p>
+          <p>
+            So here’s my answer to the question that started this. Local LLMs
+            are already good enough to power a narrow, personality-rich desktop
+            companion, if the rest of the system is designed carefully around
+            them. They aren’t good enough to trust blindly, and they don’t
+            become good product components by accident. Given structure,
+            guardrails, and a visible role in the UI, they’re a lot more useful
+            than a novelty demo.
+          </p>
+          <p>
+            Dipsy is also one of the clearest looks I’ve had at the gap between
+            LLM capability and product capability. It works best when that gap
+            is acknowledged instead of hidden. The model contributes
+            interpretation, tone, and structured intent. The app contributes
+            state, validation, timing, rendering, and safety. That division of
+            labor is the main thing I’d carry into any future local-first
+            assistant.
+          </p>
+          <p>
+            It’s the kind of software I like building: playful on the surface,
+            disciplined underneath, and opinionated about where the real
+            complexity belongs.
+          </p>
+          <p>
+            The project is on pause now, left runnable, packaged, and
+            release-ready. If you’re on Windows, 1.0.0 is still there. It isn’t
+            code signed, and it’ll want 5.7 GB for the model.
+          </p>
+        </div>
+        <p
+          class:list={[
+            mono,
+            "col-span-2 col-start-2 mt-[clamp(32px,4vw,64px)] pl-(--col-inset) phone:pl-0",
+          ]}
+        >
+          <a
+            class="link phone:inline-flex phone:min-h-11 phone:items-center"
+            href={release}
+          >
+            $ open DipsyDolphin-Setup-1.0.0.exe
+          </a>
+          <br />
+          <a
+            class="link phone:inline-flex phone:min-h-11 phone:items-center"
+            href={link}
+          >
+            $ open {link?.replace(/^https?:\/\//, "")}
+          </a>
+          <br />
+          <a
+            class="link phone:inline-flex phone:min-h-11 phone:items-center"
+            href="/index/"
+          >
+            $ cd ..
+          </a>
+        </p>
+      </section>
+
+      <div
+        role="img"
+        data-stand
+        aria-label="Dipsy again, standing on the footer, idling."
+        class:list={[
+          sprite,
+          moving,
+          "absolute right-(--gutter) bottom-[calc(var(--size)*-0.117)] size-(--size) [background-image:var(--idle)] [--size:clamp(128px,15vw,256px)]",
+        ]}
+        style={strips}
+      >
+      </div>
+    </div>
+  </article>
+
+  <button
+    type="button"
+    data-dipsy
+    data-gone="true"
+    hidden
+    aria-label="Dipsy. Use the arrow keys to move it, Enter to poke it, or Escape to send it away."
+    title="Drag me, click me, or press Esc"
+    class="fixed top-0 left-0 z-50 h-[98px] w-[47px] cursor-grab touch-none opacity-100 outline-offset-2 transition-[translate,opacity,visibility] duration-500 ease-soft active:cursor-grabbing data-[gone=true]:invisible data-[gone=true]:translate-y-[140%] data-[gone=true]:opacity-0 motion-reduce:transition-none min-[701px]:h-[196px] min-[701px]:w-[94px]"
+  >
+    <span
+      data-sprite
+      class:list={[
+        sprite,
+        moving,
+        "pointer-events-none absolute -top-[15px] -left-[43px] size-[128px] [background-image:var(--idle)] data-[talking=true]:[background-image:var(--talk)] min-[701px]:-top-[30px] min-[701px]:-left-[86px] min-[701px]:size-[256px]",
+      ]}
+      style={strips}></span>
+  </button>
+
+  <div
+    data-bubble
+    hidden
+    class:list={[
+      bubbleFont,
+      "fixed z-50 max-w-[min(340px,calc(100vw-24px))] rounded-xl border-2 [border-style:var(--line)] border-(--edge) bg-(--fill) px-4 py-3 text-[16px]/[1.4] text-(--ink)",
+    ]}
+  >
+    <p class="leading-[1.4]">
+      <span data-shown></span><span
+        data-rest
+        aria-hidden="true"
+        class="invisible"></span>
+    </p>
+    <span
+      data-tail
+      aria-hidden="true"
+      class="absolute top-full -mt-[9px] -ml-2.5 size-4 rotate-45 border-r-2 border-b-2 [border-style:var(--line)] border-(--edge) bg-(--fill) data-[side=top]:top-auto data-[side=top]:bottom-full data-[side=top]:-mb-[9px] data-[side=top]:rotate-225"
+    ></span>
+  </div>
+</Layout>
+
+<script>
+  import { mountDipsy } from "./components/stage";
+
+  mountDipsy();
+</script>
+
+<style is:global>
+  @keyframes dipsy-frames {
+    to {
+      background-position-x: 100%;
+    }
+  }
+  @keyframes dipsy-settle {
+    to {
+      background-image: var(--idle);
+    }
+  }
+</style>
