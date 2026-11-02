@@ -1,0 +1,148 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import type { Entry } from "../../lib/entries";
+
+interface Props {
+  entry: Entry;
+}
+
+const { entry } = Astro.props;
+const { title, date, keywords } = entry.data;
+
+const mono = "font-mono text-[clamp(14px,1.1vw,18px)]/[2]";
+const overLight =
+  "relative text-paper [filter:drop-shadow(0_0_1px_#141412)_drop-shadow(0_0_2px_#141412)_drop-shadow(0_0_3px_#141412)]";
+---
+
+<Layout
+  title={title}
+  description="A light, some walls, and a title that casts a shadow. Every frame it sends out rays and works out what it can see."
+>
+  <article
+    data-stage
+    class="relative cursor-crosshair touch-pan-y overflow-clip bg-[#141412] text-paper selection:bg-[#c8ff3a] selection:text-[#141412]"
+  >
+    <canvas
+      hidden
+      tabindex="0"
+      aria-label="A raycasting simulator. A light moves around the page and the letters of the title cast shadows. Use the arrow keys to move the light."
+      class="absolute inset-0 size-full outline-offset-[-6px] [image-rendering:pixelated] motion-safe:animate-enter-fade"
+    ></canvas>
+
+    <div
+      class="pointer-events-none relative flex h-dvh min-h-120 flex-col justify-between"
+    >
+      <p
+        class:list={[
+          mono,
+          overLight,
+          "flex justify-between gap-6 px-(--gutter) pt-(--col-inset)",
+        ]}
+      >
+        <a
+          class="pointer-events-auto link phone:inline-flex phone:min-h-11 phone:items-center"
+          href="/index/"
+        >
+          $ cd ..
+        </a>
+        <span class="phone:hidden">
+          <time datetime={date}>{date}</time>
+          {` ${keywords.join(" ").toLowerCase()}`}
+        </span>
+      </p>
+
+      <h1
+        class="absolute inset-x-0 top-1/2 -translate-y-1/2 px-(--gutter) font-display text-[min(calc((100vw-2*var(--gutter))/7.2),30dvh,300px)]/[0.92] font-extrabold tracking-[-0.03em] text-[#4d4b44] uppercase phone:text-[calc((100vw-2*var(--gutter))/5.9)]"
+      >
+        <span data-wall class="block w-fit">2D raycasting</span>
+        <span data-wall class="block w-fit phone:hidden">vision simulator</span>
+        <span data-wall class="hidden w-fit phone:block">vision</span>
+        <span data-wall class="hidden w-fit phone:block">simulator</span>
+      </h1>
+
+      <div
+        data-controls
+        class:list={[
+          mono,
+          overLight,
+          "hidden flex-wrap items-center gap-x-8 px-(--gutter) pb-(--col-inset) data-[ready=true]:flex",
+        ]}
+      >
+        <label class="pointer-events-auto flex min-h-11 items-center gap-3">
+          rays
+          <input
+            data-rays
+            type="range"
+            min="24"
+            max="2000"
+            step="1"
+            value="550"
+            class="h-11 w-[clamp(120px,18vw,280px)] cursor-pointer appearance-none bg-transparent [&::-moz-range-thumb]:size-3.5 [&::-moz-range-thumb]:rounded-none [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-paper [&::-moz-range-track]:h-px [&::-moz-range-track]:bg-paper [&::-webkit-slider-runnable-track]:h-px [&::-webkit-slider-runnable-track]:bg-paper [&::-webkit-slider-thumb]:-mt-[7px] [&::-webkit-slider-thumb]:size-3.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:bg-paper"
+          />
+          <output data-count class="w-[4ch]">550</output>
+        </label>
+        <label
+          class="pointer-events-auto flex min-h-11 cursor-pointer items-center gap-2"
+        >
+          <input
+            data-show-rays
+            type="checkbox"
+            class="size-3.5 cursor-pointer appearance-none border border-paper checked:bg-paper"
+          />
+          show rays
+        </label>
+        <button
+          data-reset
+          type="button"
+          class="pointer-events-auto min-h-11 cursor-pointer link"
+        >
+          reset walls
+        </button>
+      </div>
+    </div>
+
+    <section
+      class="pointer-events-none relative grid grid-cols-4 px-(--gutter) pt-[clamp(72px,10vw,160px)] pb-[clamp(190px,20vw,280px)] phone:block"
+    >
+      <div
+        data-block
+        class="pointer-events-auto col-span-2 col-start-3 max-w-[60ch] cursor-auto space-y-5 pl-(--col-inset) text-body/[1.6] phone:pl-0"
+      >
+        <p>
+          Move your mouse over it, or leave it alone and watch the light wander.
+          Drag the grey bars to change the room. On a phone, tap where you want
+          the light to go.
+        </p>
+        <p>
+          Every frame the light sends out rays in all directions. Each one stops
+          at the first thing it hits, and whatever the rays reached is what the
+          light can see. A lot of games decide what a guard notices, how far a
+          flashlight reaches, and where the fog of war lifts this same way.
+        </p>
+        <p>
+          Nothing here is really being lit. It’s a list of distances that
+          happens to look like a shadow.
+        </p>
+        <p>
+          Slide the rays down and the edges go blocky. Slide them up and they go
+          smooth, and it costs more. A game has to pay that for every light and
+          every enemy at once, so the slider is really a budget.
+        </p>
+        <p class:list={[mono, "pt-4"]}>
+          <a
+            class="link phone:inline-flex phone:min-h-11 phone:items-center"
+            href="/index/"
+          >
+            $ cd ..
+          </a>
+        </p>
+      </div>
+    </section>
+  </article>
+</Layout>
+
+<script>
+  import { startSimulator } from "./components/simulator";
+
+  startSimulator();
+</script>
