@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@property --color-dim {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6c6a62;
+}
+
 @custom-variant hover (&:hover);
 @custom-variant phone (@media (max-width: 700px));
 @custom-variant ready {
