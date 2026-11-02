@@ -50,8 +50,9 @@ themed identity.
   around 50 entries, in the page rather than pinned over it.
 - **Entry pages (`/index/<slug>`)**: one per entry, each free to define its own
   typography, colour, layout, and interaction to suit the material. The only shared
-  requirement is an obvious way back. They're placeholders for now; each will be designed
-  with the owner section by section.
+  requirement is an obvious way back. Dipsy Dolphin, Escapism as escapism, and the raycasting simulator have their own
+  pages, described in `.impeccable/surfaces/src-entries-*-page-astro.md`. The rest are
+  placeholders for now; each will be designed with the owner section by section.
 - **About (`/about`)**: "Me, at length." A mostly paper page with the dithered
   portrait, where Tristan has lived, work, recent films and music, and what he's
   settled on versus still wondering about. Its composition lives in
@@ -67,7 +68,8 @@ themed identity.
   date (`YYYY-MM` or `YYYY-MM-DD`) are required. `keywords` is a free-form string
   array (default empty). `link`, `readingTime`, `featured` (homepage pick order), and
   `colour` (the entry's Index scene and sweep) are optional. An entry's hover effect
-  and page live in the same folder, both optional.
+  and page live in the same folder, both optional. `docs/ARCHITECTURE.md` sets out the
+  folder shape.
 - No entry descriptions, fixed content types, or publication statuses. Every record
   is listed and has a page at `/index/<slug>`, a placeholder until it has its own. No
   route-existence checks, redirects for retired pages, or compatibility aliases.
@@ -80,8 +82,9 @@ themed identity.
 - Content and navigation work before JavaScript, by keyboard, and with reduced
   motion.
 - The résumé is authored in Typst (`resume/`) and served at `/resume.pdf`.
-- Current records: Dipsy Dolphin, This website, Everybody's fired, Puerto Rico
-  (August 2026), and Maine (October 2026). Each has a placeholder page.
+- Current records: Dipsy Dolphin, This website, Escapism as escapism, 2D raycasting vision simulator, Puerto Rico
+  (August 2026), and Maine (October 2026). All but Dipsy Dolphin have a placeholder
+  page.
 - Curated picks will probably be mostly projects and code. Allow that; don't force a
   balanced mix.
 
