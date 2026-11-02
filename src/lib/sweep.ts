@@ -1,6 +1,6 @@
-import { threshold } from "./dither/index.ts";
+import { packed } from "./dither/effect.ts";
 import { readDot } from "./dither/fit.ts";
-import { WIPE, fromHex } from "./dither/palette.ts";
+import { WASH, fromHex } from "./dither/palette.ts";
 import { splotch } from "./dither/splotch.ts";
 import { hash } from "./hash.ts";
 import { reducedMotion } from "./motion.ts";
@@ -13,7 +13,6 @@ const KEY = "sweep";
 const COLOUR_KEY = "sweep-colour";
 const SPREAD_KEY = "sweep-spread";
 
-type Direction = 1 | -1;
 type Spread = { x: number; y: number; seed: number; opening?: boolean };
 
 type Curtain = ReturnType<typeof curtain>;
@@ -29,7 +28,7 @@ function forget() {
   sessionStorage.removeItem(SPREAD_KEY);
 }
 
-function curtain(direction: Direction, colour = WIPE, spread?: Spread) {
+function curtain(spread: Spread, colour: string) {
   const root = document.documentElement;
   const dot = readDot(root);
   const { clientWidth, clientHeight } = root;
@@ -45,22 +44,21 @@ function curtain(direction: Direction, colour = WIPE, spread?: Spread) {
 
   const context = canvas.getContext("2d")!;
   const image = context.createImageData(cols, rows);
-  const order = spread
-    ? splotch(cols, rows, spread.x / dot, spread.y / dot, spread.seed)
-    : new Float32Array(cols * rows);
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
-      const across = direction === 1 ? x / cols : 1 - x / cols;
-      const i = y * cols + x;
-      if (!spread) order[i] = across * 0.6 + threshold(x, y) * 0.4;
-      else if (spread.opening) order[i] = 1 - order[i];
-      image.data.set(colour, i * 4);
-    }
-  }
+  const pixels = new Uint32Array(image.data.buffer);
+  const fill = packed(fromHex(colour));
+  const order = splotch(
+    cols,
+    rows,
+    spread.x / dot,
+    spread.y / dot,
+    spread.seed,
+  );
+  if (spread.opening)
+    for (let i = 0; i < order.length; i++) order[i] = 1 - order[i];
 
   const draw = (coverage: number) => {
     for (let i = 0; i < order.length; i++)
-      image.data[i * 4 + 3] = order[i] < coverage ? 255 : 0;
+      pixels[i] = order[i] < coverage ? fill : 0;
     context.putImageData(image, 0, 0);
   };
   return { canvas, draw };
@@ -102,25 +100,23 @@ function sweepable(event: MouseEvent) {
   return { url, link };
 }
 
+function clickPoint(link: HTMLAnchorElement, event: MouseEvent) {
+  const origin = link.dataset.origin?.split(",").map(Number);
+  if (origin) return { x: origin[0], y: origin[1] };
+  if (event.detail) return { x: event.clientX, y: event.clientY };
+  const box = link.getBoundingClientRect();
+  return { x: box.left + box.width / 2, y: box.top + box.height / 2 };
+}
+
 async function leave(url: URL, link: HTMLAnchorElement, event: MouseEvent) {
-  const direction: Direction = url.pathname === "/" ? -1 : 1;
-  const accent = link.dataset.colour;
-  const [x, y] = link.dataset.origin?.split(",").map(Number) ?? [
-    event.clientX,
-    event.clientY,
-  ];
-  const spread = accent ? { x, y, seed: hash(url.pathname) } : undefined;
+  const { x, y } = clickPoint(link, event);
+  const spread = { x, y, seed: hash(url.pathname) };
+  const colour = link.dataset.colour ?? WASH;
   forget();
-  sessionStorage.setItem(KEY, String(direction));
-  if (accent) {
-    sessionStorage.setItem(COLOUR_KEY, accent);
-    sessionStorage.setItem(SPREAD_KEY, JSON.stringify(spread));
-  }
-  const cover = curtain(
-    direction,
-    accent ? fromHex(accent) : undefined,
-    spread,
-  );
+  sessionStorage.setItem(KEY, "true");
+  sessionStorage.setItem(COLOUR_KEY, colour);
+  sessionStorage.setItem(SPREAD_KEY, JSON.stringify(spread));
+  const cover = curtain(spread, colour);
   leaving = { ...cover, stalled: 0 };
   await play(COVER, (t) => cover.draw(easeIn(t)));
   location.href = url.href;
@@ -141,17 +137,13 @@ async function uncover({ canvas, draw }: Curtain) {
 }
 
 function arrive() {
-  const direction = Number(document.documentElement.dataset.sweep);
+  const sweeping = document.documentElement.dataset.sweep;
   const colour = sessionStorage.getItem(COLOUR_KEY);
   const spread = sessionStorage.getItem(SPREAD_KEY);
   forget();
-  if (direction !== 1 && direction !== -1) return;
+  if (!sweeping || !colour || !spread) return;
   uncover(
-    curtain(
-      -direction as Direction,
-      colour ? fromHex(colour) : undefined,
-      spread ? { ...(JSON.parse(spread) as Spread), opening: true } : undefined,
-    ),
+    curtain({ ...(JSON.parse(spread) as Spread), opening: true }, colour),
   );
 }
 
