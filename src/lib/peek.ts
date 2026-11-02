@@ -7,7 +7,7 @@ const LINGER = 180;
 const DWELL = 250;
 const READING_LINE = 0.4;
 
-const effects = import.meta.glob<{ default: Effect }>("../entries/*/effect.ts");
+const effects = import.meta.glob<{ default: Effect }>("../entries/*/peek.ts");
 
 export function mountPeeks(root: HTMLElement) {
   const touch = matchMedia("(hover: none)");
@@ -21,7 +21,7 @@ export function mountPeeks(root: HTMLElement) {
     const link = row.querySelector("a")!;
     const accent = link.dataset.colour;
     const load =
-      effects[`../entries/${link.pathname.split("/").at(-2)}/effect.ts`];
+      effects[`../entries/${link.pathname.split("/").at(-2)}/peek.ts`];
     const effect = load ? (await load()).default : accent ? splat : undefined;
     await effect?.prepare?.();
     if (!effect || ticket !== opening) return;

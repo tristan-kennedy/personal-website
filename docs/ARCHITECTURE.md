@@ -22,11 +22,12 @@ dithered imagery, clocks, ribbon, and entrances are all hand-written and tiny.
 
 ```
 src/
-  entries/<slug>/            Everything for one entry, kept together:
+  entries/<slug>/            Everything for one entry, kept together (see Entry folders)
     entry.json               Metadata (the folder name is the slug)
-    effect.ts                Its Index hover effect (optional)
+    peek.ts                  Its Index scene (optional)
     Page.astro               Its page at /index/<slug> (optional)
-    (assets)                 Sprites, images, and anything else it needs
+    assets/                  Images, sprites, and other files (optional)
+    components/              Code its page or peek uses (optional)
   content.config.ts          The `entries` collection schema
   layouts/Layout.astro       <html>, head metadata, fonts, skip link, footer
   components/
@@ -85,9 +86,25 @@ docs/                        PRODUCT.md, DESIGN.md, this file
 ```
 
 Each entry page is `src/entries/<slug>/Page.astro`, beside that entry's metadata and
-effect, with its assets in the same folder. It receives `entry` as a prop and owns its
-own layout, styles, and scripts. `src/pages/index/[slug].astro` is the only route; it
-finds the page, and an entry without a `Page.astro` gets `EntryStub.astro`.
+peek. It receives `entry` as a prop and owns its own layout, styles, and scripts.
+`src/pages/index/[slug].astro` is the only route; it finds the page, and an entry
+without a `Page.astro` gets `EntryStub.astro`.
+
+### Entry folders
+
+Every entry has the same shape, so any one of them can be read at a glance.
+
+- **Top level:** only `entry.json`, `peek.ts`, and `Page.astro`. These are the names
+  the site looks for, and nothing else belongs beside them.
+- **`assets/`:** files the entry imports or shows, such as images, sprites, and audio,
+  for the page and the peek alike.
+- **`components/`:** code the page or peek uses, such as `.astro` components, client scripts, and
+  data. Keep it flat.
+
+Add a folder only when the entry has something to put in it, and don't add others.
+Code used by one entry stays in that entry. Nothing outside `src/entries/<slug>/`
+imports from it, apart from the globs that find these three top-level files. Code that
+a second entry needs moves to `src/lib/` or `src/components/`.
 
 ## Styling conventions
 
@@ -135,7 +152,7 @@ and each level works without the others:
 
 1. **Colour.** `"colour": "#rrggbb"` in the JSON gives the row a boiling splat
    behind its title and turns the page sweep that colour.
-2. **Effect.** `effect.ts` in the entry's folder default-exports an `Effect` (see
+2. **Peek.** `peek.ts` in the entry's folder default-exports an `Effect` (see
    `src/lib/dither/effect.ts`) that replaces the splat with its own animation. `reach`
    sets how far it spreads from the title on each side, in title heights (capped at
    170px). `paint` gets the stage and returns a function that fills `pixels` each
@@ -144,7 +161,7 @@ and each level works without the others:
    It needs to look right at `seconds = 6`, the still frame under reduced motion. An
    optional `prepare` runs first, for loading anything the effect needs, like a sprite.
 3. **Page.** `Page.astro` in the entry's folder replaces the placeholder at
-   `/index/<slug>`.
+   `/index/<slug>`. Its files go in `assets/` and `components/`, as in Entry folders.
 
 An effect stays small and hugs its title, never takes clicks, keeps the title readable
 (rows always sit above it), and has a still frame under reduced motion. See the scenes

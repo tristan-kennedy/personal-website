@@ -1,7 +1,7 @@
 import { packed, plotter, type Effect } from "../../lib/dither/effect";
 import { threshold } from "../../lib/dither/index";
 import { PAPER } from "../../lib/dither/palette";
-import sheetUrl from "./talk.png";
+import sheetUrl from "./assets/talk.png";
 
 const FRAMES = 12;
 const FRAME_SIZE = 128;
@@ -54,7 +54,7 @@ export default {
   prepare: loadSheet,
   reach: { top: 1.5, right: 0.42, bottom: 0.4, left: 0.42 },
   paint(stage) {
-    const { cols, rows, box, colour } = stage;
+    const { cols, box, colour } = stage;
     const desktop = packed(colour);
     const wide = box.right - box.left;
     const scale = Math.min(box.top / SKETCH_HEIGHT, wide / 150);

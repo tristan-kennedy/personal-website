@@ -7,7 +7,7 @@ Tristan Kennedy's personal archive: Astro, Tailwind CSS v4, static on Cloudflare
 - `docs/PRODUCT.md`: what the site is for, the content model, and constraints.
 - `docs/DESIGN.md`: the visual system. Read it before any interface change.
 - `docs/ARCHITECTURE.md`: file layout, packages, and styling conventions.
-- `.impeccable/surfaces/`: each page's composition and what was rejected (`src-pages-index-astro.md` is the homepage, `src-pages-index-index-astro.md` is the Index, `src-pages-about-astro.md` is About, `src-pages-404-astro.md` is the 404).
+- `.impeccable/surfaces/`: each page's composition and what was rejected (`src-pages-index-astro.md` is the homepage, `src-pages-index-index-astro.md` is the Index, `src-pages-about-astro.md` is About, `src-pages-404-astro.md` is the 404, `src-entries-dipsy-dolphin-page-astro.md` is Dipsy's page, `src-entries-escapism-as-escapism-page-astro.md` is Escapism, `src-entries-2d-raycasting-page-astro.md` is the raycasting simulator).
 - Impeccable lives in `.agents/skills/impeccable/` (pinned by `skills-lock.json`, defaults in `.impeccable/config.json`). Follow its SKILL.md for design work. The owner's explicit instructions take precedence.
 
 ## Rules
@@ -16,7 +16,7 @@ Tristan Kennedy's personal archive: Astro, Tailwind CSS v4, static on Cloudflare
 - Keep comments to a minimum. Name things well instead.
 - Personal details live in `src/lib/site.ts`. Never hard-code them elsewhere.
 - Every dithered piece uses the shared threshold, sun, and `--dot`.
-- Everything for one entry lives in `src/entries/<slug>/`: `entry.json`, `effect.ts`, `Page.astro`, and its assets.
+- Everything for one entry lives in `src/entries/<slug>/`. The top level holds only `entry.json`, `peek.ts`, and `Page.astro`. Files go in `assets/`, code the page or peek uses goes in `components/`, and each folder exists only when needed. See "Entry folders" in `docs/ARCHITECTURE.md`.
 - Keep keyboard focus, reduced-motion paths, and content before JavaScript working.
 - Don't design entry pages, restore rejected ideas, or change an entry's Index scene without working through it with the owner section by section.
 - Call catalog records "entries" and their destinations "pages", never "worlds".
