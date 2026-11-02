@@ -25,4 +25,4 @@ Tristan Kennedy's personal archive: Astro, Tailwind CSS v4, static on Cloudflare
 - No tests unless asked. Run `pnpm build` and check the pages in a browser.
 - Keep changes scoped and preserve unrelated work.
 - Internal links end in a slash. Cloudflare treats bare `/index` as the homepage, so `public/_redirects` sends it to `/index/`.
-- Commit subjects are public: the About log and the colophon show them. Make them short, plain-spoken, and a little fun, the way a person would say it. No forced jokes, puns, emoji, or dev-humor references. Example: "Taught the favorites to stand up straight on phones."
+- Commit subjects are public: the About log and the colophon show them. Keep them short and plain, and say what changed. No jokes, wordplay, or emoji. Examples: "Add resume", "Fix build", "New favicons and bug fixes".
