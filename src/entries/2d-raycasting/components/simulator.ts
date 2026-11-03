@@ -23,6 +23,7 @@ const CHARCOAL = packed([0x29, 0x28, 0x24]);
 
 const TAU = Math.PI * 2;
 const TAU_SCALE = 1 / TAU;
+const GLOW_STEPS = 16;
 const SOLID_ALPHA = 110;
 const TITLE = 1;
 const BARRIER = 2;
@@ -51,6 +52,26 @@ const STARTING_BARS = [
 
 type Bar = { x0: number; y0: number; x1: number; y1: number };
 
+const turn = (y: number, x: number) => {
+  const acrossX = Math.abs(x);
+  const acrossY = Math.abs(y);
+  const wide = Math.max(acrossX, acrossY);
+  const slope = wide ? Math.min(acrossX, acrossY) / wide : 0;
+  const square = slope * slope;
+  let angle =
+    slope *
+    (0.99997726 +
+      square *
+        (-0.33262347 +
+          square *
+            (0.19354346 +
+              square *
+                (-0.11643287 + square * (0.05265332 + square * -0.0117212)))));
+  if (acrossY > acrossX) angle = Math.PI / 2 - angle;
+  if (x < 0) angle = Math.PI - angle;
+  return y < 0 ? TAU - angle : angle;
+};
+
 export const startSimulator = async () => {
   const stage = document.querySelector<HTMLElement>("[data-stage]")!;
   const canvas = stage.querySelector("canvas")!;
@@ -71,10 +92,14 @@ export const startSimulator = async () => {
   let title = new Uint8Array(0);
   let solid = new Uint8Array(0);
   let litFrame = new Uint32Array(0);
+  let thresholds = new Float32Array(0);
+  let tones = new Float32Array(0);
+  let tonesReach = 0;
   let image: ImageData;
   let pixels = new Uint32Array(0);
   let bars: Bar[] = [];
-  let hits = new Float32Array(Number(slider.max));
+  const hits = new Float32Array(Number(slider.max));
+  const nearness = new Float32Array(hits.length);
   let frame = 0;
   let dirty = true;
   let onScreen = true;
@@ -178,6 +203,9 @@ export const startSimulator = async () => {
     title = new Uint8Array(cols * rows);
     solid = new Uint8Array(cols * rows);
     litFrame = new Uint32Array(cols * rows);
+    thresholds = new Float32Array(cols * rows);
+    for (let y = 0; y < rows; y++)
+      for (let x = 0; x < cols; x++) thresholds[y * cols + x] = threshold(x, y);
     image = context.createImageData(cols, rows);
     pixels = new Uint32Array(image.data.buffer);
     readTitle();
@@ -221,6 +249,7 @@ export const startSimulator = async () => {
       }
     }
     hits[index] = Math.max(travelled, 0.001);
+    nearness[index] = 1 / hits[index];
   };
 
   const render = () => {
@@ -230,6 +259,13 @@ export const startSimulator = async () => {
     for (let i = 0; i < rayCount; i++) castRay(i * step, i);
 
     const reach = Math.hypot(cols, viewRows()) * REACH_SHARE;
+    if (reach !== tonesReach) {
+      tonesReach = reach;
+      tones = new Float32Array(Math.ceil(reach * GLOW_STEPS) + 1);
+      for (let i = 0; i < tones.length; i++)
+        tones[i] = Math.max(0, 1 - i / GLOW_STEPS / reach) ** 2.1 * LAST_STEP;
+    }
+    const reachSquared = reach * reach;
     const perAngle = rayCount * TAU_SCALE;
     const top = firstRow();
     const bottom = Math.min(rows, Math.ceil(top + viewRows()) + 1);
@@ -237,12 +273,12 @@ export const startSimulator = async () => {
     const fadeFrom = rows - fadeLength;
     for (let y = top; y < bottom; y++) {
       const offsetY = y + 0.5 - light.y;
+      const offsetYSquared = offsetY * offsetY;
       for (let x = 0; x < cols; x++) {
         const cell = y * cols + x;
-        const offsetX = x + 0.5 - light.x;
-        if (solid[cell]) {
+        const kind = solid[cell];
+        if (kind) {
           const lit = litFrame[cell] === frame;
-          const kind = solid[cell];
           pixels[cell] =
             kind === TEXT_BLOCK
               ? lit
@@ -255,21 +291,27 @@ export const startSimulator = async () => {
                   : WALL;
           continue;
         }
-        const distance = Math.hypot(offsetX, offsetY);
-        const angle = Math.atan2(offsetY, offsetX);
-        const place = (angle < 0 ? angle + TAU : angle) * perAngle;
-        const before = Math.floor(place) % rayCount;
-        const after = (before + 1) % rayCount;
-        const share = place - Math.floor(place);
-        const edge = 1 / ((1 - share) / hits[before] + share / hits[after]);
-        if (distance > edge) {
+        const offsetX = x + 0.5 - light.x;
+        const distanceSquared = offsetX * offsetX + offsetYSquared;
+        if (distanceSquared >= reachSquared) {
           pixels[cell] = GROUND;
           continue;
         }
-        const glow = Math.max(0, 1 - distance / reach) ** 2.1;
-        const tone = glow * LAST_STEP;
+        const distance = Math.sqrt(distanceSquared);
+        const place = turn(offsetY, offsetX) * perAngle;
+        const whole = place | 0;
+        const before = whole < rayCount ? whole : 0;
+        const after = before + 1 < rayCount ? before + 1 : 0;
+        const share = place - whole;
+        const past =
+          distance * ((1 - share) * nearness[before] + share * nearness[after]);
+        if (past > 1) {
+          pixels[cell] = GROUND;
+          continue;
+        }
+        const tone = tones[(distance * GLOW_STEPS) | 0];
         const low = Math.floor(tone);
-        const up = tone - low > threshold(x, y) ? 1 : 0;
+        const up = tone - low > thresholds[cell] ? 1 : 0;
         pixels[cell] = RAMP[Math.min(LAST_STEP, low + up)];
       }
     }
@@ -301,7 +343,7 @@ export const startSimulator = async () => {
     for (let y = Math.max(top, Math.ceil(fadeFrom)); y < bottom; y++) {
       const gone = (y - fadeFrom) / fadeLength;
       for (let x = 0; x < cols; x++)
-        if (threshold(x, y) < gone) pixels[y * cols + x] = CHARCOAL;
+        if (thresholds[y * cols + x] < gone) pixels[y * cols + x] = CHARCOAL;
     }
 
     context.putImageData(image, 0, 0, 0, top, cols, bottom - top);

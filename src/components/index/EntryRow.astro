@@ -51,16 +51,16 @@ const poster = tier === "poster";
     data-accents={colour && accents.length ? accents.join(" ") : undefined}
   >
     <span
-      class="pointer-events-none absolute inset-0 [translate:0.05em_0.06em] [padding:inherit] [--delay:0s] [transition:translate_0.7s_var(--ease-soft)_var(--delay),transform_0.45s_var(--ease-soft),--color-dim_0.3s_ease] in-data-active:[--color-dim:var(--ink)] motion-safe:in-data-active:[transform:translate(0.07em,0.08em)] unrevealed:[translate:0_0] revealing:[--delay:0.3s]"
+      class="pointer-events-none absolute inset-0 [translate:0.05em_0.06em] [padding:inherit] [will-change:transform,translate] [--delay:0s] [transition:translate_0.7s_var(--ease-soft)_var(--delay),transform_0.45s_var(--ease-soft)] in-data-active:[--color-dim:var(--ink)] motion-safe:in-data-active:[transform:translate(0.07em,0.08em)] unrevealed:[translate:0_0] revealing:[--delay:0.3s]"
       aria-hidden="true"
     >
-      <span class="dither-text">{title}</span>
+      <span class="dither-text [transition:color_0.3s_ease]">{title}</span>
       <span class="invisible"
         ><EntryMeta entry={entry} tier={tier} place={place} /></span
       >
     </span>
     <h2
-      class="pointer-events-auto relative z-1 inline font-[inherit] text-[length:inherit]/[inherit] tracking-[inherit] [-webkit-text-stroke:0.05em_transparent] [paint-order:stroke_fill] [transition:color_0.3s_ease,-webkit-text-stroke-color_0.3s_ease] in-data-dimmed:[-webkit-text-stroke-color:var(--color-charcoal)] in-data-dimmed:not-in-data-active:text-(--dimmed)"
+      class="pointer-events-auto relative z-1 inline font-[inherit] text-[length:inherit]/[inherit] tracking-[inherit] [-webkit-text-stroke:0_var(--color-charcoal)] [paint-order:stroke_fill] [transition:color_0.3s_ease] in-data-dimmed:not-in-data-active:text-(--dimmed) in-[[data-index]:has([data-row]>canvas)]:[-webkit-text-stroke-width:0.05em]"
       data-title
     >
       {title}

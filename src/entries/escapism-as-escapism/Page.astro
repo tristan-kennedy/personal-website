@@ -10,7 +10,8 @@ interface Props {
 const { entry } = Astro.props;
 const { title, date, keywords } = entry.data;
 
-const band = "px-(--gutter) py-[clamp(120px,14vw,220px)]";
+const band =
+  "px-(--gutter) py-(--pad) [--pad:clamp(120px,14vw,220px)] bg-linear-to-b/oklab";
 const column = "mx-auto max-w-[34em] space-y-[1.1em] font-serif";
 const large =
   "mx-auto mb-[clamp(56px,7vw,112px)] max-w-[12em] text-center font-serif text-[clamp(44px,7vw,132px)]/[1.04] tracking-[-0.02em] text-balance";
@@ -68,7 +69,7 @@ const large =
     <section
       class:list={[
         band,
-        "relative bg-linear-to-b from-paper to-[#2a2a5e] to-[180px] text-[clamp(21px,1.7vw,28px)]/[1.6] text-paper peer-data-[walk=true]:-mt-[60dvh] peer-data-[walk=true]:from-transparent peer-data-[walk=true]:to-[60dvh] peer-data-[walk=true]:pt-[calc(60dvh+clamp(40px,6vw,96px))]",
+        "relative from-paper via-[#2a2a5e] via-[180px] to-[#4f458f] text-[clamp(21px,1.7vw,28px)]/[1.6] text-paper peer-data-[walk=true]:-mt-[60dvh] peer-data-[walk=true]:from-transparent peer-data-[walk=true]:via-[60dvh] peer-data-[walk=true]:pt-[calc(60dvh+clamp(40px,6vw,96px))]",
       ]}
     >
       <h2 class={large}>Is escapism even bad?</h2>
@@ -90,7 +91,7 @@ const large =
     <section
       class:list={[
         band,
-        "bg-linear-to-b from-[#2a2a5e] to-[#4f458f] to-[140px] text-[clamp(21px,1.8vw,29px)]/[1.55] text-paper",
+        "from-[#4f458f] to-[#8a4a8c] text-[clamp(21px,1.8vw,29px)]/[1.55] text-paper",
       ]}
     >
       <div class={column}>
@@ -110,7 +111,7 @@ const large =
     <section
       class:list={[
         band,
-        "bg-linear-to-b from-[#4f458f] to-[#8a4a8c] to-[140px] text-[clamp(22px,1.9vw,30px)]/[1.55] text-paper",
+        "from-[#8a4a8c] via-[#9a4f8e] via-[calc(100%-var(--pad))] to-[#bd6a81] text-[clamp(22px,1.9vw,30px)]/[1.55] text-paper",
       ]}
     >
       <div class={column}>
@@ -130,7 +131,7 @@ const large =
     <section
       class:list={[
         band,
-        "bg-linear-to-b from-[#8a4a8c] to-[#f08a76] to-[180px] text-[clamp(22px,2vw,31px)]/[1.5] text-charcoal",
+        "from-[#bd6a81] via-(length:--pad) via-[#f08a76] to-[#f1bdaf] text-[clamp(22px,2vw,31px)]/[1.5] text-charcoal",
       ]}
     >
       <div class={column}>
@@ -147,7 +148,7 @@ const large =
     <section
       class:list={[
         band,
-        "bg-linear-to-b from-[#f08a76] to-paper to-[200px] text-[clamp(23px,2.1vw,33px)]/[1.5] text-charcoal",
+        "from-[#f1bdaf] to-(length:--pad) to-paper text-[clamp(23px,2.1vw,33px)]/[1.5] text-charcoal",
       ]}
     >
       <div class={column}>

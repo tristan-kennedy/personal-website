@@ -237,13 +237,9 @@
 }
 
 @utility dither-text {
-  color: transparent;
-  background: repeating-conic-gradient(
-      var(--color-dim) 0 25%,
-      transparent 0 50%
-    )
+  color: var(--color-dim);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2' shape-rendering='crispEdges'%3E%3Cpath d='M1 0h1v1H1zM0 1h1v1H0z'/%3E%3C/svg%3E")
     0 0 / calc(var(--dot) * 2) calc(var(--dot) * 2);
-  background-clip: text;
   pointer-events: none;
 }
 
@@ -262,12 +258,6 @@
   [data-revealed="instant"] *,
   [data-revealed="instant"] *::before {
     transition: none !important;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  @view-transition {
-    navigation: auto;
   }
 }
 

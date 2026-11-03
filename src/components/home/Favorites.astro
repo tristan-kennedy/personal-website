@@ -61,7 +61,7 @@ const longestWord = (title: string) =>
                 ]}
               >
                 <span
-                  class="dither-text absolute top-0 left-0 [translate:0.05em_0.06em] [--delay:0s] [transition:translate_0.7s_var(--ease-soft)_var(--delay),transform_0.45s_var(--ease-soft)] group-hover:[transform:translate(0.07em,0.08em)] group-focus-visible:[transform:translate(0.07em,0.08em)] unrevealed:[translate:0_0] revealing:[--delay:calc(var(--row)+0.3s)]"
+                  class="dither-text absolute top-0 left-0 [will-change:transform,translate] [translate:0.05em_0.06em] [--delay:0s] [transition:translate_0.7s_var(--ease-soft)_var(--delay),transform_0.45s_var(--ease-soft)] group-hover:[transform:translate(0.07em,0.08em)] group-focus-visible:[transform:translate(0.07em,0.08em)] unrevealed:[translate:0_0] revealing:[--delay:calc(var(--row)+0.3s)]"
                   aria-hidden="true"
                 >
                   {entry.data.title}
@@ -84,7 +84,7 @@ const longestWord = (title: string) =>
               </span>
               <span
                 class:list={[
-                  "dither-text flex flex-none gap-[0.3em] opacity-60 [--delay:0s] [transition:opacity_0.6s_ease_var(--delay),translate_0.7s_var(--ease-soft)_var(--delay),transform_0.6s_var(--ease-soft)] unrevealed:opacity-0 revealing:[--delay:calc(var(--row)+0.35s)] [&>span]:flex-none",
+                  "pointer-events-none flex flex-none gap-[0.3em] opacity-60 *:dither-text [will-change:transform,translate,opacity] [--delay:0s] [transition:opacity_0.6s_ease_var(--delay),translate_0.7s_var(--ease-soft)_var(--delay),transform_0.6s_var(--ease-soft)] unrevealed:opacity-0 revealing:[--delay:calc(var(--row)+0.35s)] [&>span]:flex-none",
                   "phone:hidden",
                   even
                     ? "flex-row-reverse mask-[linear-gradient(to_left,#000,transparent_70%)] pr-[0.3em] group-hover:[transform:translateX(-0.3em)] group-focus-visible:[transform:translateX(-0.3em)] unrevealed:[translate:0.6em_0]"

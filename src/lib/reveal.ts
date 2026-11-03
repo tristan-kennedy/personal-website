@@ -23,6 +23,7 @@ export function revealOnScroll() {
     });
   const observer = new IntersectionObserver(
     (entries) => {
+      let batch = 0;
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
         const section = entry.target as HTMLElement;
@@ -32,6 +33,7 @@ export function revealOnScroll() {
           reveal(section);
           continue;
         }
+        section.style.setProperty("--batch", String(batch++));
         const wait = HERO_LEAD - performance.now();
         if (wait > 0) setTimeout(() => reveal(section), wait);
         else reveal(section);

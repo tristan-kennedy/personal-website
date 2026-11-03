@@ -4,6 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 import type { Entry } from "../../lib/entries";
 import Day from "./components/Day.astro";
 import Photo from "../../components/Photo.astro";
+import Reveal from "../../components/Reveal.astro";
 import Strip from "./components/Strip.astro";
 
 interface Props {
@@ -27,6 +28,7 @@ const small = "(max-width: 700px) 80vw, 22vw";
   title={title}
   description="Six days in and around Acadia in October, in photos: the coast, the gardens, Cadillac at sunrise, Schoodic in fog, and Jordan Pond."
 >
+  <Reveal />
   <article class="overflow-x-clip bg-[#1d2620] text-paper">
     <header class="grid min-h-dvh grid-cols-12 items-stretch">
       <div
@@ -46,20 +48,20 @@ const small = "(max-width: 700px) 80vw, 22vw";
             {` ${keywords.join(" ").toLowerCase()}`}
           </span>
         </p>
-        <div>
+        <div data-reveal>
           <h1
-            class="font-serif text-[max(96px,calc(11*var(--vw)))]/[0.85] tracking-[-0.03em]"
+            class="font-serif text-[max(96px,calc(11*var(--vw)))]/[0.85] tracking-[-0.03em] reveal [--delay:0.2s] unrevealed:translate-y-6 unrevealed:opacity-0"
           >
             Maine
           </h1>
           <p
-            class="mt-[clamp(24px,3vw,48px)] max-w-[22em] font-serif text-[clamp(20px,1.7vw,30px)]/[1.3] text-balance"
+            class="mt-[clamp(24px,3vw,48px)] max-w-[22em] font-serif text-[clamp(20px,1.7vw,30px)]/[1.3] text-balance reveal [--delay:0.35s] unrevealed:translate-y-3 unrevealed:opacity-0"
           >
             Six days in and around Acadia, October 10 to 15, 2026, with Trinity,
             my mom, and my dad.
           </p>
           <p
-            class="mt-6 font-mono text-[12px] tracking-[0.14em] text-[#f2b93b] uppercase"
+            class="mt-6 font-mono text-[12px] tracking-[0.14em] text-[#f2b93b] uppercase reveal [--delay:0.5s] unrevealed:opacity-0"
           >
             100 photos, out of 435
           </p>
@@ -72,7 +74,7 @@ const small = "(max-width: 700px) 80vw, 22vw";
         eager
         quality={90}
         frame="h-dvh phone:h-[90vw]"
-        class="col-span-7 phone:col-span-12"
+        class="col-span-7 overflow-hidden [--reveal-duration:1s,1.4s,1.4s] [--rise:0px] [--zoom:1.04] phone:col-span-12"
       />
     </header>
 
@@ -856,17 +858,20 @@ const small = "(max-width: 700px) 80vw, 22vw";
         src={photo("last-light")}
         alt="Dusk over the water from the sandbar, a thin line of orange at the horizon under a fading blue sky."
         sizes="(max-width: 700px) 100vw, 46vw"
-        class="col-span-6 phone:col-span-12"
+        class="col-span-6 [--reveal-duration:1.8s,2s] [--rise:0.5rem] phone:col-span-12"
       />
-      <div class="col-span-5 col-start-8 phone:col-span-12">
+      <div
+        class="col-span-5 col-start-8 [--reveal-duration:1.6s,1.8s] phone:col-span-12"
+        data-reveal
+      >
         <p
-          class="font-mono text-[12px] tracking-[0.14em] text-[#f2b93b] uppercase"
+          class="font-mono text-[12px] tracking-[0.14em] text-[#f2b93b] uppercase reveal [--delay:0.6s] unrevealed:opacity-0"
         >
           Thursday · 6:01 pm
         </p>
         <h2
           id="last-light"
-          class="mt-4 font-serif text-[clamp(40px,4.4vw,84px)]/[1] tracking-[-0.02em] text-balance"
+          class="mt-4 font-serif text-[clamp(40px,4.4vw,84px)]/[1] tracking-[-0.02em] text-balance reveal [--delay:0.9s] unrevealed:translate-y-2 unrevealed:opacity-0"
         >
           Last light over the sandbar.
         </h2>

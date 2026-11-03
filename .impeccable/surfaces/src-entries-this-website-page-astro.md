@@ -67,8 +67,11 @@ the verdict, DESIGN.md, and every shipping raster carrying its provenance
   serving `dist/`.
 - The old case study (`src/content/projects/personal-portfolio.mdx`, last at `dc609cf`)
   is quoted, not reprinted.
-- The title's wipe is the only motion. Screenshots had a slide-in at first, and the
-  finish review cut it as one entrance repeated across seven different eras.
+- Motion: the title's wipe, the contents stripes fanning in one after another like a
+  swatch book opening, and each screenshot fading in plainly when reached (owner asked
+  for subtle entrances 2026-11-03). Screenshots had a slide-in at first, and the finish
+  review cut it as one entrance repeated across seven different eras, so they only fade,
+  with no movement that would belong to one era's idiom.
 - Era fonts load only on this page: Inter, Oswald, Nunito Sans from `@fontsource`.
 - Everything stated comes from the code and commit history. Lines that read as opinion
   speak for the owner and need their approval.

@@ -4,6 +4,7 @@ import "@fontsource/barlow-condensed/800.css";
 import "@fontsource/marcellus/400.css";
 import "@fontsource/mrs-saint-delafield/400.css";
 import "../styles/global.css";
+import { getEntries } from "../lib/entries";
 
 interface Props {
   title: string;
@@ -17,10 +18,18 @@ const {
   home = false,
 } = Astro.props;
 const pageTitle = home ? title : `${title} — Tristan Kennedy`;
+const entry = (await getEntries()).find(
+  (entry) => entry.url === Astro.url.pathname,
+);
+const backColour = entry?.data.colour;
+const backAccents =
+  backColour && entry.data.accents.length
+    ? entry.data.accents.join(" ")
+    : undefined;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-back-colour={backColour} data-back-accents={backAccents}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,6 +41,11 @@ const pageTitle = home ? title : `${title} — Tristan Kennedy`;
     <title>{pageTitle}</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <style is:inline>
+      @media (prefers-reduced-motion: no-preference) {
+        @view-transition {
+          navigation: auto;
+        }
+      }
       html[data-sweep]::after {
         content: "";
         position: fixed;

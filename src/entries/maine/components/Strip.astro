@@ -10,7 +10,10 @@ interface Props {
 const { label, frames } = Astro.props;
 ---
 
-<figure class="col-span-9 -mr-(--gutter) min-w-0 phone:-ml-(--gutter)">
+<figure
+  class="col-span-9 -mr-(--gutter) min-w-0 phone:-ml-(--gutter)"
+  data-reveal
+>
   <figcaption
     class="mb-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 pr-(--gutter) phone:pl-(--gutter)"
   >
@@ -29,8 +32,11 @@ const { label, frames } = Astro.props;
     aria-label={label}
   >
     {
-      frames.map(({ src, alt, time }) => (
-        <div class="flex-none snap-start">
+      frames.map(({ src, alt, time }, i) => (
+        <div
+          class="flex-none snap-start reveal unrevealed:translate-x-12 unrevealed:opacity-0"
+          style={`--delay: ${Math.min(i, 5) * 0.08}s`}
+        >
           <Image
             src={src}
             alt={alt}

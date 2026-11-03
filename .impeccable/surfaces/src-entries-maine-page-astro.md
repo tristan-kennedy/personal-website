@@ -33,6 +33,13 @@ Landscape-cropped bands for the big moments. Two swipeable filmstrips (scroll-sn
 keyboard-focusable, no JavaScript) for sequences: the Jesup Path boardwalk and the
 sunrise from Cadillac. Phones stack the panel above the photos.
 
+ENTRANCES (asked for by the owner 2026-11-03): the shared reveal. The hero maple fades
+up while settling from a 1.04 zoom, and the title, line, and count follow it in. Each
+day's panel (label, weekday, places) comes in first, then its photos fade and rise and
+cascade in reading order (`Photo.astro`). Filmstrip frames drift in from the right.
+Last light is slower, so it fades in like dusk. Reduced motion and no JavaScript show
+everything at rest.
+
 ## Days
 
 1. Saturday, Oct 10: the plane, Portland airport's Acadia mural.

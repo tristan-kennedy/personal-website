@@ -115,15 +115,27 @@ function sweepable(event: MouseEvent) {
   )
     return;
   const link = (event.target as Element).closest?.("a");
-  if (!link?.dataset.colour || link.target || link.hasAttribute("download"))
-    return;
+  if (!link || link.target || link.hasAttribute("download")) return;
   const url = new URL(link.href, location.href);
   if (url.origin !== location.origin) return;
   if (/\.[a-z0-9]+$/i.test(url.pathname)) return;
   if (url.pathname === location.pathname && url.search === location.search)
     return;
-  return { url, link };
+  const paint = link.dataset.colour
+    ? link.dataset
+    : url.pathname === "/index/"
+      ? backPaint()
+      : undefined;
+  if (!paint?.colour) return;
+  return { url, link, colour: paint.colour, accents: paint.accents ?? "" };
 }
+
+function backPaint() {
+  const { backColour, backAccents } = document.documentElement.dataset;
+  return { colour: backColour, accents: backAccents };
+}
+
+type Target = NonNullable<ReturnType<typeof sweepable>>;
 
 function clickPoint(link: HTMLAnchorElement, event: MouseEvent) {
   const origin = link.dataset.origin?.split(",").map(Number);
@@ -138,11 +150,12 @@ const paint = (colour: string, accents: string) => [
   colour,
 ];
 
-async function leave(url: URL, link: HTMLAnchorElement, event: MouseEvent) {
+async function leave(
+  { url, link, colour, accents }: Target,
+  event: MouseEvent,
+) {
   const { x, y } = clickPoint(link, event);
   const spread = { x, y, seed: hash(url.pathname) };
-  const colour = link.dataset.colour!;
-  const accents = link.dataset.accents ?? "";
   const colours = paint(colour, accents);
   forget();
   sessionStorage.setItem(KEY, "true");
@@ -209,6 +222,6 @@ export function mountSweep() {
     const target = sweepable(event);
     if (!target) return;
     event.preventDefault();
-    if (!leaving) leave(target.url, target.link, event);
+    if (!leaving) leave(target, event);
   });
 }

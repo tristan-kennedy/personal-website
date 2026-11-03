@@ -68,6 +68,26 @@ const rows = entries.map((entry, i) => ({
         ))
       }
     </ol>
+    <script is:inline>
+      {
+        const from = document.referrer && new URL(document.referrer);
+        const fresh =
+          performance.getEntriesByType("navigation")[0]?.type === "navigate";
+        const row =
+          fresh &&
+          from?.origin === location.origin &&
+          !location.hash &&
+          document.querySelector(`[data-row] a[href="${from.pathname}"]`);
+        if (row) {
+          row.scrollIntoView({ block: "center", behavior: "instant" });
+          const landed = scrollY;
+          document.fonts.ready.then(() => {
+            if (scrollY === landed)
+              row.scrollIntoView({ block: "center", behavior: "instant" });
+          });
+        }
+      }
+    </script>
   </div>
 </Layout>
 

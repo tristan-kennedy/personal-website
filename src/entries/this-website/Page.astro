@@ -7,6 +7,7 @@ import "@fontsource/nunito-sans/400.css";
 import "@fontsource/nunito-sans/700.css";
 import "@fontsource/oswald/500.css";
 import Layout from "../../layouts/Layout.astro";
+import Reveal from "../../components/Reveal.astro";
 import type { Entry } from "../../lib/entries";
 import { getHistory } from "../../lib/history";
 import about from "./assets/about.webp";
@@ -108,7 +109,8 @@ const band = "relative px-(--gutter) py-(--section-space)";
 const measure = "max-w-[62ch] text-body/[1.65] [&_p+p]:mt-5";
 const pre =
   "overflow-x-auto p-5 font-mono text-[14px]/[1.6] whitespace-pre phone:-mx-(--gutter) phone:text-[13px]";
-const shot = "block h-auto w-full";
+const shot =
+  "block h-auto w-full reveal [--reveal-duration:0.9s] unrevealed:opacity-0";
 
 const helloSnippet = `---
 import Welcome from "../components/Welcome.astro";
@@ -217,6 +219,7 @@ const recordSnippet = JSON.stringify(record, null, 2);
   title={title}
   description="Seven versions of this site in its first year, each told in its own colours and type."
 >
+  <Reveal />
   <article class="overflow-x-clip">
     <header
       class="flex min-h-dvh flex-col justify-between bg-charcoal px-(--gutter) pt-(--col-inset) text-paper phone:min-h-0"
@@ -259,11 +262,18 @@ const recordSnippet = JSON.stringify(record, null, 2);
       </div>
     </header>
 
-    <nav aria-label="Contents" class="bg-charcoal pb-(--section-space)">
+    <nav
+      aria-label="Contents"
+      class="bg-charcoal pb-(--section-space)"
+      data-reveal
+    >
       <ol>
         {
-          chapters.map(({ id, number, name, when, commits, swatch }) => (
-            <li>
+          chapters.map(({ id, number, name, when, commits, swatch }, i) => (
+            <li
+              class="reveal unrevealed:-translate-x-4 unrevealed:opacity-0"
+              style={`--delay: ${i * 0.07}s`}
+            >
               <a
                 href={`#${id}`}
                 class:list={[
@@ -332,6 +342,7 @@ const recordSnippet = JSON.stringify(record, null, 2);
           ]}><code>{helloSnippet}</code></pre>
       </div>
       <figure
+        data-reveal
         class="relative mx-auto mt-(--section-space) max-w-[min(100%,1100px)]"
       >
         <img
@@ -400,7 +411,7 @@ const recordSnippet = JSON.stringify(record, null, 2);
               "mt-8 bg-[#ebdbb2] text-[#3c3836]",
             ]}><code>{themeSnippet}</code></pre>
         </div>
-        <figure class="self-start">
+        <figure data-reveal class="self-start">
           <img
             src={dashboard.src}
             width={dashboard.width}
@@ -473,6 +484,7 @@ const recordSnippet = JSON.stringify(record, null, 2);
           </div>
         </div>
         <figure
+          data-reveal
           class="col-span-3 overflow-hidden rounded-xl border-2 border-[#bdae93] bg-[#3c3836] max-lg:col-span-2 phone:col-span-1"
         >
           <img
@@ -510,6 +522,7 @@ const recordSnippet = JSON.stringify(record, null, 2);
             ]}><code>{crtSnippet}</code></pre>
         </div>
         <figure
+          data-reveal
           class="col-span-3 self-start overflow-hidden rounded-xl border-2 border-[#bdae93] bg-[#3c3836] max-lg:col-span-2 phone:col-span-1"
         >
           <img
@@ -583,7 +596,7 @@ const recordSnippet = JSON.stringify(record, null, 2);
       <div
         class="mt-(--section-space) grid grid-cols-[3fr_2fr] gap-x-8 gap-y-12 max-lg:grid-cols-1"
       >
-        <figure>
+        <figure data-reveal>
           <img
             src={index.src}
             width={index.width}
@@ -606,7 +619,7 @@ const recordSnippet = JSON.stringify(record, null, 2);
               pre,
               "bg-white text-[#222222]",
             ]}><code>{stubSnippet}</code></pre>
-          <figure>
+          <figure data-reveal>
             <img
               src={stub.src}
               width={stub.width}
@@ -702,7 +715,7 @@ const recordSnippet = JSON.stringify(record, null, 2);
             ]}><code>{introSnippet}</code></pre>
         </div>
         <div class="flex flex-col gap-12">
-          <figure>
+          <figure data-reveal>
             <img
               src={intro.src}
               width={intro.width}
@@ -717,7 +730,7 @@ const recordSnippet = JSON.stringify(record, null, 2);
               The intro, a moment in. 2016666 / 25 January 2026
             </figcaption>
           </figure>
-          <figure>
+          <figure data-reveal>
             <img
               src={experiments.src}
               width={experiments.width}
@@ -815,7 +828,7 @@ const recordSnippet = JSON.stringify(record, null, 2);
             this.
           </p>
         </div>
-        <figure>
+        <figure data-reveal>
           <img
             src={caseStudy.src}
             width={caseStudy.width}
@@ -856,7 +869,7 @@ const recordSnippet = JSON.stringify(record, null, 2);
             since it doesn’t exist yet”.
           </p>
         </div>
-        <figure>
+        <figure data-reveal>
           <img
             src={projects.src}
             width={projects.width}

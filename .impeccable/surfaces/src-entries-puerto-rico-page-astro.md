@@ -28,8 +28,15 @@ the "I ♥ Puerto Rico" street full bleed.
 
 FORM: Four chapters by day on a 12-column grid with controlled asymmetry: big and
 small photos, staggered pairs and threes, two full-bleed photos, and sub-labels by
-place. Phones stack, with some photos inset to keep the rhythm. No JavaScript, no
-lightbox, no entrances.
+place. Phones stack, with some photos inset to keep the rhythm. No lightbox.
+
+ENTRANCES (asked for by the owner 2026-11-03, replacing the original "no entrances"):
+the shared reveal (`src/lib/reveal.ts`). The title rises while its pink shadow eases out
+from behind the letters, then the intro line. Every photo fades and rises 1rem as it
+comes into view (built into `Photo.astro`), and photos arriving together cascade in
+reading order. El Yunque's twelve empty tiles fill in one by one, and the coda's three
+terminal lines appear like typed commands. Reduced motion and no JavaScript show
+everything at rest.
 
 ## Sections
 

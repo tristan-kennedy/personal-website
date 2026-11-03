@@ -9,6 +9,7 @@ const SHOWN = 0.72;
 const GROW = 420;
 const SHRINK = 180;
 const FRAME = 33;
+const FRAME_SLACK = 6;
 const STILL = 6;
 
 export const packed = ([r, g, b]: Rgb) =>
@@ -152,7 +153,7 @@ export function openEffect(
   let last = performance.now();
   const step = (now: number) => {
     const elapsed = now - last;
-    if (elapsed >= FRAME) {
+    if (elapsed >= FRAME - FRAME_SLACK) {
       last = now;
       const moment = Math.min(elapsed, 50);
       seconds += moment / 1000;

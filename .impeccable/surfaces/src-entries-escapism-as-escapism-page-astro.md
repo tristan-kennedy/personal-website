@@ -58,8 +58,11 @@ the verdict, DESIGN.md, and every shipping raster carrying its provenance
 - **Paper.** The guilt, then "I can't tell if this is a defense of escapism or just more of
   it." at display size, which is the title's payoff, then the way back.
 
-Text sits on solid colour only. Bands blend in their top padding, above any text. Keep
-paper text on the first three bands and charcoal on the rest, for contrast.
+The background never sits still: each band fades from its colour into the next across
+its full height (in oklab), so night runs through dusk, plum and coral into paper in one
+continuous wash. Keep paper text on the first three bands and charcoal on the rest, for
+contrast. The plum band only lightens to `#9a4f8e` behind its text, and the turn to coral
+happens in the padding between plum and coral, where there's no text.
 
 Without JavaScript the page shows `assets/door.png`, a capture of the canvas at 1440 wide.
 With no JavaScript or under reduced motion the door stays shut, the stage is one screen
