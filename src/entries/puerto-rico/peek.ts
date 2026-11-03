@@ -46,8 +46,10 @@ const FLOOR_TALL = 19;
 const SHUTTER_WIDE = 7;
 const SHUTTER_TALL = 13;
 const SHUTTER_EVERY = 13;
-const WALL_SHADE = 0.84;
-const SHADE_WIDE = 3;
+const SHADE_SHARE = 0.35;
+const FOOT_SHARE = 0.4;
+const FOOT_DENSITY = 0.15;
+const LEAF_TIP = 0.7;
 
 const LEAF_GREENS = [
   { light: [0x4f, 0xb8, 0x6a], dark: [0x2c, 0x8a, 0x52] },
@@ -74,6 +76,19 @@ const FROGS = [
 const CHARCOAL = packed([0x29, 0x28, 0x24]);
 const CREAM = packed([0xf6, 0xef, 0xdd]);
 
+const scaled = (rgb: Rgb, by: number) =>
+  packed(rgb.map((value) => Math.round(value * by)) as Rgb);
+const lifted = (rgb: Rgb, by: number) =>
+  packed(rgb.map((value) => Math.round(value + (255 - value) * by)) as Rgb);
+const clamp = (value: number) => Math.max(0, Math.min(1, value));
+const inkAt = (inks: number[], tone: number, x: number, y: number) => {
+  const place = clamp(tone) * (inks.length - 1);
+  const ink = Math.floor(place);
+  return inks[
+    Math.min(inks.length - 1, ink + (place - ink > threshold(x, y) ? 1 : 0))
+  ];
+};
+
 export default {
   reach: { top: 1.05, right: 0.35, bottom: 0.7, left: 0.2 },
   paint({ cols, rows, box, gate }) {
@@ -87,8 +102,12 @@ export default {
       angle,
       length: leafLength * (small ? 0.72 : 1),
       girth: leafLength * 0.25,
-      light: packed(LEAF_GREENS[green].light),
-      dark: packed(LEAF_GREENS[green].dark),
+      inks: [
+        scaled(LEAF_GREENS[green].dark, 0.7),
+        packed(LEAF_GREENS[green].dark),
+        packed(LEAF_GREENS[green].light),
+        lifted(LEAF_GREENS[green].light, 0.3),
+      ],
       phase: index * 1.7,
     }));
 
@@ -97,9 +116,13 @@ export default {
       right: Math.round(box.left + to * wide),
       top: Math.round(box.top * (1 - HOUSE_HEADROOM * rise)),
       bottom: Math.round(box.top + tall * HOUSE_BASE),
-      wall: packed(wall),
-      shade: packed(wall.map((value) => Math.round(value * WALL_SHADE)) as Rgb),
-      shutter: packed(shutter),
+      walls: [
+        scaled(wall, 0.66),
+        scaled(wall, 0.84),
+        packed(wall),
+        lifted(wall, 0.3),
+      ],
+      shutters: [scaled(shutter, 0.7), packed(shutter), lifted(shutter, 0.25)],
     }));
 
     const frogs = FROGS.flatMap(({ at, feet, facesLeft }) => {
@@ -121,22 +144,33 @@ export default {
       };
 
       for (const house of houses) {
-        const { left, right, top, bottom, wall, shade, shutter } = house;
-        for (let y = top; y < bottom; y++)
+        const { left, right, top, bottom, walls, shutters } = house;
+        const shadeWide = (right - left) * SHADE_SHARE;
+        const footFrom = bottom - (bottom - top) * FOOT_SHARE;
+        for (let y = top; y < bottom; y++) {
+          const foot = clamp((y - footFrom) / (bottom - footFrom));
+          const density = 1.1 - foot * (1.1 - FOOT_DENSITY);
           for (let x = left; x < right; x++) {
-            const inCornice = y < top + CORNICE;
-            const undercut = y === top + CORNICE;
-            lay(
-              x,
-              y,
-              inCornice
-                ? CREAM
-                : undercut || x < left + SHADE_WIDE
-                  ? shade
-                  : wall,
-              1.1,
-            );
+            if (y < top + CORNICE) {
+              const underside = y === top + CORNICE - 1;
+              lay(
+                x,
+                y,
+                underside && threshold(x, y) < 0.5 ? walls[3] : CREAM,
+                1.1,
+              );
+              continue;
+            }
+            const sunned = clamp((x - left) / shadeWide);
+            const undercut = clamp((y - top - CORNICE) / 5);
+            const tone =
+              0.08 +
+              sunned * 0.62 +
+              undercut * 0.22 -
+              ((y - top) / (bottom - top)) * 0.18;
+            lay(x, y, inkAt(walls, tone, x, y), density);
           }
+        }
         const doors = Math.max(1, Math.floor((right - left) / SHUTTER_EVERY));
         const gap = (right - left) / doors;
         for (let y = top + CORNICE + 4; y < box.top; y += FLOOR_TALL)
@@ -149,10 +183,19 @@ export default {
                 const edge = over === 0 || over === SHUTTER_WIDE - 1;
                 if (down === 0 && edge) continue;
                 const seam = over === 3;
-                lay(start + over, y + down, seam ? CHARCOAL : shutter, 1.1);
+                const slat = down % 2 ? 0.3 : 0.7;
+                const tone = slat + (over > 3 ? 0.15 : -0.15);
+                lay(
+                  start + over,
+                  y + down,
+                  seam
+                    ? CHARCOAL
+                    : inkAt(shutters, tone, start + over, y + down),
+                  1.1,
+                );
               }
             for (let over = -2; over < SHUTTER_WIDE + 2; over++)
-              lay(start + over, y + SHUTTER_TALL, CHARCOAL, 1.1);
+              lay(start + over, y + SHUTTER_TALL, CHARCOAL, 0.8);
           }
       }
 
@@ -163,12 +206,22 @@ export default {
         for (let t = 0; t < leaf.length; t += LEAF_STEP) {
           const share = t / leaf.length;
           const half = leaf.girth * Math.sin(Math.PI * share ** 0.7) ** 0.65;
+          const tip = clamp((share - LEAF_TIP) / (1 - LEAF_TIP));
           for (let s = -half; s <= half; s += LEAF_STEP) {
             const x = Math.round(leaf.x + alongX * t - alongY * s);
             const y = Math.round(leaf.y + alongY * t + alongX * s);
+            const across = half ? s / half : 0;
             const vein = (t + Math.abs(s) * 1.1) % 9 < 0.9;
             const rib = Math.abs(s) < 0.7;
-            lay(x, y, rib || vein || s > 0 ? leaf.dark : leaf.light, 1.1);
+            const tone =
+              rib || vein
+                ? 0.15
+                : 0.55 -
+                  across * 0.4 +
+                  (1 - Math.abs(across)) * 0.2 -
+                  share * 0.15;
+            const edge = Math.abs(across) > 0.8 ? 0.5 : 1.1;
+            lay(x, y, inkAt(leaf.inks, tone, x, y), Math.min(edge, 1.1 - tip));
           }
         }
       }

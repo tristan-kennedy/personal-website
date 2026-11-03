@@ -128,8 +128,8 @@
     --rule: #55534b;
     --dot: 3px;
     --section-space: clamp(56px, 7vw, 112px);
-    --page-max: 2400px;
-    --gutter: max(24px, 5vw, calc((100vw - var(--page-max)) / 2 + 120px));
+    --vw: min(1vw, 2.4vh);
+    --gutter: max(24px, calc((100vw - 90 * var(--vw)) / 2));
     --col-inset: 20px;
     --reveal-transition:
       opacity 0.6s ease, translate 0.7s var(--ease-soft),
@@ -262,5 +262,51 @@
   [data-revealed="instant"] *,
   [data-revealed="instant"] *::before {
     transition: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-old(root) {
+  animation:
+    90ms cubic-bezier(0.4, 0, 1, 1) both page-fade reverse,
+    220ms cubic-bezier(0.4, 0, 0.2, 1) both page-slide-out;
+}
+
+::view-transition-new(root) {
+  animation:
+    210ms cubic-bezier(0, 0, 0.2, 1) 90ms both page-fade,
+    220ms cubic-bezier(0.4, 0, 0.2, 1) both page-slide-in;
+}
+
+html[data-back]::view-transition-old(root) {
+  animation-name: page-fade, page-slide-in;
+  animation-direction: reverse, reverse;
+}
+
+html[data-back]::view-transition-new(root) {
+  animation-name: page-fade, page-slide-out;
+  animation-direction: normal, reverse;
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes page-slide-out {
+  to {
+    translate: -100% 0;
+  }
+}
+
+@keyframes page-slide-in {
+  from {
+    translate: 100% 0;
   }
 }

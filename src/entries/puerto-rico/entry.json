@@ -2,5 +2,6 @@
   "title": "Puerto Rico",
   "date": "2026-08",
   "keywords": ["Travel", "Scrapbook"],
-  "colour": "#ee6f9a"
+  "colour": "#ee6f9a",
+  "accents": ["#f5c95a", "#62c8c4", "#f28b6a"]
 }

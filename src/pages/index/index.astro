@@ -32,7 +32,7 @@ const rows = entries.map((entry, i) => ({
         class="relative flex items-end gap-[clamp(16px,2vw,32px)] pl-(--gutter) phone:flex-col phone:items-stretch phone:gap-3 phone:pr-(--gutter)"
       >
         <h1
-          class="flex-none font-display text-[min(23vw,552px)]/[0.8] font-extrabold tracking-[-0.035em] uppercase reveal phone:text-[calc((100vw-2*var(--gutter))/2.32)] unrevealed:-translate-x-8 unrevealed:opacity-0"
+          class="flex-none font-display text-[calc(23*var(--vw))]/[0.8] font-extrabold tracking-[-0.035em] uppercase reveal phone:text-[calc((100vw-2*var(--gutter))/2.32)] unrevealed:-translate-x-8 unrevealed:opacity-0"
         >
           Index.
         </h1>
@@ -40,7 +40,7 @@ const rows = entries.map((entry, i) => ({
           class="mb-[0.4vw] h-[clamp(6px,0.8vw,14px)] min-w-12 flex-auto bg-current reveal motion-safe:origin-right phone:hidden unrevealed:scale-x-0"
           aria-hidden="true"></span>
         <figure
-          class="pointer-events-none absolute right-0 bottom-[calc(0.4vw+clamp(6px,0.8vw,14px))] w-[min(calc(100%-var(--gutter)-min(23vw,552px)*2.3),calc((100svh-200px)*1.03))] reveal [--delay:0.2s] phone:relative phone:right-auto phone:bottom-auto phone:order-first phone:-mr-(--gutter) phone:w-[82vw] phone:self-end unrevealed:translate-x-16 unrevealed:opacity-0"
+          class="pointer-events-none absolute right-0 bottom-[calc(0.4vw+clamp(6px,0.8vw,14px))] w-[min(calc(100%-var(--gutter)-calc(23*var(--vw))*2.3),calc((100svh-200px)*1.03))] reveal [--delay:0.2s] phone:relative phone:right-auto phone:bottom-auto phone:order-first phone:-mr-(--gutter) phone:w-[82vw] phone:self-end unrevealed:translate-x-16 unrevealed:opacity-0"
           aria-hidden="true"
           data-hand
         >

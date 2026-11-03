@@ -8,7 +8,6 @@ colors:
   ink-muted: "#67645b"
   rule: "#55534b"
   rule-on-paper: "#c9c6bb"
-  wash: "#7d7a70"
   echo: "#6c6a62"
 typography:
   display:
@@ -55,7 +54,7 @@ typography:
 rounded:
   none: "0px"
 spacing:
-  gutter: "max(24px, 5vw, calc((100vw - 2400px) / 2 + 120px))"
+  gutter: "max(24px, calc((100vw - 90 * var(--vw)) / 2))"
   col-inset: "20px"
   section: "clamp(56px, 7vw, 112px)"
   dot: "3px"
@@ -111,7 +110,6 @@ Warm and tonal. Contrast between sections carries the structure.
 - **Muted** (#b8b5aa): supporting text on charcoal, and the globe's ink.
 - **Ink Muted** (#67645b): supporting text on paper.
 - **Rule** (#55534b on charcoal, #c9c6bb on paper): structural hairlines.
-- **Wash** (#7d7a70): the one colour of every plain page transition, in and out. It sits at equal contrast to charcoal and paper, so it reads the same on both.
 - **Echo** (#6c6a62): the dim dither behind the Favorites and Index titles and their hover dimming.
 
 The `paper` utility flips a section to the light surface and swaps `muted` and
@@ -123,7 +121,8 @@ imagery included. Each page decides how much of each it uses: the homepage
 alternates them, while About stays mostly on paper, and the Index stays on charcoal.
 The only colour on a shared page belongs to an entry, set by `colour` in its
 `entry.json`. It appears on the Index while that entry's row is active and carries
-through the sweep into its page.
+through the sweep into its page, led by up to three `accents` taken from the entry's
+own Index scene.
 
 ## Typography
 
@@ -134,7 +133,8 @@ through the sweep into its page.
 **Script:** Mrs Saint Delafield, used sparingly as a signature: Douglas in the hero, "briefly" in About's heading, and the colophon's "Tristan" signature. Its rarity is what makes it read as handwriting.
 
 All three webfonts load from `@fontsource` packages at the needed weights, with no
-preloads or manual copies.
+preloads or manual copies. This website's entry page also loads Inter, Oswald, and
+Nunito Sans, for its chapters on the site's old versions, and nothing else uses them.
 
 ### Hierarchy
 
@@ -152,7 +152,7 @@ instead (the quote's "experience itself" is set in Barlow caps).
 ## Layout
 
 - **One grid.** Every homepage section sits on four equal columns (the status ribbon's). Content past column 1 starts `--col-inset` (20px) after its column line.
-- **Gutters.** `--gutter` is fluid. Past `--page-max` (2400px) the gutter grows instead of the content, and viewport-scaled type is capped to match. Backgrounds and rules still run edge to edge.
+- **Gutters and width.** There is no fixed maximum width: the site scales with the screen at any size. `--vw` is `min(1vw, 2.4vh)`, so it is `1vw` on every screen up to about 21:9 and follows the height beyond that. Display type and imagery that scale with the frame use `calc(N * var(--vw))` with no ceiling, and `--gutter` is 5% of the frame, growing to centre it on ultrawide screens. Body text, labels, and spacing keep their own small caps so copy never grows past a comfortable reading size. Backgrounds and rules still run edge to edge. A fixed 2400px `--page-max`, with the gutter growing past it, was used first and left widescreen monitors with a centred column.
 - **Rhythm.** Every section uses `--section-space` top and bottom.
 - **Breakpoint.** One content-led breakpoint at 700px (the `phone:` variant). Phones keep every idea and its scale: display type is sized to fill the width between the gutters (TRISTAN and KENNEDY, FAVORITES., each poster title by its longest word), not shrunk to a fixed vw. Grids stack, and compositions reorder rather than shrink. Rotation is allowed where it buys scale: the poster dates and tags run vertically beside their titles.
 - **First screen.** About and the Index open as posters: the title locks to the foot of the screen with its image rising above it, and the content starts past the fold. Both are also capped by the screen's height so they fit on laptops.
@@ -186,9 +186,9 @@ screen edge. The closing scene is the only box: a
 - **Peeks.** With a mouse, only a row's text hovers and clicks. On touch screens the row at a reading line 40% down the screen opens by itself, and the whole row taps. Every title rests on a misregistered dithered shadow, like the Favorites. The active row dims the others, moves its shadow further out in its colour, and opens its scene: a small animated scene on the shared threshold and `--dot`, rising from behind the title and fading at a rough organic edge. Every entry's scene is its own. Keep them small, like Maine's, and specific to the entry. An entry without one gets a boiling splat of its colour, or stays type only.
 - **Terminal listing.** Recents and About's log use the mono voice: a `$` prompt, short rows, and a blinking block cursor (still under reduced motion).
 - **Colophon footer.** On every page: centred and small under three dithered diamonds, with a mono "COLOPHON" label, a Marcellus note on how the site is made, the latest commit and change count, one row of links, a script signature, and a small line with the copyright, live clock, and Back to top.
-- **Page transitions.** A dithered splash (`src/lib/sweep.ts`), the site's own material rather than a crossfade. Clicking a link spreads a splotch from the click on the shared threshold and `--dot` (0.32s, accelerating). An entry with a `colour` uses that colour, and everything else uses Wash, with no second colour anywhere in the move. The next page loads under the cover and opens through the same splotch from the same spot (0.48s, decelerating), so the whole move has one origin. Back and Forward have no animation: the browser can't delay leaving, so only half could ever play, and they're outside the site's own navigation.
+- **Page transitions.** Two kinds. Opening an entry from the Index plays a dithered splash (`src/lib/sweep.ts`): a splotch spreads from the click on the shared threshold and `--dot`, its `accents` crawling in together as mottled patches along the edge while its `colour` fills in behind them (0.72s, accelerating). The entry page loads under the cover and opens through the same splotch from the same spot, with the accents mottling the edge of the opening (0.82s, decelerating). Rings of one colour after another were tried first and read as too many flashes. Every other link is a plain cross-document View Transition: the old page fades and slides out left as the new one slides in from the right, reversed on Back, with Astro's slide timings (0.22s). Browsers without cross-document View Transitions, Firefox included, just load the page. The full dithered splash on every link was too much once the site already slides sideways in so many places.
 
-  An inline head script and an inlined `html[data-sweep]` rule keep the arriving page covered before first paint, and hold its CSS animations on their first frame until the clear starts, so the homepage name wipes in as the dots lift. The clear advances frame by frame (no frame counts for more than 1/30s), so a busy page start still shows every step. The curtain is pinned to the viewport so it never adds a scrollbar. It skips reduced motion, modified clicks, new tabs, downloads and files, and same-page links, and a stalled load uncovers the page after 4s. Astro prefetches links so the next page is usually ready first. Native cross-document View Transitions (no Firefox support, and a muddy crossfade between surfaces), a clip-path wipe, choosing charcoal or paper by page (inconsistent between light and dark pages), a single off-charcoal grey with links home reversed, a charcoal sheet with a paper edge sweeping left to right (too aggressive), and a splash in charcoal or paper picked by the background under the click (the colour change between pages read as a double flash) were all tried first.
+  An inline head script and an inlined `html[data-sweep]` rule keep an arriving entry page covered before first paint, skip the slide under it, and hold its CSS animations on their first frame until the clear starts. The clear advances frame by frame (no frame counts for more than 1/30s), so a busy page start still shows every step. The curtain is pinned to the viewport so it never adds a scrollbar. Reduced motion gets neither the sweep nor the slide. The sweep skips modified clicks, new tabs, downloads and files, and same-page links, and a stalled load uncovers the page after 4s. Back and Forward never sweep: the browser can't delay leaving, so only half could ever play. Astro prefetches links so the next page is usually ready first. A clip-path wipe, a crossfade, choosing charcoal or paper by page, a single grey Wash for every plain link, a charcoal sheet sweeping left to right, and a splash in charcoal or paper picked by the background under the click were all tried before.
 
 - **Entrances.** The hero loads in with CSS (name halves wiped from opposite sides, Douglas written left to right, globe fading up, ribbon and intro rising). Other sections play a one-time sideways entrance when they come into view (`src/lib/reveal.ts`), staggered so each unfolds in order. Nothing is tied to scroll position.
 

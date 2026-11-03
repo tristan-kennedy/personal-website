@@ -2,5 +2,6 @@
   "title": "2D raycasting vision simulator",
   "date": "2026-03",
   "keywords": ["Experiment", "Code"],
-  "colour": "#c8ff3a"
+  "colour": "#c8ff3a",
+  "accents": ["#f6ffd8", "#6f8f1c"]
 }

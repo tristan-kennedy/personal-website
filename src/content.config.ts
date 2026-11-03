@@ -2,6 +2,8 @@ import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
+const hex = z.string().regex(/^#[0-9a-f]{6}$/i);
+
 const entries = defineCollection({
   loader: glob({
     pattern: "*/entry.json",
@@ -21,10 +23,8 @@ const entries = defineCollection({
     link: z.url().optional(),
     readingTime: z.string().optional(),
     featured: z.number().int().positive().optional(),
-    colour: z
-      .string()
-      .regex(/^#[0-9a-f]{6}$/i)
-      .optional(),
+    colour: hex.optional(),
+    accents: z.array(hex).max(3).default([]),
   }),
 });
 

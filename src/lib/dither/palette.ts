@@ -4,7 +4,6 @@ export type Rgba = [number, number, number, number];
 export const CHARCOAL: Rgb = [0x29, 0x28, 0x24];
 export const PAPER: Rgb = [0xf2, 0xf0, 0xe9];
 export const MUTED: Rgb = [0xb8, 0xb5, 0xaa];
-export const WASH = "#7d7a70";
 
 export const CLEAR: Rgba = [0, 0, 0, 0];
 export const opaque = ([r, g, b]: Rgb): Rgba => [r, g, b, 255];

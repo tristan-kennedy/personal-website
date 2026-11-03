@@ -8,7 +8,7 @@ interface Props {
 
 const { number, id, lines, face } = Astro.props;
 const serif =
-  "font-serif text-[clamp(44px,6.2vw,150px)]/[1.02] tracking-[-0.02em]";
+  "font-serif text-[max(44px,calc(6.2*var(--vw)))]/[1.02] tracking-[-0.02em]";
 const title = "col-span-3 block pl-(--col-inset) phone:pl-0";
 ---
 
@@ -26,7 +26,7 @@ const title = "col-span-3 block pl-(--col-inset) phone:pl-0";
       <span
         class:list={[
           title,
-          "font-display text-[clamp(60px,9.5vw,228px)]/[0.86] font-extrabold tracking-[-0.03em] uppercase",
+          "font-display text-[max(60px,calc(9.5*var(--vw)))]/[0.86] font-extrabold tracking-[-0.03em] uppercase",
         ]}
       >
         {lines.slice(0, -1).map((line) => (

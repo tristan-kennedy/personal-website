@@ -4,16 +4,16 @@ A static Astro site, styled with Tailwind CSS v4 and deployed to Cloudflare Work
 
 ## Stack
 
-| Concern            | Use                                     | Notes                                                         |
-| ------------------ | --------------------------------------- | ------------------------------------------------------------- |
-| Framework          | Astro (static output)                   | `.astro` components by default.                               |
-| Styling            | Tailwind CSS v4 via `@tailwindcss/vite` | Utility classes inline. No component stylesheets.             |
-| Interactive pieces | `@astrojs/react`                        | Available for future entry pages. Not used yet.               |
-| Long-form content  | `@astrojs/mdx`                          | Optional, per page. No shared article renderer.               |
-| Fonts              | `@fontsource/*`                         | Barlow Condensed 800, Marcellus 400, Mrs Saint Delafield 400. |
-| Images             | `sharp`                                 | Astro image optimisation and `scripts/dither.mjs`.            |
-| Résumé             | Typst (`typst` package)                 | `resume/` → `public/resume.pdf` on build.                     |
-| Formatting         | Prettier + astro + tailwindcss plugins  | Sorts classes. Run `npx prettier --write .`.                  |
+| Concern            | Use                                     | Notes                                                                                                                     |
+| ------------------ | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Framework          | Astro (static output)                   | `.astro` components by default.                                                                                           |
+| Styling            | Tailwind CSS v4 via `@tailwindcss/vite` | Utility classes inline. No component stylesheets.                                                                         |
+| Interactive pieces | `@astrojs/react`                        | Available for future entry pages. Not used yet.                                                                           |
+| Long-form content  | `@astrojs/mdx`                          | Optional, per page. No shared article renderer.                                                                           |
+| Fonts              | `@fontsource/*`                         | Barlow Condensed 800, Marcellus 400, Mrs Saint Delafield 400. Inter, Oswald, and Nunito Sans on This website's page only. |
+| Images             | `sharp`                                 | Astro image optimisation and `scripts/dither.mjs`.                                                                        |
+| Résumé             | Typst (`typst` package)                 | `resume/` → `public/resume.pdf` on build.                                                                                 |
+| Formatting         | Prettier + astro + tailwindcss plugins  | Sorts classes. Run `npx prettier --write .`.                                                                              |
 
 Don't add a dependency for something a few lines of browser code can do. The
 dithered imagery, clocks, ribbon, and entrances are all hand-written and tiny.
@@ -36,6 +36,7 @@ src/
     SiteNav.astro            Home link plus one page link, on /index and /about
     Reveal.astro             Entrance setup for pages with [data-reveal] sections
     DitherFrame.astro        Static dither frame plus the canvas that replaces it
+    Photo.astro              Responsive photo with an optional time and note caption
     about/                   About-only sections (Opener, Where, Work, Media, Tldr)
                              and the shared Blurb and SectionHeading
     home/                    Homepage-only sections and pieces
@@ -64,7 +65,7 @@ src/
                              durations
     motion.ts                The reduced-motion media query
     reveal.ts                One-time section entrances
-    sweep.ts                 Dithered page-to-page transition
+    sweep.ts                 Dithered Index-to-entry transition
     dither/                  Shared threshold and sun (index.ts), palette, whole-dot
                              canvas sizing (fit.ts), canvas loop,
                              globe, apple, About portrait and record, the About map projection and
@@ -78,6 +79,11 @@ scripts/
   dither.mjs                 Regenerate the static dither frames (globe, apple, the
                              About map, phone map, and record), or dither a photo
   land-mask.mjs              Regenerate src/lib/dither/land-mask.ts
+  photo-edit.py              Develop photos from a JSON file of recipes (exposure,
+                             tone, colour, sky and radial masks, crop, shared presets,
+                             and LaMa object removal); needs Python with numpy, pillow,
+                             pillow-heif, and opencv, plus torch and
+                             simple-lama-inpainting (--no-deps) for removal
   full-history.mjs           Unshallow CI checkouts so the git log is complete
 public/                      Static files (favicon, résumé, dither PNGs, _headers)
 wrangler.jsonc               Workers deploy config: serves dist/ as static assets
@@ -117,8 +123,10 @@ Everything is Tailwind. Write utilities inline on the element. Reach for
   and `rule` (they change inside `paper`), the font families (`font-display`,
   `font-serif`, `font-script`, `font-mono`, `font-sans`), `text-body`, the `ease-*`
   curves, and the named `animate-*` entrances.
-- **Layout variables** on `:root`: `--gutter`, `--col-inset`, `--section-space`,
-  `--page-max`, and `--dot`. Use them as `px-(--gutter)`, `py-(--section-space)`, and so on.
+- **Layout variables** on `:root`: `--vw`, `--gutter`, `--col-inset`, `--section-space`,
+  and `--dot`. Use them as `px-(--gutter)`, `py-(--section-space)`, and so on.
+  Size display type and imagery that should keep growing on large screens with
+  `calc(N*var(--vw))` rather than `Nvw`, so ultrawide screens scale by height instead.
 - **Custom variants**:
   - `phone:` is the single 700px breakpoint (max-width).
   - `hover:` is plain `:hover`, without Tailwind's hover media query, so touch matches desktop.
@@ -151,7 +159,8 @@ Add `src/entries/<slug>/entry.json`. That is all an entry needs. The rest is opt
 and each level works without the others:
 
 1. **Colour.** `"colour": "#rrggbb"` in the JSON gives the row a boiling splat
-   behind its title and turns the page sweep that colour.
+   behind its title and turns the page sweep that colour. `"accents"` (up to three,
+   taken from the peek's own palette) mottle the leading edge of the sweep.
 2. **Peek.** `peek.ts` in the entry's folder default-exports an `Effect` (see
    `src/lib/dither/effect.ts`) that replaces the splat with its own animation. `reach`
    sets how far it spreads from the title on each side, in title heights (capped at

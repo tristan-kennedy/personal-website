@@ -50,7 +50,7 @@ themed identity.
   around 50 entries, in the page rather than pinned over it.
 - **Entry pages (`/index/<slug>`)**: one per entry, each free to define its own
   typography, colour, layout, and interaction to suit the material. The only shared
-  requirement is an obvious way back. Dipsy Dolphin, Escapism as escapism, and the raycasting simulator have their own
+  requirement is an obvious way back. Dipsy Dolphin, This website, Escapism as escapism, the raycasting simulator, Puerto Rico, and Maine have their own
   pages, described in `.impeccable/surfaces/src-entries-*-page-astro.md`. The rest are
   placeholders for now; each will be designed with the owner section by section.
 - **About (`/about`)**: "Me, at length." A mostly paper page with the dithered
@@ -67,7 +67,8 @@ themed identity.
 - One metadata collection, `entries`, read from `src/entries/<slug>/entry.json`. Title and
   date (`YYYY-MM` or `YYYY-MM-DD`) are required. `keywords` is a free-form string
   array (default empty). `link`, `readingTime`, `featured` (homepage pick order), and
-  `colour` (the entry's Index scene and sweep) are optional. An entry's hover effect
+  `colour` (the entry's Index scene and sweep), and `accents` (extra sweep colours)
+  are optional. An entry's hover effect
   and page live in the same folder, both optional. `docs/ARCHITECTURE.md` sets out the
   folder shape.
 - No entry descriptions, fixed content types, or publication statuses. Every record
@@ -83,8 +84,7 @@ themed identity.
   motion.
 - The résumé is authored in Typst (`resume/`) and served at `/resume.pdf`.
 - Current records: Dipsy Dolphin, This website, Escapism as escapism, 2D raycasting vision simulator, Puerto Rico
-  (August 2026), and Maine (October 2026). All but Dipsy Dolphin have a placeholder
-  page.
+  (August 2026), and Maine (October 2026).
 - Curated picks will probably be mostly projects and code. Allow that; don't force a
   balanced mix.
 
@@ -108,8 +108,11 @@ must not look like a copy of either.
 - Résumé source and artifact: `resume/resume.typ`, `public/resume.pdf`.
 - Favicon: `public/favicon.svg`.
 - The site's own git history, read at build time.
+- The owner's Puerto Rico photos (a shared iCloud album), with their capture times
+  and GPS, and the owner's account of the lost phone.
+- The owner's Maine photos (a shared iCloud album), with capture times and GPS.
 
-There are no trip stories, photographs, testimonials, clients, or metrics. Never
+There are no other trip stories or photographs, and no testimonials, clients, or metrics. Never
 invent experiences, employers, results, or entry content.
 
 ## Product Principles

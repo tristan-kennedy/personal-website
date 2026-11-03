@@ -10,7 +10,7 @@ interface Props {
 }
 
 const { entry, tier, place } = Astro.props;
-const { title, colour } = entry.data;
+const { title, colour, accents } = entry.data;
 const style = [
   "--size: " + place.size + "cqi",
   "--left: " + place.left + "cqi",
@@ -39,9 +39,7 @@ const poster = tier === "poster";
       face,
       "pr-(--right) pl-(--left) phone:pr-(--phone-right) phone:pl-(--phone-left)",
       place.alignRight ? "text-right" : "text-left",
-      poster
-        ? "leading-[0.92] reveal unrevealed:opacity-0"
-        : "leading-[1.04]",
+      poster ? "leading-[0.92] reveal unrevealed:opacity-0" : "leading-[1.04]",
       poster &&
         (place.alignRight
           ? "unrevealed:translate-x-12"
@@ -50,6 +48,7 @@ const poster = tier === "poster";
     ]}
     href={entry.url}
     data-colour={colour}
+    data-accents={colour && accents.length ? accents.join(" ") : undefined}
   >
     <span
       class="pointer-events-none absolute inset-0 [translate:0.05em_0.06em] [padding:inherit] [--delay:0s] [transition:translate_0.7s_var(--ease-soft)_var(--delay),transform_0.45s_var(--ease-soft),--color-dim_0.3s_ease] in-data-active:[--color-dim:var(--ink)] motion-safe:in-data-active:[transform:translate(0.07em,0.08em)] unrevealed:[translate:0_0] revealing:[--delay:0.3s]"

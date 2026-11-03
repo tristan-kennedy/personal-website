@@ -1,4 +1,5 @@
 import { packed } from "../../../lib/dither/effect";
+import { threshold } from "../../../lib/dither/index";
 
 const INKS: Record<string, number> = {
   b: packed([0xa8, 0x79, 0x4f]),
@@ -10,6 +11,14 @@ const INKS: Record<string, number> = {
   t: packed([0xf4, 0xea, 0xd2]),
   s: packed([0xcf, 0xbd, 0x9a]),
 };
+const UNDERSIDE: Record<string, string> = {
+  b: "d",
+  l: "s",
+  t: "s",
+  o: "d",
+  e: "b",
+};
+const SHADOW = 0.75;
 const OUTLINE = packed([0x29, 0x28, 0x24]);
 
 const RESTING = [
@@ -101,6 +110,12 @@ export const drawCoqui = (
     if (left >= 0 && top >= 0 && left < cols && top < rows)
       pixels[top * cols + left] = OUTLINE;
   }
-  for (const cell of cells)
-    pixels[(y + cell.y) * cols + across(cell.x)] = INKS[cell.cell];
+  for (const cell of cells) {
+    const left = across(cell.x);
+    const top = y + cell.y;
+    const shaded =
+      UNDERSIDE[cell.cell] &&
+      threshold(left, top) < (cell.y / COQUI_TALL) * SHADOW;
+    pixels[top * cols + left] = INKS[shaded ? UNDERSIDE[cell.cell] : cell.cell];
+  }
 };

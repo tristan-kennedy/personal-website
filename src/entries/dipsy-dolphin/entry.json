@@ -4,5 +4,6 @@
   "keywords": ["Project", "Software", "Local AI"],
   "featured": 1,
   "link": "https://github.com/tristan-kennedy/virtual-desktop-assistant",
-  "colour": "#1f9e96"
+  "colour": "#1f9e96",
+  "accents": ["#f2c14e", "#000080", "#c0c0c0"]
 }

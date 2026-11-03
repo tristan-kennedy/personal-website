@@ -59,6 +59,21 @@ const pageTitle = home ? title : `${title} — Tristan Kennedy`;
             );
         }
       } catch {}
+      addEventListener("pagereveal", (event) => {
+        const transition = event.viewTransition;
+        if (!transition) return;
+        const root = document.documentElement;
+        if (root.dataset.sweep) {
+          transition.ready.catch(() => {});
+          return transition.skipTransition();
+        }
+        const { entry, from, navigationType } =
+          window.navigation?.activation ?? {};
+        if (navigationType === "traverse" && entry.index < from?.index) {
+          root.dataset.back = "";
+          transition.finished.finally(() => delete root.dataset.back);
+        }
+      });
     </script>
   </head>
   <body>
