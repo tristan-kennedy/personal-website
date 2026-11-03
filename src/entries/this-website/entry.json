@@ -4,5 +4,6 @@
   "keywords": ["Project", "Design", "Development"],
   "featured": 2,
   "link": "https://github.com/tristan-kennedy/personal-website",
-  "colour": "#ffc93c"
+  "colour": "#ffc93c",
+  "accents": ["#f2f0e9", "#b8b5aa"]
 }

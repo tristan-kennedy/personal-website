@@ -1,12 +1,1000 @@
 ---
-import EntryStub from "../../components/EntryStub.astro";
+import "@fontsource/inter/300.css";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/900.css";
+import "@fontsource/nunito-sans/400.css";
+import "@fontsource/nunito-sans/700.css";
+import "@fontsource/oswald/500.css";
+import Layout from "../../layouts/Layout.astro";
 import type { Entry } from "../../lib/entries";
+import { getHistory } from "../../lib/history";
+import about from "./assets/about.webp";
+import bento from "./assets/bento.webp";
+import caseStudy from "./assets/case-study.webp";
+import dashboard from "./assets/dashboard.webp";
+import experiments from "./assets/experiments.webp";
+import hello from "./assets/hello.webp";
+import index from "./assets/index.webp";
+import intro from "./assets/intro.webp";
+import projects from "./assets/projects.webp";
+import stub from "./assets/stub.webp";
+import record from "./entry.json";
 
 interface Props {
   entry: Entry;
 }
 
 const { entry } = Astro.props;
+const { title, date, keywords, link } = entry.data;
+const { changes, total } = getHistory();
+const latest = changes[0];
+const commitsBetween = (from: string, to?: string) =>
+  changes.filter((change) => change.date >= from && (!to || change.date <= to))
+    .length;
+
+const chapters = [
+  {
+    id: "hello",
+    name: "Hello",
+    when: "October 2025",
+    from: "2025-10-06",
+    to: "2025-10-10",
+    swatch:
+      "bg-white text-[#111827] font-[Inter,sans-serif] font-bold tracking-[-0.01em]",
+  },
+  {
+    id: "dashboard",
+    name: "Welcome to My Portfolio Dashboard",
+    when: "October 2025",
+    from: "2025-10-11",
+    to: "2025-10-20",
+    swatch: "bg-[#fbf1c7] text-[#282828] font-[system-ui,sans-serif]",
+  },
+  {
+    id: "bento",
+    name: "Hello, I’m Tristan Kennedy",
+    when: "October to November 2025",
+    from: "2025-10-21",
+    to: "2025-11-30",
+    swatch:
+      "bg-[#282828] text-[#ebdbb2] font-[Oswald,sans-serif] font-medium uppercase",
+  },
+  {
+    id: "index",
+    name: "Index",
+    when: "December 2025",
+    from: "2025-12-01",
+    to: "2025-12-31",
+    swatch:
+      "bg-[#f4f3f2] text-[#222222] font-[Inter,sans-serif] font-black uppercase tracking-[-0.02em]",
+  },
+  {
+    id: "hello-world",
+    name: "Hello world",
+    when: "January to February 2026",
+    from: "2026-01-01",
+    to: "2026-02-28",
+    swatch:
+      "bg-[#d62828] text-white font-[Inter,sans-serif] font-black uppercase tracking-[-0.02em]",
+  },
+  {
+    id: "real",
+    name: "Make all the pages real",
+    when: "March to October 2026",
+    from: "2026-03-01",
+    to: "2026-10-26",
+    swatch: "bg-[#0e0e10] text-[#d4d4d8] font-[Inter,sans-serif] font-light",
+  },
+  {
+    id: "again",
+    name: "Completely redo the website again",
+    when: "Since October 2026",
+    from: "2026-10-27",
+    swatch:
+      "bg-paper text-charcoal font-display font-extrabold uppercase tracking-[-0.02em]",
+  },
+].map((chapter, position) => ({
+  ...chapter,
+  number: position + 1,
+  commits: commitsBetween(chapter.from, chapter.to),
+}));
+const [one, two, three, four, five, six, seven] = chapters;
+const count = (commits: number) =>
+  `${commits} ${commits === 1 ? "commit" : "commits"}`;
+
+const mono = "font-mono text-[clamp(14px,1.1vw,18px)]/[2]";
+const band = "relative px-(--gutter) py-(--section-space)";
+const measure = "max-w-[62ch] text-body/[1.65] [&_p+p]:mt-5";
+const pre =
+  "overflow-x-auto p-5 font-mono text-[14px]/[1.6] whitespace-pre phone:-mx-(--gutter) phone:text-[13px]";
+const shot = "block h-auto w-full";
+
+const helloSnippet = `---
+import Welcome from "../components/Welcome.astro";
+import Layout from "../layouts/Layout.astro";
+
+// Welcome to Astro! Wondering what to do next? ...
+// Don't want to use any of this? Delete everything in this file, ...
 ---
 
-<EntryStub entry={entry} />
+<Layout>
+  <div class="text-2xl font-bold">Hello</div>
+  <Welcome />
+</Layout>`;
+
+const themeSnippet = `const theme =
+  localStorage.theme ??
+  (window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light");
+document.documentElement.setAttribute("data-theme", theme);`;
+
+const crtSnippet = `.crt::before {
+  background:
+    linear-gradient(
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.06),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.06)
+    );
+  background-size: 100% 2px, 3px 100%;
+}
+.crt::after {
+  animation: flicker 0.15s infinite;
+}`;
+
+const stubSnippet = `---
+layout: ../../layouts/Layout.astro
+title: "Personal Portfolio"
+date: "DEC 2025"
+description: "My personal website that supports further expansion
+  and all the stuff I wanted it to support. Could change at any moment."
+tech:
+  - ASTRO
+  - REACT
+  - TYPESCRIPT
+  - TAILWIND
+---`;
+
+const introSnippet = `const introLines = [
+  "HELLO", "HELLO WORLD", "HEY THERE", "NICE TO MEET YOU",
+  "HELLO WORLD", "HELLO", "HEY THERE", "HELLO WORLD",
+];
+
+introTimeline
+  .to(introLines, { autoAlpha: 1, stagger: 0.06 })
+  .to(introLines, { autoAlpha: 0, stagger: 0.04 }, "+=0.2")
+  .to(introOverlay, {
+    duration: 1.1,
+    x: rect.left,
+    y: rect.top,
+    scaleX,
+    scaleY,
+  });`;
+
+const greetings = [
+  "Hello",
+  "Hello world",
+  "Hey there",
+  "Nice to meet you",
+  "Hello world",
+  "Hello",
+  "Hey there",
+  "Hello world",
+];
+
+const fixes = [
+  ["2026-05-13", "Animations"],
+  ["2026-05-14", "Potential Fix"],
+  ["2026-05-14", "Final try"],
+  ["2026-05-18", "Might fix"],
+  ["2026-05-18", "Remove dvh"],
+  ["2026-05-18", "Remove view transitions for test"],
+  ["2026-05-18", "add head back disable animation"],
+  ["2026-05-18", "One final try"],
+  ["2026-05-18", "Fix light/dark thing maybe"],
+  ["2026-05-18", "Test"],
+];
+
+const realPages = [
+  ["Personal Portfolio", "Project", "Mar, 2026"],
+  ["Escapism as escapism", "Post", "Mar, 2026"],
+  ["2D raycasting vision simulator", "Experiment", "Mar, 2026"],
+  ["Matter.js surface dive", "Experiment", "Mar, 2026"],
+  ["MDX in Astro", "Experiment", "Mar, 2026"],
+  ["Dipsy Dolphin", "Project", "Apr, 2026"],
+];
+
+const recordSnippet = JSON.stringify(record, null, 2);
+---
+
+<Layout
+  title={title}
+  description="Seven versions of this site in its first year, each told in its own colours and type."
+>
+  <article class="overflow-x-clip">
+    <header
+      class="flex min-h-dvh flex-col justify-between bg-charcoal px-(--gutter) pt-(--col-inset) text-paper phone:min-h-0"
+    >
+      <p class:list={[mono, "flex justify-between gap-6 text-muted"]}>
+        <a
+          class="text-paper link phone:inline-flex phone:min-h-11 phone:items-center"
+          href="/index/"
+        >
+          $ cd ..
+        </a>
+        <span>
+          <time datetime={date}>{date}</time>
+          <span class="phone:hidden">
+            {` ${keywords.join(" ").toLowerCase()}`}
+          </span>
+        </span>
+      </p>
+
+      <div class="mt-16 pb-[clamp(28px,3vw,56px)]">
+        <h1
+          class="font-display text-[min(19vw,456px,30dvh)]/[0.8] font-extrabold tracking-[-0.035em] uppercase phone:text-[calc((100vw-48px)/3.3)]"
+        >
+          <span class="block motion-safe:animate-wipe-left">This</span>
+          <span class="flex items-end">
+            <span class="motion-safe:animate-wipe-right">Website</span>
+            <span
+              aria-hidden="true"
+              class="-mr-(--gutter) mb-[0.075em] ml-[0.1em] h-[clamp(6px,0.8vw,14px)] grow bg-paper phone:hidden"
+            ></span>
+          </span>
+        </h1>
+        <p
+          class="mt-[clamp(28px,3vw,56px)] max-w-[34ch] font-serif text-[clamp(26px,2.6vw,46px)]/[1.15] tracking-[-0.02em]"
+        >
+          Seven versions in its first year, and all of them still in the git
+          history. I built each one again and wrote down what it was, each in
+          its own colours.
+        </p>
+      </div>
+    </header>
+
+    <nav aria-label="Contents" class="bg-charcoal pb-(--section-space)">
+      <ol>
+        {
+          chapters.map(({ id, number, name, when, commits, swatch }) => (
+            <li>
+              <a
+                href={`#${id}`}
+                class:list={[
+                  swatch,
+                  "group grid min-h-[clamp(60px,6.5vw,104px)] grid-cols-[3ch_1fr_auto] items-center gap-x-4 px-(--gutter) py-3 phone:grid-cols-[2.5ch_1fr]",
+                ]}
+              >
+                <span class="font-mono text-[15px] font-normal tracking-normal normal-case">
+                  {number}
+                </span>
+                <span class="text-[clamp(22px,2.6vw,46px)]/[1.05] text-balance group-hover:underline group-hover:decoration-2 group-hover:underline-offset-[0.15em]">
+                  {name}
+                </span>
+                <span class="text-right font-mono text-[13px] font-normal tracking-[0.06em] normal-case phone:col-start-2 phone:mt-1 phone:text-left">
+                  {when.toLowerCase()} · {count(commits)}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <section
+      id={one.id}
+      aria-labelledby={`${one.id}-title`}
+      class:list={[
+        band,
+        "scroll-mt-0 overflow-hidden bg-white font-[Inter,sans-serif] text-[#111827] selection:bg-[#7c3aed] selection:text-white",
+      ]}
+    >
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_50%_at_20%_80%,#e9d5ff_0%,transparent_70%),radial-gradient(50%_60%_at_85%_20%,#fbcfe8_0%,transparent_70%)] opacity-80"
+      >
+      </div>
+      <div class="relative mx-auto max-w-[62ch]">
+        <h2
+          id={`${one.id}-title`}
+          class="text-[clamp(22px,1.8vw,30px)] font-bold"
+        >
+          {one.number}. {one.name}
+        </h2>
+        <p class="mt-2 text-[15px] text-[#4b5563]">
+          {one.when} · {count(one.commits)}
+        </p>
+        <div class:list={[measure, "mt-10"]}>
+          <p>
+            The first commit is called “Initial commit from Astro”, and that’s
+            all it was: the starter project, with its soft violet blur and its
+            Read our docs button. The second commit, called “New”, typed one
+            word above it. That was the whole site for five days.
+          </p>
+          <p>
+            Astro is still under everything here. It turns each page into plain
+            HTML when the site builds, which suits a site that mostly sits
+            still.
+          </p>
+        </div>
+        <pre
+          tabindex="0"
+          aria-label="The first homepage, src/pages/index.astro"
+          class:list={[
+            pre,
+            "mt-10 rounded-lg border border-[#e5e7eb] bg-white/80 text-[#374151]",
+          ]}><code>{helloSnippet}</code></pre>
+      </div>
+      <figure
+        class="relative mx-auto mt-(--section-space) max-w-[min(100%,1100px)]"
+      >
+        <img
+          src={hello.src}
+          width={hello.width}
+          height={hello.height}
+          loading="lazy"
+          alt="The Astro starter page: a pale violet and pink blur, the Astro logo, “To get started, open the src/pages directory in your project”, and a bold “Hello” in the top left corner."
+          class:list={[
+            shot,
+            "rounded-lg border border-[#e5e7eb] shadow-[0_12px_40px_rgb(17_24_39/0.12)]",
+          ]}
+        />
+        <figcaption class="mt-4 text-center text-[14px] text-[#4b5563]">
+          f3a1b7c, 6 October 2025. Like every screenshot here, rebuilt from its
+          commit in November 2026.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section
+      id={two.id}
+      aria-labelledby={`${two.id}-title`}
+      class:list={[
+        band,
+        "bg-[#fbf1c7] font-[system-ui,sans-serif] text-[#282828] selection:bg-[#282828] selection:text-[#fbf1c7]",
+      ]}
+    >
+      <h2 id={`${two.id}-title`} class="text-body">
+        {two.number}. {two.name}
+      </h2>
+      <p
+        class="mt-2 max-w-[24ch] text-[clamp(30px,3.4vw,58px)]/[1.1] text-pretty"
+      >
+        This is a simple dashboard to showcase my projects and skills.
+      </p>
+      <p class="mt-4 text-[15px] text-[#665c54]">
+        {two.when} · {count(two.commits)}
+      </p>
+      <div
+        class="mt-12 grid grid-cols-[minmax(0,62ch)_1fr] gap-x-16 gap-y-12 max-lg:grid-cols-1"
+      >
+        <div class={measure}>
+          <p>
+            Five days later the starter was gone and the site had a palette:
+            Gruvbox, the warm retro scheme a lot of people run in their code
+            editors, in its cream and its dark brown, with a button to switch
+            between them. The page said “Welcome to My Portfolio Dashboard”.
+            Tailwind’s reset shrinks headings to the size of everything else, so
+            the title came out tiny and the sentence under it, set at
+            <code class="font-mono text-[0.88em]">text-3xl</code>, came out
+            huge. This section keeps it that way.
+          </p>
+          <p>
+            The switch was a small React component, and a script in the page’s
+            head picked the theme before anything painted, so it never flashed
+            the wrong one. Some version of that switch survived every redesign
+            until this October. It’s gone now. Each page here picks its own
+            surface instead.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="The theme script"
+            class:list={[
+              pre,
+              "mt-8 bg-[#ebdbb2] text-[#3c3836]",
+            ]}><code>{themeSnippet}</code></pre>
+        </div>
+        <figure class="self-start">
+          <img
+            src={dashboard.src}
+            width={dashboard.width}
+            height={dashboard.height}
+            loading="lazy"
+            alt="A cream page with “Tristan Kennedy” in small bold type at the top left, a theme button, the heading “Welcome to My Portfolio Dashboard” at the same small size, and one larger sentence. Nothing else."
+            class:list={[shot, "border border-[#d5c4a1]"]}
+          />
+          <figcaption class="mt-3 text-[14px] text-[#665c54]">
+            dc72dbc, 11 October 2025.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section
+      id={three.id}
+      aria-labelledby={`${three.id}-title`}
+      class:list={[
+        band,
+        "bg-[#282828] font-['Nunito_Sans',sans-serif] text-[#ebdbb2] [text-shadow:0_0_5px_rgb(235_219_178/0.35)] selection:bg-[#ebdbb2] selection:text-[#282828]",
+      ]}
+    >
+      <div class="grid grid-cols-6 gap-6 max-lg:grid-cols-2 phone:grid-cols-1">
+        <div
+          class="col-span-4 flex flex-col justify-end rounded-xl border-2 border-[#bdae93] bg-[#3c3836] p-[clamp(24px,2.4vw,40px)] max-lg:col-span-2 phone:col-span-1"
+        >
+          <h2 id={`${three.id}-title`}>
+            <span class="block text-[clamp(20px,1.8vw,30px)]">
+              {three.number}. Hello, I’m
+            </span>
+            <span
+              class="mt-2 block font-[Oswald,sans-serif] text-[clamp(44px,6.4vw,112px)]/[0.95] font-medium uppercase"
+            >
+              Tristan Kennedy
+            </span>
+          </h2>
+        </div>
+        <div
+          class="col-span-2 flex flex-col justify-between gap-8 rounded-xl border-2 border-[#bdae93] bg-[#3c3836] p-[clamp(24px,2.4vw,40px)] font-[Oswald,sans-serif] uppercase max-lg:col-span-2 phone:col-span-1"
+        >
+          <p class="text-[clamp(28px,2.6vw,44px)]/[1.05] font-medium">
+            {three.when}
+          </p>
+          <p
+            class="text-[clamp(28px,2.6vw,44px)]/[1.05] font-medium text-[#d79921]"
+          >
+            {count(three.commits)}
+          </p>
+        </div>
+
+        <div
+          class="col-span-3 rounded-xl border-2 border-[#bdae93] bg-[#3c3836] p-[clamp(24px,2.4vw,40px)] max-lg:col-span-2 phone:col-span-1"
+        >
+          <div class={measure}>
+            <p>
+              Then it got a personality. Over a few weeks it became a bento
+              grid, eight columns by six rows, every page a rounded box with a
+              cream border: About me, Blog, Projects, Experiments, and a wide
+              one that said “Wanna talk? Send me a message.” with a paper plane
+              flying across it. Oswald for the headings, Nunito Sans for the
+              rest, and a strip of social icons scrolling along under my name.
+            </p>
+            <p>
+              Most of the boxes opened onto nothing. Projects was a heading.
+              About was a page of placeholder text. The last commit of this
+              version is called “New layout idk”, and then nothing for almost a
+              month.
+            </p>
+          </div>
+        </div>
+        <figure
+          class="col-span-3 overflow-hidden rounded-xl border-2 border-[#bdae93] bg-[#3c3836] max-lg:col-span-2 phone:col-span-1"
+        >
+          <img
+            src={bento.src}
+            width={bento.width}
+            height={bento.height}
+            loading="lazy"
+            alt="A cream bento grid of rounded boxes: “Hello, I’m Tristan Kennedy”, About me, Blog, Projects, Experiments, and “Wanna talk? Send me a message.” with a paper plane, above a row of social icons."
+            class={shot}
+          />
+          <figcaption class="p-5 text-[14px] text-[#bdae93]">
+            1092e44, 6 November 2025.
+          </figcaption>
+        </figure>
+
+        <div
+          class="col-span-3 rounded-xl border-2 border-[#bdae93] bg-[#3c3836] p-[clamp(24px,2.4vw,40px)] max-lg:col-span-2 phone:col-span-1"
+        >
+          <div class={measure}>
+            <p>
+              There was a CRT button too. It laid scanlines over the whole site
+              with two CSS gradients, gave the text a glow, and flickered an
+              overlay every 0.15 seconds. It also switched itself on for anyone
+              whose computer asked for reduced motion, which is exactly
+              backwards. This section has the scanlines and the glow, but not
+              the flicker.
+            </p>
+          </div>
+          <pre
+            tabindex="0"
+            aria-label="The CRT effect"
+            class:list={[
+              pre,
+              "mt-8 rounded-lg bg-[#1d2021] text-[#d5c4a1] phone:mx-0",
+            ]}><code>{crtSnippet}</code></pre>
+        </div>
+        <figure
+          class="col-span-3 self-start overflow-hidden rounded-xl border-2 border-[#bdae93] bg-[#3c3836] max-lg:col-span-2 phone:col-span-1"
+        >
+          <img
+            src={about.src}
+            width={about.width}
+            height={about.height}
+            loading="lazy"
+            alt="The About page with the CRT effect on: a tan box headed “About me” and “Hello there!”, filled with placeholder paragraphs under faint scanlines."
+            class={shot}
+          />
+          <figcaption class="p-5 text-[14px] text-[#bdae93]">
+            The About page, CRT on.
+          </figcaption>
+        </figure>
+      </div>
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-0 bg-[linear-gradient(rgb(18_16_16/0)_50%,rgb(0_0_0/0.25)_50%),linear-gradient(90deg,rgb(255_0_0/0.06),rgb(0_255_0/0.02),rgb(0_0_255/0.06))] bg-size-[100%_2px,3px_100%]"
+      >
+      </div>
+    </section>
+
+    <section
+      id={four.id}
+      aria-labelledby={`${four.id}-title`}
+      class:list={[
+        band,
+        "bg-[#f4f3f2] font-[Inter,sans-serif] text-[#222222] selection:bg-[#d62828] selection:text-white",
+      ]}
+    >
+      <p
+        class="flex justify-between text-[11px] tracking-[0.2em] text-[#6c6c6c] uppercase"
+      >
+        <span>0{four.number}/ {four.when}</span>
+        <span>{count(four.commits)}</span>
+      </p>
+      <h2
+        id={`${four.id}-title`}
+        class="mt-[clamp(40px,6vw,96px)] text-[clamp(72px,14vw,240px)]/[0.88] font-black tracking-[-0.03em] uppercase"
+      >
+        {four.name}
+      </h2>
+      <div class="mt-[clamp(40px,5vw,80px)] flex gap-8 phone:block">
+        <span
+          aria-hidden="true"
+          class="size-12 shrink-0 bg-[#d62828] phone:mb-8"></span>
+        <div class={measure}>
+          <p>
+            In December I started over on a branch called
+            <code class="font-mono text-[0.88em]"
+              >new-website-entirely-shoot</code
+            >. Its one real commit is “Just redo the entire thing”, and the pull
+            request that merged it is titled “Redo the entire website”.
+          </p>
+          <p>
+            Gruvbox went, and so did Oswald, the boxes, and the scanlines. In
+            came a single typeface, Inter, at its heaviest weight, on a pale
+            warm grey with one red square. My name filled the screen at 12rem,
+            and above it, in tiny tracked capitals, was the word INDEX. The word
+            stuck. A year later it’s the name of the whole archive.
+          </p>
+          <p>
+            Under the name sat a numbered list, 01/ About me down to 05/
+            Contact. The project pages were plain Markdown files, and the one
+            about this site described it as a website that “could change at any
+            moment”. Two of that month’s commits are called “WIP but I’m going
+            home” and “Going home”.
+          </p>
+        </div>
+      </div>
+      <div
+        class="mt-(--section-space) grid grid-cols-[3fr_2fr] gap-x-8 gap-y-12 max-lg:grid-cols-1"
+      >
+        <figure>
+          <img
+            src={index.src}
+            width={index.width}
+            height={index.height}
+            loading="lazy"
+            alt="A pale grey page: “Software engineer, Rogers, AR” in the top right, the label INDEX, TRISTAN KENNEDY in enormous black Inter, a red square beside a numbered menu, and “© 2025” and “Scroll” along the bottom."
+            class:list={[shot, "border border-[#ddd9d4]"]}
+          />
+          <figcaption
+            class="mt-3 text-[11px] tracking-[0.2em] text-[#6c6c6c] uppercase"
+          >
+            c8cdf9b / 30 December 2025
+          </figcaption>
+        </figure>
+        <div class="flex flex-col gap-12">
+          <pre
+            tabindex="0"
+            aria-label="The Markdown page for this site"
+            class:list={[
+              pre,
+              "bg-white text-[#222222]",
+            ]}><code>{stubSnippet}</code></pre>
+          <figure>
+            <img
+              src={stub.src}
+              width={stub.width}
+              height={stub.height}
+              loading="lazy"
+              alt="That Markdown page rendered: “Personal Portfolio”, a two-line description, a tech list, and short sections called What I built and Highlights."
+              class:list={[shot, "border border-[#ddd9d4]"]}
+            />
+            <figcaption
+              class="mt-3 text-[11px] tracking-[0.2em] text-[#6c6c6c] uppercase"
+            >
+              /projects/personal-portfolio
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id={five.id}
+      aria-labelledby={`${five.id}-title`}
+      class:list={[
+        band,
+        "bg-[#d62828] font-[Inter,sans-serif] text-white selection:bg-white selection:text-[#d62828]",
+      ]}
+    >
+      <div
+        aria-hidden="true"
+        class="flex flex-wrap gap-x-[0.45em] text-[clamp(36px,5vw,88px)]/[1] font-black tracking-[-0.02em] uppercase"
+      >
+        {
+          greetings.map((greeting, position) => (
+            <span
+              class:list={[
+                "whitespace-nowrap",
+                position === 0 ? "text-white/90" : "text-white/25",
+                position > 3 && "phone:hidden",
+              ]}
+            >
+              {greeting}
+            </span>
+          ))
+        }
+      </div>
+      <h2
+        id={`${five.id}-title`}
+        class="mt-[clamp(40px,5vw,80px)] text-[clamp(28px,2.8vw,48px)]/[1.1] font-black tracking-[-0.02em] uppercase"
+      >
+        {five.number}. {five.name}
+      </h2>
+      <p class="mt-2 text-[13px] tracking-[0.2em] text-white uppercase">
+        {five.when} · {count(five.commits)}
+      </p>
+      <div
+        class="mt-12 grid grid-cols-[minmax(0,62ch)_1fr] gap-x-16 gap-y-12 max-lg:grid-cols-1"
+      >
+        <div class={measure}>
+          <p>
+            January began with a commit called “Refactor day”. The look stayed
+            and everything underneath it moved. Projects, posts, and experiments
+            became three Astro content collections, each a folder of MDX files
+            checked against a schema, each with its own list and its own page
+            template.
+          </p>
+          <p>
+            A full-screen menu arrived, and so did an intro. The whole screen
+            went this red, eight greetings flashed up, and then the red shrank
+            into the little square in the corner that opened the menu. It played
+            once per visit, and never if you’d asked your computer for less
+            motion.
+          </p>
+          <p>
+            The collections needed something in them, so they got placeholders:
+            an “Among Us Particle Field Accelerator Experiment”, a scroll lab,
+            an ambient canvas, a post about tuning the content pipeline, all
+            sharing one image called <code class="font-mono text-[0.88em]"
+              >test.png</code
+            >.
+          </p>
+          <p>
+            This was also the month of the first AGENTS.md, a file of house
+            rules for the AI coding agents that help build the site, committed
+            as “Add AGENTS.md file cause I’m fiddling”. It asked for a “Swiss
+            bold minimal” look with no borders or lines, and said not to add new
+            fonts. February had one commit, a page for Valentine’s Day.
+          </p>
+          <pre
+            tabindex="0"
+            aria-label="The intro"
+            class:list={[
+              pre,
+              "mt-8 bg-[#b81f1f] text-white",
+            ]}><code>{introSnippet}</code></pre>
+        </div>
+        <div class="flex flex-col gap-12">
+          <figure>
+            <img
+              src={intro.src}
+              width={intro.width}
+              height={intro.height}
+              loading="lazy"
+              alt="The intro partway through: a red screen with HELLO in pale pink and HELLO WORLD fading in beside it."
+              class:list={[shot, "ring-1 ring-white/40"]}
+            />
+            <figcaption
+              class="mt-3 text-[11px] tracking-[0.2em] text-white uppercase"
+            >
+              The intro, a moment in. 2016666 / 25 January 2026
+            </figcaption>
+          </figure>
+          <figure>
+            <img
+              src={experiments.src}
+              width={experiments.width}
+              height={experiments.height}
+              loading="lazy"
+              alt="An Experiments page listing three placeholder entries dated June 2024: Among Us Particle Field Accelerator Experiment, Ambient Canvas Study, and Scroll-linked Storytelling Lab."
+              class={shot}
+            />
+            <figcaption
+              class="mt-3 text-[11px] tracking-[0.2em] text-white uppercase"
+            >
+              Experiments, all placeholders
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id={six.id}
+      aria-labelledby={`${six.id}-title`}
+      class:list={[
+        band,
+        "bg-[#0e0e10] font-[Inter,sans-serif] text-[#d4d4d8] selection:bg-[#d62828] selection:text-white",
+      ]}
+    >
+      <div
+        class="flex items-end justify-between gap-8 border-b border-[#2a2a2e] pb-8"
+      >
+        <h2
+          id={`${six.id}-title`}
+          class="max-w-[14ch] text-[clamp(44px,6.6vw,120px)]/[0.98] font-light tracking-[-0.03em]"
+        >
+          {six.name}
+        </h2>
+        <p class="shrink-0 text-right">
+          <span
+            class="block text-[clamp(32px,3.4vw,60px)] font-black text-[#e5484d]"
+            >0{six.number}</span
+          >
+          <span class="text-[11px] tracking-[0.2em] text-[#a5a5a5] uppercase"
+            >{count(six.commits)}</span
+          >
+        </p>
+      </div>
+      <p class="mt-3 text-[11px] tracking-[0.2em] text-[#a5a5a5] uppercase">
+        {six.when}
+      </p>
+
+      <div
+        class="mt-(--section-space) grid grid-cols-[minmax(0,62ch)_1fr] gap-x-16 gap-y-12 max-lg:grid-cols-1"
+      >
+        <div class={measure}>
+          <p>
+            On 15 March the site moved to Astro 6, and the next commit was
+            called “Make all the pages real”. The placeholders went, and real
+            write-ups replaced them. Dipsy Dolphin joined in April.
+          </p>
+        </div>
+        <ol class="border-t border-[#2a2a2e]">
+          {
+            realPages.map(([name, kind, when], position) => (
+              <li class="grid grid-cols-[5ch_1fr_auto] items-baseline gap-x-4 border-b border-[#2a2a2e] py-4 phone:grid-cols-[5ch_1fr]">
+                <span class="text-[11px] tracking-[0.2em] text-[#a5a5a5]">
+                  [0{position + 1}]
+                </span>
+                <span class="text-[clamp(18px,1.5vw,24px)] font-light">
+                  {name}
+                </span>
+                <span class="text-right text-[11px] tracking-[0.2em] text-[#a5a5a5] uppercase phone:col-start-2 phone:mt-1 phone:text-left">
+                  {kind}, {when}
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <div
+        class="mt-(--section-space) grid grid-cols-[minmax(0,62ch)_1fr] gap-x-16 gap-y-12 max-lg:grid-cols-1"
+      >
+        <div class={measure}>
+          <p>
+            The first of them was a long case study of this site. It calls the
+            project “a publishing platform disguised as a portfolio”, sets out a
+            four-question decision framework, and ends by calling the site a
+            platform for communicating how I think. Very little of it is true of
+            the site now, but this page started from it.
+          </p>
+          <p>
+            In May came “Sweeping changes”. Every collection got a list of
+            numbered rows under a giant heading, the menu became its own red
+            page, and pages started revealing themselves as they loaded. Then
+            something went wrong, and the log for the next five days reads like
+            this.
+          </p>
+        </div>
+        <figure>
+          <img
+            src={caseStudy.src}
+            width={caseStudy.width}
+            height={caseStudy.height}
+            loading="lazy"
+            alt="The top of the Personal Portfolio case study: “Personal Portfolio”, dated March 2026, built with Astro, React, TypeScript, Tailwind, and MDX, with a red square in the corner."
+            class:list={[shot, "border border-[#2a2a2e]"]}
+          />
+          <figcaption
+            class="mt-3 text-[11px] tracking-[0.2em] text-[#a5a5a5] uppercase"
+          >
+            b101202 / 15 March 2026
+          </figcaption>
+        </figure>
+      </div>
+
+      <ol
+        aria-label="Commits from 13 to 18 May 2026"
+        class="mt-12 max-w-[62ch] border-t border-[#2a2a2e] font-mono text-[clamp(14px,1.1vw,17px)]"
+      >
+        {
+          fixes.map(([day, message]) => (
+            <li class="flex gap-6 border-b border-[#2a2a2e] py-2.5">
+              <span class="shrink-0 text-[#8b8b90]">{day}</span>
+              <span>{message}</span>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div
+        class="mt-(--section-space) grid grid-cols-[minmax(0,62ch)_1fr] gap-x-16 gap-y-12 max-lg:grid-cols-1"
+      >
+        <div class={measure}>
+          <p>
+            After that, nothing until September, when the résumé went up and I
+            added my middle initial. The commit after that is called “Remove url
+            since it doesn’t exist yet”.
+          </p>
+        </div>
+        <figure>
+          <img
+            src={projects.src}
+            width={projects.width}
+            height={projects.height}
+            loading="lazy"
+            alt="The Projects list: PROJECTS in enormous black type, a red 02 labelled Finished works, and two numbered rows for Dipsy Dolphin and Personal Portfolio."
+            class:list={[shot, "border border-[#2a2a2e]"]}
+          />
+          <figcaption
+            class="mt-3 text-[11px] tracking-[0.2em] text-[#a5a5a5] uppercase"
+          >
+            299edb5 / 4 October 2026, the last of it
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section
+      id={seven.id}
+      aria-labelledby={`${seven.id}-title`}
+      class="py-(--section-space) paper"
+    >
+      <div class="grid grid-cols-4 px-(--gutter) phone:block">
+        <h2
+          id={`${seven.id}-title`}
+          class="col-span-4 font-display text-[max(56px,calc(9*var(--vw)))]/[0.86] font-extrabold tracking-[-0.03em] uppercase"
+        >
+          <span class="block text-muted">{seven.number}</span>
+          <span class="block">Completely redo</span>
+          <span class="flex items-end">
+            the website again
+            <span
+              aria-hidden="true"
+              class="-mr-(--gutter) mb-[0.1em] ml-[0.12em] h-[clamp(6px,0.8vw,14px)] grow bg-charcoal phone:hidden"
+            ></span>
+          </span>
+        </h2>
+        <p class:list={[mono, "col-span-4 mt-6 text-muted"]}>
+          {seven.when.toLowerCase()} · {count(seven.commits)} so far
+        </p>
+
+        <p
+          class="col-span-3 col-start-2 mt-(--section-space) pl-(--col-inset) font-serif text-[clamp(28px,2.9vw,50px)]/[1.15] tracking-[-0.02em] phone:pl-0"
+        >
+          On 27 October I deleted nearly all of it in one commit. What replaced
+          it is what you’re reading.
+        </p>
+
+        <div
+          class:list={[
+            measure,
+            "col-span-2 col-start-2 mt-[clamp(32px,4vw,64px)] pl-(--col-inset) phone:pl-0",
+          ]}
+        >
+          <p>
+            The React components went, along with the three collections, the
+            menu, the theme switch, the intro, and the red. The idea changed
+            more than the look did. The old site sorted everything into
+            projects, posts, and experiments and asked each one to earn its
+            place. Now there’s one kind of thing, an entry, and the Index lists
+            every one newest first, so a trip to Maine sits next to a desktop
+            dolphin and an essay. An entry doesn’t have to be work, or finished,
+            or impressive. It just has to be something I spent time on.
+          </p>
+          <p>
+            Each entry is a folder with a small JSON file, and if it wants them,
+            a page of its own and a little animated scene for the Index. This is
+            the one for this page, read when the site builds:
+          </p>
+        </div>
+        <pre
+          tabindex="0"
+          aria-label="This entry’s entry.json"
+          class:list={[
+            pre,
+            "col-span-2 col-start-2 mt-8 ml-(--col-inset) bg-charcoal text-paper",
+          ]}><code>{recordSnippet}</code></pre>
+
+        <div
+          class:list={[
+            measure,
+            "col-span-2 col-start-2 mt-[clamp(32px,4vw,64px)] pl-(--col-inset) phone:pl-0",
+          ]}
+        >
+          <p>
+            Every page gets to be its own thing. Escapism is a door you walk
+            through, the raycaster’s title is the walls, and Dipsy wanders
+            around his. The shared parts are few: charcoal and paper, Barlow
+            Condensed and Marcellus, and a dither that puts every image on the
+            same 3-pixel dot, the same 4×4 threshold, and the same sun in the
+            upper right.
+          </p>
+          <p>
+            The site also reads its own git history when it builds. The About
+            page keeps a log of every change and the footer shows the latest
+            one, so commit messages are public now. That’s why the new ones say
+            what changed and the old ones say “Fix maybe”.
+          </p>
+          <p>
+            It’s still under construction, which is why its scene on the Index
+            is a crane.
+          </p>
+        </div>
+
+        <div
+          class:list={[
+            mono,
+            "col-span-3 col-start-2 mt-(--section-space) pl-(--col-inset) text-muted phone:pl-0",
+          ]}
+        >
+          {
+            latest && (
+              <p>
+                {total} commits so far. The latest is “{latest.message}”,{" "}
+                <time datetime={latest.date}>{latest.date}</time>.
+              </p>
+            )
+          }
+          <p class="mt-4 flex flex-wrap gap-x-10">
+            <a
+              class="text-charcoal link phone:inline-flex phone:min-h-11 phone:items-center"
+              href="/index/"
+            >
+              $ cd ..
+            </a>
+            {
+              link && (
+                <a
+                  class="text-charcoal link phone:inline-flex phone:min-h-11 phone:items-center"
+                  href={link}
+                >
+                  $ open {link.replace(/^https?:\/\//, "")}
+                </a>
+              )
+            }
+          </p>
+        </div>
+      </div>
+    </section>
+  </article>
+</Layout>

@@ -17,10 +17,19 @@ importers:
       '@fontsource/barlow-condensed':
         specifier: ^5.3.0
         version: 5.3.0
+      '@fontsource/inter':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@fontsource/marcellus':
         specifier: ^5.3.0
         version: 5.3.0
       '@fontsource/mrs-saint-delafield':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource/nunito-sans':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource/oswald':
         specifier: ^5.3.0
         version: 5.3.0
       '@tailwindcss/vite':
@@ -442,11 +451,20 @@ packages:
   '@fontsource/barlow-condensed@5.3.0':
     resolution: {integrity: sha512-RA7MmIx0v3eQ6Gcf74qLVLOwLB0GpPOzx+eU9iG/AmCnSJGcIWYeU8y6CEMGZ210MGwGg5CZhzLkkvyZdTTk1g==}
 
+  '@fontsource/inter@5.3.0':
+    resolution: {integrity: sha512-RofMylZmjlJEfELXeNHFWBRcSs75rGU/6bV2S2jfnvv/3rPXPGe0LgUJTklcHZ9lM4OZmAVFhcJPnACfb91A3g==}
+
   '@fontsource/marcellus@5.3.0':
     resolution: {integrity: sha512-cMnanjpiPIC7Rq4GXIA/Zal5WLSoDV5Mc681tMkWsWfKHXnRnLGlhuGeBnLF6HrqtFkiSdiuy4NCSPfOrz266w==}
 
   '@fontsource/mrs-saint-delafield@5.3.0':
     resolution: {integrity: sha512-OH6pmSgyh8CqpiFmAxthdrlhreJj2jt49kk+NpEZ4UMRrSOcF7qxF1AT0QNxuVVCQWy4h5TOIvep7Hglenrtig==}
+
+  '@fontsource/nunito-sans@5.3.0':
+    resolution: {integrity: sha512-CctNhebQ2YYJUwVMCAkHexQg7yedfz9s8JzaETALyc9QIQuDFRlNTWXux9H5PsNLgptPkrzRDomAdLJt1sDFpQ==}
+
+  '@fontsource/oswald@5.3.0':
+    resolution: {integrity: sha512-16r2aHActe0pH+9FLdk/74/YxXM7HpGak05kAzx3RvSToiJwGvyhv6GvckPz+YuZmvL1nxWbEop2jAXRcXYPRg==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -2372,9 +2390,15 @@ snapshots:
 
   '@fontsource/barlow-condensed@5.3.0': {}
 
+  '@fontsource/inter@5.3.0': {}
+
   '@fontsource/marcellus@5.3.0': {}
 
   '@fontsource/mrs-saint-delafield@5.3.0': {}
+
+  '@fontsource/nunito-sans@5.3.0': {}
+
+  '@fontsource/oswald@5.3.0': {}
 
   '@img/colour@1.1.0': {}
 
