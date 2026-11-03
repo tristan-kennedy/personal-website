@@ -1,0 +1,50 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  label: string;
+  frames: { src: ImageMetadata; alt: string; time: string }[];
+}
+
+const { label, frames } = Astro.props;
+---
+
+<figure class="col-span-9 -mr-(--gutter) min-w-0 phone:-ml-(--gutter)">
+  <figcaption
+    class="mb-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 pr-(--gutter) phone:pl-(--gutter)"
+  >
+    <span class="font-serif text-[clamp(22px,2vw,36px)]/[1.2]">{label}</span>
+    <span
+      class="font-mono text-[12px] tracking-[0.08em] text-paper/55 lowercase"
+      aria-hidden="true"
+    >
+      scroll sideways →
+    </span>
+  </figcaption>
+  <div
+    class="flex snap-x snap-mandatory [scrollbar-width:thin] [scrollbar-color:rgb(242_240_233/0.3)_transparent] gap-[clamp(8px,1vw,16px)] overflow-x-auto pr-(--gutter) pb-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-paper phone:scroll-px-(--gutter) phone:px-(--gutter)"
+    tabindex="0"
+    role="group"
+    aria-label={label}
+  >
+    {
+      frames.map(({ src, alt, time }) => (
+        <div class="flex-none snap-start">
+          <Image
+            src={src}
+            alt={alt}
+            widths={[480, 800, 1200].filter((w) => w <= src.width)}
+            sizes="(max-width: 700px) 72vw, 34vw"
+            quality={85}
+            loading="lazy"
+            class="block h-[min(72vh,calc(52*var(--vw)))] w-auto bg-white/5 phone:h-[60vh]"
+          />
+          <p class="mt-2 font-mono text-[12px] tracking-[0.08em] text-paper/55">
+            {time}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</figure>

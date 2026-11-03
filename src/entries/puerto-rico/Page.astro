@@ -1,12 +1,610 @@
 ---
-import EntryStub from "../../components/EntryStub.astro";
+import type { ImageMetadata } from "astro";
+import Layout from "../../layouts/Layout.astro";
 import type { Entry } from "../../lib/entries";
+import Photo from "../../components/Photo.astro";
 
 interface Props {
   entry: Entry;
 }
 
 const { entry } = Astro.props;
+const photos = import.meta.glob<{ default: ImageMetadata }>("./assets/*.jpg", {
+  eager: true,
+});
+const photo = (name: string) => photos[`./assets/${name}.jpg`].default;
+const { title, date, keywords } = entry.data;
+
+const grid =
+  "grid grid-cols-12 items-start gap-x-[clamp(12px,1.8vw,32px)] gap-y-[clamp(56px,7vw,136px)] px-(--gutter) phone:gap-y-12";
+const bleed = "col-span-12 -mx-(--gutter)";
+const kicker =
+  "inline-block px-2 py-1 font-mono text-[12px]/none tracking-[0.14em] text-charcoal uppercase";
+const chapter =
+  "mt-5 font-display text-[max(64px,calc(15*var(--vw)))]/[0.82] font-extrabold tracking-[-0.035em] uppercase";
+const meta =
+  "mt-6 font-mono text-[clamp(13px,1vw,16px)] tracking-[0.06em] lowercase";
+const label =
+  "col-span-12 -mb-[clamp(24px,4vw,72px)] flex items-center gap-4 font-mono text-[12px] tracking-[0.14em] uppercase phone:-mb-4";
+const line =
+  "font-serif text-[clamp(28px,3vw,54px)]/[1.12] tracking-[-0.02em] text-balance";
+const full = "(max-width: 700px) 100vw, 100vw";
+const wide = "(max-width: 700px) 100vw, 84vw";
+const half = "(max-width: 700px) 100vw, 50vw";
+const third = "(max-width: 700px) 100vw, 34vw";
+const quarter = "(max-width: 700px) 100vw, 26vw";
 ---
 
-<EntryStub entry={entry} />
+<Layout
+  title={title}
+  description="Five days in Puerto Rico in photos: Old San Juan, a day at El Yunque with no pictures, and Vieques."
+>
+  <article class="overflow-x-clip bg-[#f6efdd] text-charcoal">
+    <header class="px-(--gutter) pt-(--col-inset)">
+      <p
+        class="flex justify-between gap-6 font-mono text-[clamp(14px,1.1vw,18px)]/[2] text-[#6f6656]"
+      >
+        <a
+          class="text-charcoal link phone:inline-flex phone:min-h-11 phone:items-center"
+          href="/index/"
+        >
+          $ cd ..
+        </a>
+        <span class="phone:hidden">
+          <time datetime={date}>{date}</time>
+          {` ${keywords.join(" ").toLowerCase()}`}
+        </span>
+      </p>
+      <div
+        class="grid grid-cols-12 items-end gap-x-[clamp(12px,1.8vw,32px)] pt-[clamp(48px,8vw,140px)] pb-[clamp(32px,4vw,72px)]"
+      >
+        <h1
+          class="col-span-8 font-display text-[max(84px,calc(21*var(--vw)))]/[0.8] font-extrabold tracking-[-0.04em] uppercase [text-shadow:0.035em_0.03em_0_#ee6f9a] phone:col-span-12"
+        >
+          Puerto<br />Rico
+        </h1>
+        <p
+          class="col-span-4 font-serif text-[clamp(20px,1.7vw,30px)]/[1.3] text-balance phone:col-span-12 phone:mt-8"
+        >
+          Old San Juan, El Yunque, and Vieques, July 29 to August 2, 2026. One
+          phone lost along the way.
+        </p>
+      </div>
+    </header>
+
+    <Photo
+      src={photo("love-puerto-rico")}
+      alt="A cobbled street in Old San Juan lined with pastel houses and wrought-iron balconies, ending at a big blue “I ♥ Puerto Rico” sign in front of a building hung with flags."
+      time="wed 4:11 pm"
+      sizes={full}
+      eager
+      class="[&_figcaption]:px-(--gutter)"
+    />
+
+    <section
+      aria-labelledby="old-san-juan"
+      class="pt-(--section-space) pb-[clamp(96px,12vw,220px)]"
+    >
+      <div class="px-(--gutter)">
+        <p class:list={[kicker, "bg-[#ee6f9a]"]}>01 · Wednesday, July 29</p>
+        <h2 id="old-san-juan" class={chapter}>Old San Juan</h2>
+        <p class={meta}>3:51 to 5:17 pm · 47 photos, all on a camera</p>
+      </div>
+
+      <div class:list={[grid, "mt-[clamp(64px,8vw,150px)]"]}>
+        <p class={label}>
+          <span class="h-[3px] w-12 bg-[#ee6f9a]" aria-hidden="true"></span>
+          Paseo de la Princesa
+        </p>
+        <Photo
+          src={photo("paseo-trees")}
+          alt="A wide promenade under a tunnel of dark trees, with people walking toward a bright opening in the distance."
+          time="3:51 pm"
+          sizes={wide}
+          class="col-span-9 phone:col-span-12"
+        />
+        <Photo
+          src={photo("banyan-lamp")}
+          alt="A street lamp against the tangle of a banyan tree's hanging roots."
+          time="3:54 pm"
+          sizes={quarter}
+          class="col-span-3 self-end phone:col-span-8 phone:col-start-5"
+        />
+        <Photo
+          src={photo("raices-flags")}
+          alt="The Raíces fountain in silhouette, a bronze figure reaching up over horses and swimmers, ringed by Puerto Rican and American flags under a grey sky."
+          time="3:56 pm"
+          sizes={wide}
+          class="col-span-10 col-start-3 phone:col-span-12 phone:col-start-1"
+        />
+        <Photo
+          src={photo("raices-close")}
+          alt="Close on the fountain's bronze figures: a drummer, a reaching woman, and a leaping dolphin under clouds."
+          time="3:58 pm"
+          sizes={half}
+          class="col-span-5 phone:col-span-12"
+        />
+        <Photo
+          src={photo("flags")}
+          alt="Puerto Rican and American flags snapping in the wind against a bright, cloudy sky."
+          time="3:58 pm"
+          sizes={half}
+          class="col-span-6 col-start-7 mt-[clamp(40px,10vw,200px)] phone:col-span-10 phone:col-start-3 phone:mt-0"
+        />
+        <Photo
+          src={photo("city-wall")}
+          alt="The old stone city wall above the water, with houses and trees on the hill behind it."
+          time="4:01 pm"
+          sizes={wide}
+          class="col-span-9 col-start-2 phone:col-span-12 phone:col-start-1"
+        />
+
+        <p class={label}>
+          <span class="h-[3px] w-12 bg-[#ee6f9a]" aria-hidden="true"></span>
+          The streets
+        </p>
+        <Photo
+          src={photo("flamboyan")}
+          alt="A flamboyán tree in red bloom over a lit street lamp and a pale yellow house."
+          time="4:07 pm"
+          sizes={half}
+          class="col-span-6 phone:col-span-12"
+        />
+        <Photo
+          src={photo("cathedral")}
+          alt="A white church front with a statue in its niche, against a deep blue sky."
+          time="4:07 pm"
+          sizes={third}
+          class="col-span-5 col-start-8 mt-[clamp(40px,12vw,240px)] phone:col-span-10 phone:col-start-1 phone:mt-0"
+        />
+        <Photo
+          src={photo("pare")}
+          alt="The corner of a red stop sign cutting into the frame, with a rooftop statue on a white cornice behind it."
+          time="4:08 pm"
+          sizes={quarter}
+          class="col-span-3 col-start-2 self-end phone:col-span-7 phone:col-start-6"
+        />
+        <Photo
+          src={photo("pink-street")}
+          alt="A narrow street of pink, mint, and yellow houses with parked cars down one side."
+          time="4:10 pm"
+          sizes={half}
+          class="col-span-7 col-start-6 phone:col-span-12 phone:col-start-1"
+        />
+        <Photo
+          src={photo("ponce-de-leon")}
+          alt="A statue of a conquistador in silhouette, pointing, beside the top of a white church against a pale sky."
+          time="4:44 pm"
+          sizes={half}
+          class="col-span-7 phone:col-span-12"
+        />
+        <Photo
+          src={photo("balcony-bird")}
+          alt="A pigeon perched on a wooden balcony rail set into a pale pink wall."
+          time="4:46 pm"
+          note="Someone's home."
+          sizes={third}
+          class="col-span-4 col-start-9 self-center phone:col-span-8 phone:col-start-5"
+        />
+
+        <p class={label}>
+          <span class="h-[3px] w-12 bg-[#ee6f9a]" aria-hidden="true"></span>
+          El Morro
+        </p>
+        <Photo
+          src={photo("storm-birds")}
+          alt="Birds wheeling over the dark silhouette of the fort's walls under a heavy grey sky."
+          time="4:52 pm"
+          sizes={half}
+          class="col-span-6 phone:col-span-12"
+        />
+        <Photo
+          src={photo("morro-lighthouse")}
+          alt="El Morro's lighthouse rising from the fort's battlements against a cloudy sky."
+          time="4:55 pm"
+          sizes={half}
+          class="col-span-6 mt-[clamp(32px,8vw,160px)] phone:col-span-12 phone:mt-0"
+        />
+        <Photo
+          src={photo("morro-lawn")}
+          alt="A small stone outbuilding alone on the fort's wide lawn, lit by low sun, with dark sea and sky behind."
+          time="4:54 pm"
+          sizes={wide}
+          class="col-span-10 col-start-2 phone:col-span-12 phone:col-start-1"
+        />
+        <Photo
+          src={photo("la-perla-view")}
+          alt="Looking east from El Morro over the lawn to a cemetery with a red-domed chapel by the sea, and the houses of La Perla along the coast beyond."
+          time="4:56 pm"
+          note="The cemetery under El Morro, and La Perla past it."
+          sizes={full}
+          class:list={[bleed, "[&_figcaption]:px-(--gutter)"]}
+        />
+        <Photo
+          src={photo("morro-wall")}
+          alt="My sister from behind, curly hair blowing, walking toward the sea between the fort's stone walls."
+          time="4:58 pm"
+          sizes={half}
+          class="col-span-5 col-start-3 phone:col-span-12 phone:col-start-1"
+        />
+        <Photo
+          src={photo("pigeons")}
+          alt="Two pigeons sitting together on grey gravel."
+          time="5:00 pm"
+          note="Two pigeons."
+          sizes={quarter}
+          class="col-span-3 col-start-9 self-end phone:col-span-6 phone:col-start-7"
+        />
+
+        <p class={label}>
+          <span class="h-[3px] w-12 bg-[#ee6f9a]" aria-hidden="true"></span>
+          Back through town
+        </p>
+        <Photo
+          src={photo("ballaja")}
+          alt="A long ochre colonial building with flags on the roof and wind-bent palms in front, under a dark sky."
+          time="5:04 pm"
+          sizes={half}
+          class="col-span-6 phone:col-span-12"
+        />
+        <Photo
+          src={photo("totem")}
+          alt="A tall terracotta totem pole on a plaza above wide steps, with a hot pink building behind."
+          time="5:07 pm"
+          sizes={half}
+          class="col-span-6 mt-[clamp(32px,9vw,180px)] phone:col-span-12 phone:mt-0"
+        />
+        <Photo
+          src={photo("orange-street")}
+          alt="A cobbled lane between an orange and yellow building and a blue one, ending at a red arched gate."
+          time="5:09 pm"
+          sizes={half}
+          class="col-span-6 col-start-4 phone:col-span-12 phone:col-start-1"
+        />
+        <Photo
+          src={photo("frog-mural")}
+          alt="My sister giving a peace sign beside a mural of a giant frog in a blue shirt on a pink wall, next to the words “Debí tirar más fotos.”"
+          time="5:14 pm"
+          sizes={wide}
+          class="col-span-8 phone:col-span-12"
+        />
+        <div
+          class="col-span-4 self-end pb-[clamp(24px,3vw,56px)] phone:col-span-12 phone:pb-0"
+        >
+          <p class={line}>“Debí tirar más fotos.”</p>
+          <p
+            class="mt-4 font-mono text-[13px] tracking-[0.06em] text-[#6f6656]"
+          >
+            I should have taken more photos.
+          </p>
+        </div>
+        <Photo
+          src={photo("steep-street")}
+          alt="A steep street of balconied houses running downhill toward the bay, cars parked all the way down."
+          time="5:17 pm"
+          note="The last photo of the day."
+          sizes={half}
+          class="col-span-6 col-start-6 phone:col-span-12 phone:col-start-1"
+        />
+      </div>
+    </section>
+
+    <section
+      aria-labelledby="el-yunque"
+      class="bg-charcoal py-[clamp(96px,12vw,220px)] text-paper"
+    >
+      <div class="px-(--gutter)">
+        <p class:list={[kicker, "bg-[#f28b6a]"]}>02 · Thursday, July 30</p>
+        <h2 id="el-yunque" class={chapter}>El Yunque</h2>
+        <p class:list={[meta, "text-muted"]}>0 photos</p>
+      </div>
+
+      <div
+        class="mt-[clamp(56px,7vw,128px)] grid grid-cols-6 gap-[clamp(8px,1vw,16px)] px-(--gutter) phone:grid-cols-3"
+        aria-hidden="true"
+      >
+        {
+          Array.from({ length: 12 }, () => (
+            <span class="aspect-[4/3] bg-[#35342f]" />
+          ))
+        }
+      </div>
+
+      <div
+        class="mt-[clamp(56px,7vw,128px)] grid grid-cols-12 gap-x-[clamp(12px,1.8vw,32px)] px-(--gutter)"
+      >
+        <div
+          class="col-span-8 col-start-3 space-y-[0.7em] phone:col-span-12 phone:col-start-1"
+        >
+          <p class={line}>
+            I went to El Yunque, then to Las Paylas, a natural rock slide. I
+            jumped into the water, and my phone went in with me.
+          </p>
+          <p class={line}>
+            Later, some guy found it with a metal detector and got in touch. He
+            still hasn't mailed it.
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="mt-[clamp(72px,9vw,168px)] grid grid-cols-12 items-end gap-x-[clamp(12px,1.8vw,32px)] gap-y-8 px-(--gutter)"
+      >
+        <p
+          class="col-span-4 col-start-3 font-mono text-[clamp(13px,1vw,16px)]/[2] tracking-[0.06em] text-muted phone:col-span-12 phone:col-start-1"
+        >
+          next photo: img_0002<br />
+          friday, 6:56 am, luquillo
+        </p>
+        <Photo
+          src={photo("luquillo-cat")}
+          alt="A tortoiseshell cat walking along a white railing in early morning light, power lines and palms behind it."
+          sizes={third}
+          class="col-span-4 col-start-8 phone:col-span-9 phone:col-start-4 [&_figcaption]:text-muted"
+        />
+      </div>
+    </section>
+
+    <section
+      aria-labelledby="vieques"
+      class="pt-[clamp(96px,12vw,220px)] pb-[clamp(96px,12vw,220px)]"
+    >
+      <div class="px-(--gutter)">
+        <p class:list={[kicker, "bg-[#62c8c4]"]}>
+          03 · Friday, July 31, to Saturday, August 1
+        </p>
+        <h2 id="vieques" class={chapter}>Vieques</h2>
+        <p class={meta}>81 photos · 19 have a horse in them</p>
+      </div>
+
+      <div class:list={[grid, "mt-[clamp(64px,8vw,150px)]"]}>
+        <p class={label}>
+          <span class="h-[3px] w-12 bg-[#62c8c4]" aria-hidden="true"></span>
+          Horses, the first of many
+        </p>
+        <Photo
+          src={photo("horse-scrub")}
+          alt="A lone brown horse crossing a dusty clearing in front of dry scrub and thorn trees."
+          time="fri 11:59 am"
+          sizes={half}
+          class="col-span-7 phone:col-span-12"
+        />
+        <Photo
+          src={photo("horse-shade")}
+          alt="A tan horse grazing in the shade of a broad tree, another horse farther back."
+          time="11:59 am"
+          sizes={third}
+          class="col-span-5 mt-[clamp(32px,9vw,180px)] phone:col-span-12 phone:mt-0"
+        />
+        <Photo
+          src={photo("horse-tree")}
+          alt="A dark horse standing by the trunk of a huge spreading tree, its shadow a web across the ground."
+          time="11:59 am"
+          sizes={half}
+          class="col-span-6 col-start-2 phone:col-span-12 phone:col-start-1"
+        />
+        <Photo
+          src={photo("horses-grazing")}
+          alt="A chestnut horse grazing in the foreground, three more behind it on sandy ground under a big tree."
+          time="12:05 pm"
+          sizes={third}
+          class="col-span-4 col-start-9 self-end phone:col-span-9 phone:col-start-4"
+        />
+
+        <p class={label}>
+          <span class="h-[3px] w-12 bg-[#62c8c4]" aria-hidden="true"></span>
+          The beach at Esperanza
+        </p>
+        <Photo
+          src={photo("beach-cay")}
+          alt="Pale sand, turquoise water, and a small green island under puffy clouds."
+          time="12:26 pm"
+          sizes={third}
+          class="col-span-4 phone:col-span-12"
+        />
+        <Photo
+          src={photo("beach-palm")}
+          alt="A leaning palm trunk and fronds over the beach and turquoise bay."
+          time="12:26 pm"
+          sizes={third}
+          class="col-span-4 mt-[clamp(32px,7vw,140px)] phone:col-span-10 phone:col-start-3 phone:mt-0"
+        />
+        <Photo
+          src={photo("beach-rooster")}
+          alt="A rooster with a red comb strutting across the sand under a palm, a concrete bench and the sea behind."
+          time="1:28 pm"
+          sizes={third}
+          class="col-span-4 mt-[clamp(64px,14vw,280px)] phone:col-span-12 phone:mt-0"
+        />
+        <Photo
+          src={photo("beach-hen")}
+          alt="A brown hen crossing the shaded sand in front of the same concrete bench."
+          time="1:55 pm"
+          sizes={third}
+          class="col-span-4 col-start-3 phone:col-span-9 phone:col-start-1"
+        />
+        <p
+          class:list={[
+            line,
+            "col-span-4 col-start-8 self-center phone:col-span-12 phone:col-start-1",
+          ]}
+        >
+          Chickens, too.
+        </p>
+
+        <p class={label}>
+          <span class="h-[3px] w-12 bg-[#62c8c4]" aria-hidden="true"></span>
+          Playa Negra
+        </p>
+        <Photo
+          src={photo("crab-hand")}
+          alt="A hermit crab with bright red legs in a pale shell among dry leaves, a hand beside it for scale."
+          time="2:49 pm"
+          note="Hermit crab, hand for scale."
+          sizes={third}
+          class="col-span-4 phone:col-span-12"
+        />
+        <Photo
+          src={photo("crabs")}
+          alt="Dozens of hermit crabs in their shells hidden among dead leaves and twigs."
+          time="2:50 pm"
+          note="Then you notice the rest of them."
+          sizes={third}
+          class="col-span-5 col-start-6 mt-[clamp(32px,8vw,160px)] phone:col-span-12 phone:col-start-1 phone:mt-0"
+        />
+        <Photo
+          src={photo("black-sand-rock")}
+          alt="Black sand and white surf framed by a crumbling golden rock wall."
+          time="2:58 pm"
+          sizes={third}
+          class="col-span-4 phone:col-span-10"
+        />
+        <Photo
+          src={photo("black-sand-cliffs")}
+          alt="Waves rolling onto a black sand beach below pale cliffs, under a deep blue sky."
+          time="2:58 pm"
+          sizes={third}
+          class="col-span-4 mt-[clamp(32px,6vw,120px)] phone:col-span-10 phone:col-start-3 phone:mt-0"
+        />
+        <Photo
+          src={photo("black-sand-shore")}
+          alt="A long curve of dark beach and white surf running to a wooded headland."
+          time="2:58 pm"
+          sizes={third}
+          class="col-span-4 mt-[clamp(64px,12vw,240px)] phone:col-span-12 phone:mt-0"
+        />
+        <Photo
+          src={photo("black-sand-hands")}
+          alt="My sister's hands holding a scoop of wet black sand over the beach, bare feet below."
+          time="3:06 pm"
+          note="It really is black."
+          sizes={half}
+          class="col-span-5 col-start-2 phone:col-span-12 phone:col-start-1"
+        />
+        <Photo
+          src={photo("black-sand-cove")}
+          alt="A small cove with surf breaking along tan sand, eroded cliffs on both sides."
+          time="3:20 pm"
+          sizes={half}
+          class="col-span-5 col-start-8 mt-[clamp(40px,10vw,200px)] phone:col-span-12 phone:col-start-1 phone:mt-0"
+        />
+        <Photo
+          src={photo("crab-held")}
+          alt="A small hermit crab in a striped shell held between two fingertips over dry leaves."
+          time="3:39 pm"
+          note="One more on the way back."
+          sizes={quarter}
+          class="col-span-3 col-start-4 phone:col-span-8 phone:col-start-1"
+        />
+
+        <Photo
+          src={photo("love-vieques")}
+          alt="Me standing among giant white letters spelling “I ♥ Vieques” in a dirt lot, with the photographer's long shadow in the lower left."
+          time="6:07 pm"
+          note="The photographer's shadow is on the left."
+          sizes={wide}
+          class="col-span-10 col-start-2 phone:col-span-12 phone:col-start-1"
+        />
+
+        <p class={label}>
+          <span class="h-[3px] w-12 bg-[#62c8c4]" aria-hidden="true"></span>
+          Saturday
+        </p>
+        <Photo
+          src={photo("esperanza-horse")}
+          alt="A chestnut horse walking along the seafront past big rainbow letters spelling “Esperanza,” string lights overhead."
+          time="sat 12:35 pm"
+          note="A horse walking past the Esperanza sign."
+          sizes={full}
+          class:list={[bleed, "[&_figcaption]:px-(--gutter)"]}
+        />
+        <Photo
+          src={photo("esperanza-wide")}
+          alt="The same horse and sign from farther back across the road, a utility pole in the foreground."
+          time="12:35 pm"
+          note="Same horse, a step back."
+          sizes={half}
+          class="col-span-6 col-start-6 phone:col-span-12 phone:col-start-1"
+        />
+        <Photo
+          src={photo("navio-seaweed")}
+          alt="A wide bay under streaked clouds, low green headlands on both sides, and seaweed lining the white sand."
+          time="2:21 pm"
+          note="On the road to Playa Navío."
+          sizes={wide}
+          class="col-span-9 phone:col-span-12"
+        />
+        <Photo
+          src={photo("navio-white-sand")}
+          alt="White sand with a few tufts of grass running to the water under a dramatic blue sky."
+          time="2:26 pm"
+          sizes={quarter}
+          class="col-span-3 self-end phone:col-span-8 phone:col-start-5"
+        />
+        <Photo
+          src={photo("palm-horse")}
+          alt="A bay horse standing in the shade of drooping palm fronds on the sand."
+          time="3:00 pm"
+          sizes={third}
+          class="col-span-4 col-start-2 phone:col-span-12 phone:col-start-1"
+        />
+        <Photo
+          src={photo("mare-foal")}
+          alt="A dark horse and a small chestnut horse grazing side by side on the beach, a green island offshore."
+          time="4:20 pm"
+          note="A big one and a small one."
+          sizes={third}
+          class="col-span-4 col-start-7 mt-[clamp(40px,10vw,200px)] phone:col-span-12 phone:col-start-1 phone:mt-0"
+        />
+        <Photo
+          src={photo("rooster-table")}
+          alt="A black rooster standing on a café table beside a bottle of piña soda, palms behind."
+          time="6:38 pm"
+          note="A rooster, on the table."
+          sizes={third}
+          class="col-span-4 col-start-4 phone:col-span-10 phone:col-start-1"
+        />
+      </div>
+    </section>
+
+    <section
+      aria-labelledby="lechon"
+      class="bg-[#f5c95a] py-[clamp(96px,12vw,220px)]"
+    >
+      <div
+        class="grid grid-cols-12 items-end gap-x-[clamp(12px,1.8vw,32px)] gap-y-12 px-(--gutter)"
+      >
+        <div class="col-span-6 phone:col-span-12">
+          <p class:list={[kicker, "bg-[#f6efdd]"]}>04 · Sunday, August 2</p>
+          <h2
+            id="lechon"
+            class="mt-5 font-display text-[max(64px,calc(11*var(--vw)))]/[0.82] font-extrabold tracking-[-0.035em] uppercase"
+          >
+            Lechón
+          </h2>
+          <p class:list={[line, "mt-[clamp(24px,3vw,48px)] max-w-[14em]"]}>
+            Guavate, up in the mountains. The last photo.
+          </p>
+          <div
+            class="mt-[clamp(48px,6vw,112px)] font-mono text-[clamp(14px,1.2vw,20px)]/[2]"
+          >
+            <p class="text-[#6f6656]">$ where phone</p>
+            <p>found by some guy with a metal detector</p>
+            <p>
+              not mailed yet<span
+                class="ml-1 inline-block h-[1em] w-[0.6em] translate-y-[0.15em] animate-blink bg-charcoal"
+                aria-hidden="true"></span>
+            </p>
+          </div>
+        </div>
+        <Photo
+          src={photo("lechon")}
+          alt="Whole roast pigs and racks of crackling turning on spits behind glass."
+          time="sun 12:31 pm"
+          sizes={half}
+          class="col-span-5 col-start-8 phone:col-span-12 phone:col-start-1"
+        />
+      </div>
+    </section>
+  </article>
+</Layout>

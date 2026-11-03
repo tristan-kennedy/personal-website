@@ -1,12 +1,876 @@
 ---
-import EntryStub from "../../components/EntryStub.astro";
+import type { ImageMetadata } from "astro";
+import Layout from "../../layouts/Layout.astro";
 import type { Entry } from "../../lib/entries";
+import Day from "./components/Day.astro";
+import Photo from "../../components/Photo.astro";
+import Strip from "./components/Strip.astro";
 
 interface Props {
   entry: Entry;
 }
 
 const { entry } = Astro.props;
+const photos = import.meta.glob<{ default: ImageMetadata }>("./assets/*.jpg", {
+  eager: true,
+});
+const photo = (name: string) => photos[`./assets/${name}.jpg`].default;
+const { title, date, keywords } = entry.data;
+
+const wide = "(max-width: 700px) 100vw, 68vw";
+const half = "(max-width: 700px) 100vw, 38vw";
+const third = "(max-width: 700px) 100vw, 30vw";
+const small = "(max-width: 700px) 80vw, 22vw";
 ---
 
-<EntryStub entry={entry} />
+<Layout
+  title={title}
+  description="Six days in and around Acadia in October, in photos: the coast, the gardens, Cadillac at sunrise, Schoodic in fog, and Jordan Pond."
+>
+  <article class="overflow-x-clip bg-[#1d2620] text-paper">
+    <header class="grid min-h-dvh grid-cols-12 items-stretch">
+      <div
+        class="col-span-5 flex flex-col justify-between gap-16 px-(--gutter) pt-(--col-inset) pb-[clamp(40px,5vw,96px)] phone:col-span-12 phone:min-h-[70dvh]"
+      >
+        <p
+          class="flex justify-between gap-6 font-mono text-[clamp(14px,1.1vw,18px)]/[2] text-paper/60"
+        >
+          <a
+            class="text-paper link phone:inline-flex phone:min-h-11 phone:items-center"
+            href="/index/"
+          >
+            $ cd ..
+          </a>
+          <span class="phone:hidden">
+            <time datetime={date}>{date}</time>
+            {` ${keywords.join(" ").toLowerCase()}`}
+          </span>
+        </p>
+        <div>
+          <h1
+            class="font-serif text-[max(96px,calc(11*var(--vw)))]/[0.85] tracking-[-0.03em]"
+          >
+            Maine
+          </h1>
+          <p
+            class="mt-[clamp(24px,3vw,48px)] max-w-[22em] font-serif text-[clamp(20px,1.7vw,30px)]/[1.3] text-balance"
+          >
+            Six days in and around Acadia, October 10 to 15, 2026, with Trinity,
+            my mom, and my dad.
+          </p>
+          <p
+            class="mt-6 font-mono text-[12px] tracking-[0.14em] text-[#f2b93b] uppercase"
+          >
+            100 photos, out of 435
+          </p>
+        </div>
+      </div>
+      <Photo
+        src={photo("asticou-maple")}
+        alt="An orange maple arching over the pond at Asticou Azalea Garden, red and gold shrubs reflected in the water."
+        sizes="(max-width: 700px) 100vw, 58vw"
+        eager
+        quality={90}
+        frame="h-dvh phone:h-[90vw]"
+        class="col-span-7 phone:col-span-12"
+      />
+    </header>
+
+    <Day
+      id="saturday"
+      number={1}
+      weekday="Saturday"
+      date="Oct 10"
+      places={["the plane", "portland airport"]}
+      class="bg-[#23262b]"
+    >
+      <Photo
+        src={photo("plane-nap")}
+        alt="Me asleep against the window seat with earbuds in."
+        time="2:45 pm"
+        sizes={third}
+        class="col-span-4 phone:col-span-9"
+      />
+      <Photo
+        src={photo("sailboat-from-above")}
+        alt="A single sailboat on grey water, seen from far above."
+        time="3:27 pm"
+        note="A sailboat, from the plane."
+        sizes={third}
+        class="col-span-4 col-start-6 mt-[clamp(40px,10vw,200px)] phone:col-span-7 phone:col-start-3 phone:mt-0"
+      />
+      <Photo
+        src={photo("forest-from-above")}
+        alt="Dark green forest from the air with a few patches of rust where the trees are turning."
+        time="3:28 pm"
+        sizes={small}
+        class="col-span-3 col-start-2 phone:col-span-6 phone:col-start-1"
+      />
+      <Photo
+        src={photo("jetport-mural")}
+        alt="Me with my suitcase, leaning on the railing in front of a big airport mural of Acadia's coast."
+        time="4:03 pm"
+        note="Portland airport, already looking at Acadia."
+        sizes={half}
+        class="col-span-5 col-start-5 phone:col-span-9 phone:col-start-1"
+      />
+    </Day>
+
+    <Day
+      id="sunday"
+      number={2}
+      weekday="Sunday"
+      date="Oct 11"
+      places={["hulls cove", "park loop road", "sand beach", "jesup path"]}
+      class="bg-[#2a2c2b]"
+    >
+      <Photo
+        src={photo("park-sign")}
+        alt="Trinity, in a cream beanie and pink jacket, smiling by the Acadia National Park sign, with me at the edge of the frame."
+        time="11:47 am"
+        note="First stop."
+        sizes={third}
+        class="col-span-4 phone:col-span-9"
+      />
+      <Photo
+        src={photo("gull-granite")}
+        alt="A herring gull standing on pink granite above slabs of rock running into the sea."
+        time="12:56 pm"
+        sizes={half}
+        class="col-span-5 mt-[clamp(40px,9vw,180px)] phone:col-span-8 phone:col-start-2 phone:mt-0"
+      />
+      <Photo
+        src={photo("me-shore")}
+        alt="Me in a dark jacket, hands in pockets, on the rocks by the water."
+        time="12:56 pm"
+        sizes={third}
+        class="col-span-4 col-start-2 phone:col-span-7 phone:col-start-1"
+      />
+      <Photo
+        src={photo("granite-cleft")}
+        alt="A deep cleft in pink granite with grey sea beyond."
+        time="1:02 pm"
+        sizes={third}
+        class="col-span-4 col-start-6 self-end phone:col-span-9 phone:col-start-1"
+      />
+      <Photo
+        src={photo("lone-spruce")}
+        alt="A lone spruce on a granite point over the water, red and green shrubs at its feet."
+        time="1:05 pm"
+        sizes={third}
+        class="col-span-4 phone:col-span-9"
+      />
+      <Photo
+        src={photo("selfie-ocean")}
+        alt="A selfie of Trinity and me on the rocks by the ocean."
+        time="1:16 pm"
+        note="Trinity and me."
+        sizes={third}
+        class="col-span-4 col-start-6 mt-[clamp(32px,7vw,140px)] phone:col-span-8 phone:col-start-2 phone:mt-0"
+      />
+      <Photo
+        src={photo("parents-rock")}
+        alt="My mom, in a striped sweater, and my dad sitting together on a granite boulder, looking out at the sea and a wooded headland."
+        time="1:18 pm"
+        note="My mom and dad."
+        sizes={wide}
+        class="col-span-6 col-start-2 phone:col-span-9 phone:col-start-1"
+      />
+      <Photo
+        src={photo("red-maple")}
+        alt="A maple gone deep red against a grey sky."
+        time="1:24 pm"
+        sizes={small}
+        class="col-span-3 self-end phone:col-span-5 phone:col-start-5"
+      />
+      <Photo
+        src={photo("sand-beach-me")}
+        alt="Me standing alone on Sand Beach, small against the surf and a wooded point."
+        time="1:50 pm"
+        note="Sand Beach."
+        sizes={third}
+        class="col-span-4 phone:col-span-9"
+      />
+      <Photo
+        src={photo("selfie-sand")}
+        alt="A selfie of me and Trinity in beanies on the beach, Trinity mid-word."
+        time="1:52 pm"
+        sizes={third}
+        class="col-span-4 col-start-6 mt-[clamp(40px,10vw,200px)] phone:col-span-7 phone:col-start-3 phone:mt-0"
+      />
+      <Photo
+        src={photo("great-head")}
+        alt="The end of Sand Beach, where granite rises into a spruce-topped headland under a hazy sun."
+        time="1:53 pm"
+        sizes={wide}
+        frame="aspect-[4/3]"
+        class="col-span-9"
+      />
+      <Photo
+        src={photo("sand-beach-pair")}
+        alt="Trinity and me standing together on the sand with the surf behind us."
+        time="1:54 pm"
+        sizes={third}
+        class="col-span-4 col-start-3 phone:col-span-8 phone:col-start-1"
+      />
+      <Photo
+        src={photo("cove-through-trees")}
+        alt="A cove and low hills seen between dark spruce trunks."
+        time="2:21 pm"
+        sizes={third}
+        class="col-span-4 phone:col-span-9"
+      />
+      <Photo
+        src={photo("white-boulders")}
+        alt="Pale boulders and rust-stained pools under a stand of spruce."
+        time="2:26 pm"
+        sizes={third}
+        class="col-span-4 col-start-6 mt-[clamp(32px,8vw,160px)] phone:col-span-8 phone:col-start-2 phone:mt-0"
+      />
+      <Photo
+        src={photo("tide-pool")}
+        alt="A clear tide pool of pebbles under golden rockweed."
+        time="2:29 pm"
+        sizes={small}
+        class="col-span-3 col-start-2 phone:col-span-6 phone:col-start-1"
+      />
+      <Photo
+        src={photo("jesup-colour")}
+        alt="A gravel path into trees in full orange, gold, and red."
+        time="3:16 pm"
+        note="The Jesup Path, in full colour."
+        sizes={wide}
+        frame="aspect-[16/10]"
+        class="col-span-9"
+      />
+      <Photo
+        src={photo("trinity-look-back")}
+        alt="Trinity in a pink jacket looking back over her shoulder on a garden path under fall trees."
+        time="3:16 pm"
+        sizes={third}
+        class="col-span-4 col-start-5 phone:col-span-8 phone:col-start-2"
+      />
+      <Strip
+        label="The boardwalk, 3:24 to 3:48 pm"
+        frames={[
+          {
+            src: photo("boardwalk-1"),
+            alt: "A narrow boardwalk running straight into birches and spruce.",
+            time: "3:24 pm",
+          },
+          {
+            src: photo("boardwalk-2"),
+            alt: "Trinity walking away down the boardwalk under turning birches.",
+            time: "3:25 pm",
+          },
+          {
+            src: photo("boardwalk-3"),
+            alt: "The boardwalk crossing an open meadow of tall grass toward orange trees.",
+            time: "3:26 pm",
+          },
+          {
+            src: photo("boardwalk-4"),
+            alt: "Trinity walking deeper into red and gold woods on the boardwalk.",
+            time: "3:31 pm",
+          },
+          {
+            src: photo("boardwalk-5"),
+            alt: "Trinity small in the distance between tall trunks and bright leaves.",
+            time: "3:31 pm",
+          },
+          {
+            src: photo("boardwalk-6"),
+            alt: "Trinity walking back toward the camera along the boardwalk.",
+            time: "3:31 pm",
+          },
+          {
+            src: photo("boardwalk-7"),
+            alt: "Close on Trinity's shoulder and beanie, the woods ahead of her.",
+            time: "3:31 pm",
+          },
+          {
+            src: photo("hills-colour"),
+            alt: "Hills covered in orange and green under a white sky.",
+            time: "3:48 pm",
+          },
+        ]}
+      />
+    </Day>
+
+    <Day
+      id="monday"
+      number={3}
+      weekday="Monday"
+      date="Oct 12"
+      places={[
+        "thuya garden",
+        "eliot mountain",
+        "asticou azalea garden",
+        "bass harbor head light",
+      ]}
+      class="bg-[#1f2a22]"
+    >
+      <Photo
+        src={photo("butterfly-zinnia")}
+        alt="A painted lady butterfly on a pale yellow zinnia among dark leaves."
+        time="11:46 am"
+        note="Thuya Garden."
+        sizes={half}
+        class="col-span-5 phone:col-span-9"
+      />
+      <Photo
+        src={photo("pink-dahlia")}
+        alt="A spiky magenta dahlia in full bloom against a blue sky."
+        time="11:48 am"
+        sizes={third}
+        class="col-span-4 mt-[clamp(40px,9vw,180px)] phone:col-span-7 phone:col-start-3 phone:mt-0"
+      />
+      <Photo
+        src={photo("orange-dahlia")}
+        alt="Close on a peach and red dahlia's curling petals."
+        time="11:48 am"
+        sizes={small}
+        class="col-span-3 col-start-2 phone:col-span-6 phone:col-start-1"
+      />
+      <Photo
+        src={photo("bee-dahlia")}
+        alt="A bumblebee in the yellow centre of a white dahlia, raindrops on the petals."
+        time="11:50 am"
+        sizes={third}
+        class="col-span-4 col-start-5 self-end phone:col-span-8 phone:col-start-2"
+      />
+      <Photo
+        src={photo("garden-border")}
+        alt="A curving garden border of flowers and shrubs in fall colour under blue sky."
+        time="11:51 am"
+        sizes={third}
+        class="col-span-4 phone:col-span-9"
+      />
+      <Photo
+        src={photo("mushroom")}
+        alt="A single brown mushroom cap standing up out of bright green moss."
+        time="11:55 am"
+        sizes={small}
+        class="col-span-3 col-start-6 mt-[clamp(32px,7vw,140px)] phone:col-span-5 phone:col-start-5 phone:mt-0"
+      />
+      <Photo
+        src={photo("me-stone-steps")}
+        alt="Me in a red sweater at the foot of mossy stone steps in a dark spruce wood."
+        time="11:59 am"
+        sizes={third}
+        class="col-span-4 col-start-2 phone:col-span-8 phone:col-start-1"
+      />
+      <Photo
+        src={photo("feet-overlook")}
+        alt="Two pairs of feet stretched out on granite, with spruce, the bay, and puffy clouds beyond."
+        time="12:15 pm"
+        note="Feet up at the top."
+        sizes={third}
+        class="col-span-4 col-start-6 self-end phone:col-span-9 phone:col-start-1"
+      />
+      <Photo
+        src={photo("me-overlook")}
+        alt="Me in a red sweater on the summit ledge, the bay and clouds behind me."
+        time="12:16 pm"
+        sizes={third}
+        class="col-span-4 phone:col-span-8 phone:col-start-2"
+      />
+      <Photo
+        src={photo("eliot-mountain")}
+        alt="Me standing next to a bronze plaque set in the rock that reads Eliot Mountain."
+        time="12:17 pm"
+        note="Eliot Mountain. It says so on the rock."
+        sizes={third}
+        class="col-span-4 col-start-6 mt-[clamp(40px,9vw,180px)] phone:col-span-9 phone:col-start-1 phone:mt-0"
+      />
+      <Photo
+        src={photo("red-huckleberry")}
+        alt="Low bushes turned bright red on a rocky summit."
+        time="12:21 pm"
+        sizes={half}
+        class="col-span-5 col-start-2 phone:col-span-9 phone:col-start-1"
+      />
+      <Photo
+        src={photo("ferns")}
+        alt="Trinity walking a woodland trail through ferns gone copper, a jacket over her arm."
+        time="12:44 pm"
+        sizes={third}
+        class="col-span-4 phone:col-span-7 phone:col-start-3"
+      />
+      <Photo
+        src={photo("floating-dahlias")}
+        alt="A pink and a deep red dahlia floating side by side in a stone basin."
+        time="12:47 pm"
+        sizes={small}
+        class="col-span-3 col-start-6 self-end phone:col-span-6 phone:col-start-1"
+      />
+      <Photo
+        src={photo("asticou-reflection")}
+        alt="A still pond reflecting a tall pine, lawns, and trees in red and gold under a blue sky."
+        time="1:01 pm"
+        note="Asticou Azalea Garden."
+        sizes={wide}
+        class="col-span-9"
+      />
+      <Photo
+        src={photo("me-asticou")}
+        alt="Me in a red sweater looking out over the pond from the bank."
+        time="1:02 pm"
+        sizes={third}
+        class="col-span-4 phone:col-span-8"
+      />
+      <Photo
+        src={photo("asticou-reds")}
+        alt="A lawn running to bright red trees and spruce under a big sky."
+        time="1:02 pm"
+        sizes={half}
+        class="col-span-5 mt-[clamp(40px,9vw,180px)] phone:col-span-9 phone:mt-0"
+      />
+      <Photo
+        src={photo("pair-asticou")}
+        alt="Trinity and me standing on a garden path in bright sun."
+        time="1:10 pm"
+        sizes={third}
+        class="col-span-4 col-start-3 phone:col-span-8 phone:col-start-2"
+      />
+      <Photo
+        src={photo("bright-shore")}
+        alt="A cobble shore glittering under a high sun, open water and islands beyond."
+        time="2:01 pm"
+        sizes={wide}
+        class="col-span-9"
+      />
+      <Photo
+        src={photo("bass-harbor-light")}
+        alt="Bass Harbor Head Light, a white lighthouse on the cliff, looking out over calm water."
+        time="4:19 pm"
+        note="Bass Harbor Head Light."
+        sizes={half}
+        class="col-span-5 phone:col-span-9"
+      />
+      <Photo
+        src={photo("sunset-pines")}
+        alt="Ragged pines on the rocks backlit by a low sun over the water."
+        time="4:32 pm"
+        sizes={third}
+        class="col-span-4 mt-[clamp(40px,10vw,200px)] phone:col-span-8 phone:col-start-2 phone:mt-0"
+      />
+      <Photo
+        src={photo("aster")}
+        alt="A small purple aster growing out of a crack in pink granite."
+        time="4:34 pm"
+        sizes={small}
+        class="col-span-3 col-start-2 phone:col-span-6 phone:col-start-1"
+      />
+      <Photo
+        src={photo("fisheye-selfie")}
+        alt="A very close, wide-angle selfie of me grinning in big round glasses on the rocks."
+        time="4:38 pm"
+        sizes={third}
+        class="col-span-4 col-start-5 phone:col-span-7 phone:col-start-3"
+      />
+      <Photo
+        src={photo("trinity-rocks")}
+        alt="Trinity in a fuzzy jacket and beanie sitting on the rocks, looking out at the water."
+        time="4:44 pm"
+        sizes={half}
+        class="col-span-5 phone:col-span-9"
+      />
+      <Photo
+        src={photo("lobster-boat")}
+        alt="A lobster boat crossing calm water under dark clouds with a band of gold at the horizon."
+        time="4:51 pm"
+        note="A lobster boat."
+        sizes={third}
+        class="col-span-4 mt-[clamp(32px,8vw,160px)] phone:col-span-8 phone:col-start-2 phone:mt-0"
+      />
+      <Photo
+        src={photo("gull-dusk")}
+        alt="A gull on dark seaweed-covered rock against silvery evening water."
+        time="5:00 pm"
+        sizes={small}
+        class="col-span-3 col-start-2 phone:col-span-6"
+      />
+      <Photo
+        src={photo("trinity-sunset")}
+        alt="Trinity sitting on the rocks at sunset, a sliver of orange sky behind the pines."
+        time="5:13 pm"
+        sizes={third}
+        class="col-span-4 col-start-5 phone:col-span-9 phone:col-start-1"
+      />
+      <Photo
+        src={photo("buck")}
+        alt="A white-tailed buck with a full rack of antlers browsing in the brush at dusk."
+        time="5:29 pm"
+        note="A buck in the brush, at dusk."
+        sizes={wide}
+        frame="aspect-[4/3]"
+        class="col-span-9"
+      />
+    </Day>
+
+    <Day
+      id="tuesday"
+      number={4}
+      weekday="Tuesday"
+      date="Oct 13"
+      places={["cadillac mountain", "frenchman bay"]}
+      class="bg-[#2a2026]"
+    >
+      <Photo
+        src={photo("breakfast")}
+        alt="Me in a black hoodie at a table with a bowl of cereal and a vase of yellow flowers."
+        time="4:52 am"
+        note="Breakfast, at 4:52 in the morning."
+        sizes={third}
+        class="col-span-4 phone:col-span-8"
+      />
+      <Photo
+        src={photo("cadillac-1")}
+        alt="A thin orange line of dawn under heavy cloud, people in silhouette on the summit."
+        time="6:06 am"
+        note="The top of Cadillac, before sunrise."
+        sizes={third}
+        class="col-span-4 col-start-6 mt-[clamp(40px,10vw,200px)] phone:col-span-9 phone:col-start-1 phone:mt-0"
+      />
+      <Photo
+        src={photo("dad-blanket")}
+        alt="My dad wrapped in a striped blanket, standing on the summit rock against the dawn."
+        note="My dad, in a blanket."
+        time="6:09 am"
+        sizes={third}
+        class="col-span-4 col-start-2 phone:col-span-7 phone:col-start-3"
+      />
+      <Photo
+        src={photo("hooded-selfie")}
+        alt="A selfie of Trinity in a knit hood and red scarf and me in a hood and neck gaiter, the sunrise behind us."
+        time="6:25 am"
+        note="Bundled up."
+        sizes={third}
+        class="col-span-4 col-start-6 self-end phone:col-span-8 phone:col-start-1"
+      />
+      <Photo
+        src={photo("cadillac-2")}
+        alt="A wide band of orange sunrise under grey cloud, the islands of the bay below."
+        time="6:22 am"
+        sizes={wide}
+        class="col-span-9"
+      />
+      <Strip
+        label="Sunrise from Cadillac, 6:26 to 6:40 am"
+        frames={[
+          {
+            src: photo("cadillac-3"),
+            alt: "The sunrise brightening over dark hills and the bay.",
+            time: "6:26 am",
+          },
+          {
+            src: photo("cadillac-ridge"),
+            alt: "Red and gold shrubs along the summit path, the sunrise beyond.",
+            time: "6:26 am",
+          },
+          {
+            src: photo("cadillac-4"),
+            alt: "The orange band widening over the islands.",
+            time: "6:27 am",
+          },
+          {
+            src: photo("summit-colour"),
+            alt: "Granite slabs and blueberry bushes in full red on the summit.",
+            time: "6:31 am",
+          },
+          {
+            src: photo("cadillac-5"),
+            alt: "The sun glowing through a gap in the clouds over the water.",
+            time: "6:31 am",
+          },
+          {
+            src: photo("cadillac-6"),
+            alt: "Me in the shadows below a band of orange sky.",
+            time: "6:32 am",
+          },
+          {
+            src: photo("cadillac-7"),
+            alt: "The light fading to grey over red brush and a single spruce.",
+            time: "6:40 am",
+          },
+        ]}
+      />
+      <Photo
+        src={photo("me-sunrise")}
+        alt="Me from behind in a grey hood and orange jacket, facing the sunrise."
+        time="6:31 am"
+        sizes={third}
+        class="col-span-4 phone:col-span-8"
+      />
+      <Photo
+        src={photo("selfie-sunrise")}
+        alt="Trinity and me bundled up in a selfie on the summit, the sunrise behind."
+        time="6:32 am"
+        sizes={half}
+        class="col-span-5 self-end phone:col-span-9"
+      />
+      <Photo
+        src={photo("winter-harbor-light")}
+        alt="A white lighthouse and keeper's house on a low island of rock and spruce under grey sky."
+        time="10:01 am"
+        note="Winter Harbor Light."
+        sizes={third}
+        class="col-span-4 col-start-2 phone:col-span-8 phone:col-start-1"
+      />
+      <Photo
+        src={photo("egg-rock-light")}
+        alt="Egg Rock Light, a square white lighthouse on bare rock, with choppy water in front."
+        time="10:14 am"
+        note="Egg Rock Light, from the water."
+        sizes={third}
+        class="col-span-4 col-start-6 mt-[clamp(32px,8vw,160px)] phone:col-span-8 phone:col-start-2 phone:mt-0"
+      />
+    </Day>
+
+    <Day
+      id="wednesday"
+      number={5}
+      weekday="Wednesday"
+      date="Oct 14"
+      places={[
+        "schoodic peninsula",
+        "frazer point",
+        "schoodic point",
+        "southwest harbor",
+      ]}
+      class="bg-[#34383a]"
+    >
+      <Photo
+        src={photo("dock-fog")}
+        alt="Me in a navy Yankees jacket walking out along a wooden dock into grey, still water."
+        time="11:06 am"
+        note="Frazer Point."
+        sizes={third}
+        class="col-span-4 phone:col-span-8"
+      />
+      <Photo
+        src={photo("still-water")}
+        alt="Flat grey water and a low spruce island under fog."
+        time="11:08 am"
+        sizes={third}
+        class="col-span-5 mt-[clamp(40px,9vw,180px)] phone:col-span-9 phone:mt-0"
+      />
+      <Photo
+        src={photo("light-in-fog")}
+        alt="A lighthouse barely visible on a low island under a wall of fog."
+        time="11:26 am"
+        note="Winter Harbor Light again, in fog."
+        sizes={wide}
+        frame="aspect-[16/9] object-[50%_75%]"
+        class="col-span-9"
+      />
+      <Photo
+        src={photo("pin-map")}
+        alt="Someone pressing a pin into a wall map already crowded with hundreds of pins."
+        time="11:38 am"
+        note="Adding a pin."
+        sizes={third}
+        class="col-span-4 phone:col-span-7"
+      />
+      <Photo
+        src={photo("schoodic-granite")}
+        alt="Pink granite ledges with a rust-stained runnel and fall shrubs, spruce above."
+        time="11:48 am"
+        sizes={third}
+        class="col-span-5 mt-[clamp(32px,8vw,160px)] phone:col-span-9 phone:mt-0"
+      />
+      <Photo
+        src={photo("spider-web")}
+        alt="A spider web strung with water droplets across a dark crevice."
+        time="11:48 am"
+        sizes={third}
+        class="col-span-4 col-start-2 phone:col-span-7 phone:col-start-3"
+      />
+      <Photo
+        src={photo("fog-bank")}
+        alt="A dark bank of fog over the ocean at Schoodic Point, glittering surf and two people in silhouette on the rocks."
+        time="11:52 am"
+        note="Schoodic Point, under the fog."
+        sizes={wide}
+        frame="aspect-[4/3]"
+        class="col-span-9"
+      />
+      <Photo
+        src={photo("gull-car")}
+        alt="A gull perched on a car's roof rack, staring off camera, clouds behind."
+        time="12:07 pm"
+        note="A gull on the roof rack."
+        sizes={third}
+        class="col-span-4 phone:col-span-8"
+      />
+      <Photo
+        src={photo("schoodic-sun")}
+        alt="Sun breaking through cloud over a rocky shore and spruce."
+        time="12:18 pm"
+        sizes={half}
+        class="col-span-5 self-end phone:col-span-9"
+      />
+      <Photo
+        src={photo("spruce-heath")}
+        alt="Dark spruce over low bushes in red and yellow, backlit."
+        time="12:20 pm"
+        sizes={third}
+        class="col-span-4 col-start-2 phone:col-span-8 phone:col-start-2"
+      />
+      <Photo
+        src={photo("buoy-wall")}
+        alt="A wall covered in dozens of colourful painted lobster buoys, me in a navy Yankees jacket walking past."
+        time="3:08 pm"
+        note="Southwest Harbor."
+        sizes={third}
+        class="col-span-4 col-start-6 mt-[clamp(40px,9vw,180px)] phone:col-span-9 phone:col-start-1 phone:mt-0"
+      />
+    </Day>
+
+    <Day
+      id="thursday"
+      number={6}
+      weekday="Thursday"
+      date="Oct 15"
+      places={["the bar island sandbar", "jordan pond", "the bubbles"]}
+      class="bg-[#1d2a35]"
+    >
+      <Photo
+        src={photo("sandbar-walk")}
+        alt="Me from behind in a brown hoodie, walking out along the gravel sandbar in early sun."
+        time="7:14 am"
+        note="The sandbar to Bar Island, at low tide."
+        sizes={third}
+        class="col-span-4 phone:col-span-8"
+      />
+      <Photo
+        src={photo("sandbar-hills")}
+        alt="The exposed sandbar and shallow water, with the hills of the island beyond."
+        time="7:25 am"
+        sizes={half}
+        class="col-span-5 mt-[clamp(40px,9vw,180px)] phone:col-span-9 phone:mt-0"
+      />
+      <Photo
+        src={photo("sandbar-sunrise")}
+        alt="The morning sun low over the water and a small island, clouds overhead, gravel in the foreground."
+        time="7:27 am"
+        sizes={wide}
+        frame="aspect-[4/3]"
+        class="col-span-9"
+      />
+      <Photo
+        src={photo("bubbles-maple")}
+        alt="The two rounded Bubbles over Jordan Pond, a red maple sapling in front."
+        time="8:58 am"
+        note="Jordan Pond and the Bubbles."
+        sizes={third}
+        class="col-span-4 phone:col-span-8"
+      />
+      <Photo
+        src={photo("jordan-pond")}
+        alt="Jordan Pond with boulders in the shallows and the Bubbles at the far end under puffy clouds."
+        time="9:01 am"
+        sizes={half}
+        class="col-span-5 mt-[clamp(40px,9vw,180px)] phone:col-span-9 phone:mt-0"
+      />
+      <Photo
+        src={photo("red-inlet")}
+        alt="A shallow inlet winding through grass to the pond, a red tree on the bank."
+        time="9:06 am"
+        sizes={third}
+        class="col-span-4 col-start-2 phone:col-span-7 phone:col-start-3"
+      />
+      <Photo
+        src={photo("cliff-colour")}
+        alt="A steep hillside in gold, orange, and green across the pond, framed by branches."
+        time="9:15 am"
+        sizes={third}
+        class="col-span-4 col-start-6 self-end phone:col-span-9 phone:col-start-1"
+      />
+      <Photo
+        src={photo("trail-pointing")}
+        alt="Trinity in a cream beanie pointing at something off the trail, my mom in an orange jacket walking ahead."
+        note="Trinity, and my mom up ahead."
+        time="9:29 am"
+        sizes={third}
+        class="col-span-4 phone:col-span-8"
+      />
+      <Photo
+        src={photo("sun-on-pond")}
+        alt="Bright sun glaring off the pond beside a steep wooded slope."
+        time="9:29 am"
+        sizes={third}
+        class="col-span-5 mt-[clamp(32px,8vw,160px)] phone:col-span-9 phone:mt-0"
+      />
+      <Photo
+        src={photo("pond-bridge")}
+        alt="A wooden footbridge over a rocky outlet, hillside in fall colour behind."
+        time="9:41 am"
+        sizes={third}
+        class="col-span-4 col-start-2 phone:col-span-8 phone:col-start-2"
+      />
+      <Photo
+        src={photo("boardwalk-woods")}
+        alt="A single plank boardwalk winding into shadowy spruce, light through the branches."
+        time="10:03 am"
+        sizes={third}
+        class="col-span-4 col-start-6 self-end phone:col-span-7 phone:col-start-1"
+      />
+      <Photo
+        src={photo("jordan-stream")}
+        alt="The pond's outlet between spruce, a hillside in orange and the deep blue sky above."
+        time="10:21 am"
+        sizes={third}
+        class="col-span-4 phone:col-span-9"
+      />
+      <Photo
+        src={photo("field-colour")}
+        alt="A green field running to trees in gold and orange under a clear blue sky."
+        time="11:06 am"
+        sizes={third}
+        class="col-span-4 col-start-6 mt-[clamp(32px,8vw,160px)] phone:col-span-8 phone:col-start-2 phone:mt-0"
+      />
+      <Photo
+        src={photo("pair-field")}
+        alt="Me and Trinity standing side by side on the grass in front of the fall hills."
+        time="11:16 am"
+        sizes={third}
+        class="col-span-4 col-start-2 phone:col-span-8 phone:col-start-1"
+      />
+      <Photo
+        src={photo("parents-field")}
+        alt="My mom and dad with their arms around each other on the lawn, the Bubbles behind them."
+        time="11:17 am"
+        note="My mom and dad."
+        sizes={third}
+        class="col-span-4 col-start-6 self-end phone:col-span-8 phone:col-start-2"
+      />
+    </Day>
+
+    <section
+      aria-labelledby="last-light"
+      class="grid grid-cols-12 items-end gap-x-[clamp(16px,2vw,40px)] gap-y-10 bg-[#141a1f] px-(--gutter) py-[clamp(88px,11vw,200px)]"
+    >
+      <Photo
+        src={photo("last-light")}
+        alt="Dusk over the water from the sandbar, a thin line of orange at the horizon under a fading blue sky."
+        sizes="(max-width: 700px) 100vw, 46vw"
+        class="col-span-6 phone:col-span-12"
+      />
+      <div class="col-span-5 col-start-8 phone:col-span-12">
+        <p
+          class="font-mono text-[12px] tracking-[0.14em] text-[#f2b93b] uppercase"
+        >
+          Thursday · 6:01 pm
+        </p>
+        <h2
+          id="last-light"
+          class="mt-4 font-serif text-[clamp(40px,4.4vw,84px)]/[1] tracking-[-0.02em] text-balance"
+        >
+          Last light over the sandbar.
+        </h2>
+      </div>
+    </section>
+  </article>
+</Layout>
