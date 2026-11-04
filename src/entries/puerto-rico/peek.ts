@@ -1,7 +1,6 @@
 import { packed, type Effect } from "../../lib/dither/effect";
 import { threshold } from "../../lib/dither/index";
 import type { Rgb } from "../../lib/dither/palette";
-import { noise } from "../../lib/dither/splotch";
 import { hash } from "../../lib/hash";
 
 const WALLS: Rgb[] = [
@@ -27,21 +26,25 @@ const BARK: Rgb[] = [
   [0x7a, 0x60, 0x48],
   [0xa8, 0x8c, 0x6c],
 ];
-const COCONUT = packed([0x5a, 0x45, 0x2a]);
+const COCONUT: Rgb[] = [
+  [0x3e, 0x2e, 0x1e],
+  [0x5a, 0x45, 0x2a],
+  [0x86, 0x6a, 0x44],
+];
 const CREAM = packed([0xf6, 0xef, 0xdd]);
 const IRON = packed([0x29, 0x28, 0x24]);
 
+const UNIT_CAP = 60;
 const HOUSE_WIDE = [0.62, 0.74, 0.86];
 const HOUSE_RISE = [0.12, 0.2, 0.28, 0.36];
 const STREET_OVERHANG = 0.2;
-const RAGGED = 0.5;
+const END_FADE = 0.6;
 const FLOOR = 0.46;
-const WALL_DENSITY = 0.82;
-const DAPPLE = 0.5;
+const EAVES = 0.16;
 
 const PALM_AT = 0.74;
-const PALM_ROOT = 0.35;
-const PALM_RISE = 0.55;
+const PALM_ROOT = 0.1;
+const PALM_RISE = 0.45;
 const PALM_LEAN = 0.35;
 const CROWN_ROOM = 1.15;
 const FRONDS = [
@@ -54,6 +57,7 @@ const FRONDS = [
   { angle: 0.15, length: 0.8 },
   { angle: -3.25, length: 0.8 },
 ];
+const FROND_LENGTH = 0.95;
 const FROND_DROOP = 0.85;
 const LEAFLET_EVERY = 2;
 
@@ -71,47 +75,41 @@ const ramp = (inks: number[], tone: number, x: number, y: number) => {
 };
 
 export default {
-  reach: { top: 1.9, right: 0.8, bottom: 0.7, left: 0.8 },
+  reach: { top: 1.6, right: 0.8, bottom: 0.5, left: 0.8 },
   paint({ cols, rows, box, gate, lines, seed }) {
     const tall = box.bottom - box.top;
-    const line = tall / lines;
+    const unit = Math.min(tall / lines, UNIT_CAP);
     const sized = (share: number, least = 1) =>
-      Math.max(least, Math.round(share * line));
+      Math.max(least, Math.round(share * unit));
 
     const street = new Uint32Array(cols * rows);
-    const shaded = new Uint32Array(cols * rows);
-    const put = (x: number, y: number, ink: number, shadow = 0) => {
-      if (x < 0 || y < 0 || x >= cols || y >= rows) return;
+    const start = box.left - STREET_OVERHANG * unit;
+    const end = box.right + STREET_OVERHANG * unit;
+    const fadeFrom = box.top + tall * 0.4;
+    const fadeTo = box.bottom + 0.05 * unit;
+    const fadeAt = (x: number, y: number) =>
+      Math.max(
+        clamp((y - fadeFrom) / (fadeTo - fadeFrom)),
+        1 - clamp(Math.min(x - start, end - x) / (END_FADE * unit)),
+      );
+    const put = (x: number, y: number, ink: number) => {
+      if (!ink || x < 0 || y < 0 || x >= cols || y >= rows) return;
       street[y * cols + x] = ink;
-      shaded[y * cols + x] = shadow;
     };
-    const start = box.left - STREET_OVERHANG * line;
-    const end = box.right + STREET_OVERHANG * line;
-    const fadeFrom = box.top + tall * 0.5;
-    const fadeTo = box.bottom + 0.05 * line;
-    const kept = (x: number, y: number) => {
-      const fade = clamp((y - fadeFrom) / (fadeTo - fadeFrom));
-      if (threshold(x, y) < fade) return false;
-      const inward = Math.min(x - start, end - x) / (RAGGED * line);
-      const rough =
-        noise(x * 0.09, y * 0.09, seed) * 0.85 + threshold(x, y) * 0.15;
-      return inward > rough;
-    };
+    const shows = (x: number, y: number) => threshold(x, y) >= fadeAt(x, y);
+
     const cornice = sized(0.07, 2);
     const shutterWide = sized(0.13, 3) | 1;
     const shutterTall = sized(0.24, 5);
     const rail = sized(0.07, 2);
+    const middle = Math.floor(shutterWide / 2);
     let pick = seed % WALLS.length;
     for (let x = start, k = 0; x < end; k++) {
       const h = hash(`street:${k}`);
-      const wide = HOUSE_WIDE[h % HOUSE_WIDE.length] * line;
+      const wide = HOUSE_WIDE[h % HOUSE_WIDE.length] * unit;
       pick = (pick + 1 + ((h >>> 5) % (WALLS.length - 1))) % WALLS.length;
-      const walls = [
-        shade(WALLS[pick], 0.64),
-        shade(WALLS[pick], 0.82),
-        packed(WALLS[pick]),
-        lift(WALLS[pick], 0.28),
-      ];
+      const wall = WALLS[pick];
+      const walls = [0, shade(wall, 0.62), packed(wall), lift(wall, 0.25)];
       const shutters = [
         shade(SHUTTERS[pick], 0.7),
         packed(SHUTTERS[pick]),
@@ -120,31 +118,24 @@ export default {
       const left = Math.round(x);
       const right = Math.round(Math.min(x + wide, end));
       const top = Math.round(
-        box.top - HOUSE_RISE[(h >>> 9) % HOUSE_RISE.length] * line,
+        box.top - HOUSE_RISE[(h >>> 9) % HOUSE_RISE.length] * unit,
       );
       for (let y = top; y < fadeTo; y++)
         for (let px = left; px < right; px++) {
-          if (!kept(px, y)) continue;
           if (y < top + cornice) {
-            const underside = y === top + cornice - 1;
-            put(px, y, underside && threshold(px, y) < 0.5 ? walls[3] : CREAM);
+            if (shows(px, y)) put(px, y, CREAM);
             continue;
           }
-          const sunned = clamp((px - left) / ((right - left) * 0.4));
-          const tone = 0.1 + sunned * 0.62 - ((y - top) / (fadeTo - top)) * 0.2;
-          put(
-            px,
-            y,
-            ramp(walls, tone, px, y),
-            ramp(walls, tone - DAPPLE, px, y),
-          );
+          const lit = 1 - (px - left) / Math.max(1, right - left);
+          const eaves = 1 - clamp((y - top - cornice) / (EAVES * unit));
+          const tone = 0.42 + lit * 0.42 - eaves * 0.32 - fadeAt(px, y) * 0.95;
+          put(px, y, ramp(walls, tone, px, y));
         }
-      const bays = Math.max(1, Math.round(wide / (0.36 * line)));
+      const bays = Math.max(1, Math.round(wide / (0.36 * unit)));
       const bay = (right - left) / bays;
-      const middle = Math.floor(shutterWide / 2);
       for (
-        let y = top + cornice + sized(0.1, 2);
-        y + shutterTall < fadeFrom + 0.3 * line;
+        let y = top + cornice + sized(0.12, 2);
+        y + shutterTall < fadeTo;
         y += sized(FLOOR, 8)
       )
         for (let b = 0; b < bays; b++) {
@@ -153,7 +144,7 @@ export default {
             for (let over = 0; over < shutterWide; over++) {
               const px = from + over;
               const py = y + down;
-              if (!kept(px, py)) continue;
+              if (!shows(px, py)) continue;
               if (down === 0 && (over === 0 || over === shutterWide - 1))
                 continue;
               const tone =
@@ -166,70 +157,56 @@ export default {
             }
           const ledge = y + shutterTall;
           for (let over = -2; over < shutterWide + 2; over++) {
-            if (!kept(from + over, ledge)) continue;
-            put(from + over, ledge, IRON);
-            put(from + over, ledge - rail, IRON);
+            const px = from + over;
+            if (!shows(px, ledge)) continue;
+            put(px, ledge, IRON);
+            put(px, ledge - rail, IRON);
             if (over % 2 === 0)
               for (let down = 1; down < rail; down++)
-                put(from + over, ledge - down, IRON);
+                put(px, ledge - down, IRON);
           }
         }
       x += wide;
     }
 
-    const room = CROWN_ROOM * line;
+    const room = CROWN_ROOM * unit;
     const crown = {
       x: Math.min(
         Math.max(
-          box.left + PALM_AT * (box.right - box.left) + PALM_LEAN * line,
+          box.left + PALM_AT * (box.right - box.left) + PALM_LEAN * unit,
           box.left + room,
         ),
         box.right - room,
       ),
-      y: box.top - PALM_RISE * line,
+      y: box.top - PALM_RISE * unit,
     };
     const root = {
-      x: crown.x - PALM_LEAN * line,
-      y: box.bottom + PALM_ROOT * line,
+      x: crown.x - PALM_LEAN * unit,
+      y: box.bottom + PALM_ROOT * unit,
     };
-    const bend = {
-      x: root.x - 0.15 * line,
-      y: (root.y + crown.y) / 2,
-    };
-    const bark = BARK.map(packed);
-    const fronds = FROND.map(packed);
-    const trunkWide = Math.max(1.5, 0.08 * line);
-    const ring = Math.max(3, 0.09 * line);
-    const frondLength = 1.1 * line;
+    const bend = { x: root.x - 0.15 * unit, y: (root.y + crown.y) / 2 };
+    const bark = [0, ...BARK.map(packed)];
+    const fronds = [0, ...FROND.map(packed)];
+    const nuts = COCONUT.map(packed);
+    const trunkWide = Math.max(1.5, 0.08 * unit);
+    const ring = Math.max(3, 0.09 * unit);
+    const frondLength = FROND_LENGTH * unit;
+    const nut = Math.max(1, 0.06 * unit);
 
     return (pixels, seconds, reveal) => {
-      const lay = (x: number, y: number, ink: number, density = 1.1) => {
-        if (x < 0 || y < 0 || x >= cols || y >= rows) return;
+      const lay = (x: number, y: number, ink: number) => {
+        if (!ink || x < 0 || y < 0 || x >= cols || y >= rows) return;
         const i = y * cols + x;
-        if (gate[i] < reveal && threshold(x, y) < density) pixels[i] = ink;
+        if (gate[i] < reveal) pixels[i] = ink;
       };
 
-      const sway = seconds * 0.12;
-      const leafy = 0.06 / Math.max(1, line / 40);
-      for (let i = 0; i < street.length; i++) {
-        if (!street[i] || gate[i] >= reveal) continue;
-        if (!shaded[i]) {
-          pixels[i] = street[i];
-          continue;
-        }
-        const x = i % cols;
-        const y = (i - x) / cols;
-        if (threshold(x, y) >= WALL_DENSITY) continue;
-        const dapple = noise(
-          x * leafy + Math.sin(sway) * 1.5,
-          y * leafy * 1.4 + sway * 0.4,
-          seed,
-        );
-        pixels[i] = dapple > 0.56 ? shaded[i] : street[i];
-      }
+      for (let i = 0; i < street.length; i++)
+        if (street[i] && gate[i] < reveal) pixels[i] = street[i];
 
-      const lean = Math.sin(seconds * 0.5) * 0.06 * line;
-      const top = { x: crown.x + lean, y: crown.y };
+      const top = {
+        x: crown.x + Math.sin(seconds * 0.5) * 0.06 * unit,
+        y: crown.y,
+      };
       const steps = Math.ceil(Math.hypot(top.x - root.x, top.y - root.y));
       for (let k = 0; k <= steps; k++) {
         const t = k / steps;
@@ -238,12 +215,11 @@ export default {
         const y =
           (1 - t) ** 2 * root.y + 2 * (1 - t) * t * bend.y + t * t * top.y;
         const wide = trunkWide * (1.15 - t * 0.4);
-        const banded = (k % ring) / ring < 0.22;
+        const band = Math.max(0, Math.cos((k / ring) * Math.PI * 2)) ** 4;
         for (let s = -wide; s <= wide; s += 0.7) {
-          const tone = banded ? 0.05 : 0.75 - (s / wide) * 0.45;
           const px = Math.round(x + s);
           const py = Math.round(y);
-          lay(px, py, ramp(bark, tone, px, py));
+          lay(px, py, ramp(bark, 0.78 - (s / wide) * 0.4 - band * 0.5, px, py));
         }
       }
 
@@ -262,35 +238,33 @@ export default {
           const stemX = x - lastX;
           const stemY = y - lastY;
           const span = Math.hypot(stemX, stemY) || 1;
-          const normX = -stemY / span;
-          const normY = stemX / span;
           lastX = x;
           lastY = y;
-          lay(Math.round(x), Math.round(y), fronds[0]);
+          const sx = Math.round(x);
+          const sy = Math.round(y);
+          lay(sx, sy, ramp(fronds, 0.5 - t * 0.2, sx, sy));
           if (k % LEAFLET_EVERY) continue;
           const leaflet =
-            0.2 * line * Math.sin(Math.PI * Math.min(1, t * 1.15));
+            0.2 * unit * Math.sin(Math.PI * Math.min(1, t * 1.15));
           for (const side of [-1, 1])
             for (let l = 1; l < leaflet; l++) {
               const back = l * 0.7;
               const px = Math.round(
-                x + normX * side * l - (stemX / span) * back,
+                x - (stemY / span) * side * l - (stemX / span) * back,
               );
               const py = Math.round(
-                y + normY * side * l - (stemY / span) * back + l * 0.45,
+                y +
+                  (stemX / span) * side * l -
+                  (stemY / span) * back +
+                  l * 0.45,
               );
-              const tone = 0.85 - (l / leaflet) * 0.4 - (side > 0 ? 0.25 : 0);
-              lay(
-                px,
-                py,
-                ramp(fronds, tone, px, py),
-                l > leaflet * 0.8 ? 0.6 : 1.1,
-              );
+              const tone =
+                0.9 - (l / leaflet) * 0.45 - (side > 0 ? 0.2 : 0) - t * 0.2;
+              lay(px, py, ramp(fronds, tone, px, py));
             }
         }
       });
 
-      const nut = Math.max(1, 0.06 * line);
       for (const [dx, dy] of [
         [-0.7, 0.9],
         [0.6, 1],
@@ -298,12 +272,11 @@ export default {
       ])
         for (let y = -nut; y <= nut; y++)
           for (let x = -nut; x <= nut; x++)
-            if (x * x + y * y <= nut * nut)
-              lay(
-                Math.round(top.x + dx * nut * 1.6 + x),
-                Math.round(top.y + dy * nut + y),
-                COCONUT,
-              );
+            if (x * x + y * y <= nut * nut) {
+              const px = Math.round(top.x + dx * nut * 1.6 + x);
+              const py = Math.round(top.y + dy * nut + y);
+              lay(px, py, ramp(nuts, 0.55 - (x + y) / (nut * 2.4), px, py));
+            }
     };
   },
 } satisfies Effect;

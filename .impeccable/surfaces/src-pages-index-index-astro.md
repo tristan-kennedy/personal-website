@@ -105,17 +105,17 @@ already says what the page is.
 Each has its own `src/entries/<slug>/peek.ts`:
 
 - **Puerto Rico.** Soft pink base. The title stands in an Old San Juan street: one
-  unbroken row of façades behind the whole title block (both lines on a phone), in the
-  four house colours (coral, yellow, teal, pink), with cream cornices, rows of slatted
-  shutters with small iron balconies, and low stepped rooflines. Its ends dissolve in
-  a ragged, noisy edge of their own, and it fades out toward the foot of the block.
-  The walls are still; soft dappled shade drifts slowly across them. One palm rises
-  from below the title, its curved, ringed trunk passing behind the letters and its
-  crown of drooping, feathery fronds (with a few coconuts) breaking just above the
-  rooftops toward the right, swaying slowly. The crown is kept at least a frond's
-  length inside the title's width so it never runs off a phone screen. Everything is
-  sized from the title's line height. Leaves at the corners, fog through the walls,
-  gaps between houses, and a street behind only the first line were tried and dropped.
+  unbroken row of façades behind the whole title block, in the four house colours
+  (coral, yellow, teal, pink), with cream cornices, rows of slatted shutters with small
+  iron balconies, and low stepped rooflines. All shading is designed gradients through
+  the shared threshold: each house lit from the left and falling into the charcoal on
+  its right, a shadow band under the cornice, and a clean dithered fade toward the foot
+  of the block and at both ends of the street. One palm rises from just below the
+  title, its ringed trunk passing behind the letters and its crown of drooping fronds
+  (with a few coconuts) breaking above the rooftops toward the right, swaying slowly.
+  Houses, shutters, and palm scale with the title's line height only up to 60 dots, so
+  the scene stays low on ultrawide screens. Corner leaves, fog through the walls, noisy
+  ragged ends, drifting dappled shade, and gaps between houses were tried and dropped.
 - **Maine.** Three ridges of trees in fall colours with some green, through drifting fog.
 - **Dipsy Dolphin.** Teal base. The real talking character from the project, dithered,
   on a retro Windows desktop with a speech bubble, old windows, folders, a moving
