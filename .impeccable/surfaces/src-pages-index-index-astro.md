@@ -71,7 +71,7 @@ and let its colour fill the screen.
 
 A small mono line under the rule, right-aligned like the caption under the homepage
 globe, counts the archive: "106 entries, 2017–2026". After the last entry the list
-closes in Recents' terminal voice: `$ ls ~/stuff | wc -l`, the count and the first
+closes in Recents' terminal voice: `$ ls ~/index | wc -l`, the count and the first
 entry's date, then `$ cd ~ (back home)` with the blinking cursor.
 
 There is no blurb under the heading, and nothing pinned over the first screen. The hand

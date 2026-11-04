@@ -96,7 +96,10 @@ SURFACES: Paper everywhere except the Media band (charcoal) and the footer.
   grow with the window and stay on whole dots. Muted ink on charcoal, all one
   size and top-aligned (varied sizes were tried and rejected), each with
   its title in Marcellus and the rating and watch date in mono. The Letterboxd
-  link closes the posters. The listening line is the section's bottom edge: a
+  link closes the posters. Each poster sits in a thin muted frame one dot out from
+  the image, like a mounted print, so the dither never dissolves straight into the
+  page. The album sleeve has a flush one-dot charcoal frame instead, which merges with
+  the charcoal above and gives the art a dark edge on the paper below. The listening line is the section's bottom edge: a
   band split charcoal over paper, with a dotted line just above the edge that
   wipes in from the page's left edge. The album sleeve (Apple Music artwork
   dithered at build time, 100 dots; 80 dots below 480px, from its own 80-dot dither so it stays on whole dots) sits across the edge with the

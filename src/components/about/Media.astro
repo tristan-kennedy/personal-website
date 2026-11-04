@@ -54,7 +54,7 @@ const formatWatched = (date: string) =>
                 <a class="group block" href={film.href}>
                   {film.poster && (
                     <figure
-                      class="relative aspect-[2/3] overflow-hidden"
+                      class="relative aspect-[2/3] overflow-hidden outline-2 outline-offset-(--dot) outline-muted"
                       data-poster
                       data-source={film.poster.source}
                     >
@@ -168,7 +168,7 @@ const formatWatched = (date: string) =>
             <source media="(max-width: 479px)" srcset={smallSleeve.src} />
           )}
           <img
-            class="relative block size-[calc(var(--sleeve)*var(--dot))] bg-charcoal [image-rendering:pixelated]"
+            class="relative block size-[calc(var(--sleeve)*var(--dot))] bg-charcoal [outline:var(--dot)_solid_var(--color-charcoal)] [image-rendering:pixelated]"
             src={sleeve.src}
             alt=""
             width={sleeve.width}
