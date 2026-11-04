@@ -19,6 +19,7 @@ export interface Stage {
   cols: number;
   rows: number;
   box: { left: number; top: number; right: number; bottom: number };
+  lines: number;
   gate: Float32Array;
   seed: number;
   colour: Rgb;
@@ -92,6 +93,28 @@ function gateFor(stage: Omit<Stage, "gate">, pad: Effect["reach"]) {
   return gate;
 }
 
+function slideBetween(from: Element, to: Element) {
+  let x = 0;
+  let y = 0;
+  for (let at = from.parentElement; at && at !== to; at = at.parentElement) {
+    const [dx = "0", dy = "0"] = getComputedStyle(at).translate.split(" ");
+    x += parseFloat(dx) || 0;
+    y += parseFloat(dy) || 0;
+  }
+  return { x, y };
+}
+
+function linesIn(element: Element) {
+  const range = document.createRange();
+  range.selectNodeContents(element);
+  const tops = new Set(
+    [...range.getClientRects()]
+      .filter((rect) => rect.width)
+      .map((rect) => Math.round(rect.top)),
+  );
+  return Math.max(1, tops.size);
+}
+
 export function openEffect(
   row: HTMLElement,
   title: Element,
@@ -101,7 +124,14 @@ export function openEffect(
 ) {
   const dot = readDot(row);
   const place = row.getBoundingClientRect();
-  const rect = title.getBoundingClientRect();
+  const sliding = slideBetween(title, row);
+  const measured = title.getBoundingClientRect();
+  const rect = {
+    left: measured.left - sliding.x,
+    top: measured.top - sliding.y,
+    width: measured.width,
+    height: measured.height,
+  };
   const unit = Math.min(rect.height, REACH_UNIT) / dot;
   const pad = {
     top: Math.max(1, Math.ceil(unit * effect.reach.top)),
@@ -120,6 +150,7 @@ export function openEffect(
       right: pad.left + wide,
       bottom: pad.top + tall,
     },
+    lines: linesIn(title),
     seed,
     colour,
   };

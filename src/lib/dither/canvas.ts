@@ -15,18 +15,19 @@ export function mountDitherCanvas(
   const context = canvas?.getContext("2d");
   if (!figure || !canvas || !frame || !context) return;
   const motion = reducedMotion();
+  const colours = new Uint32Array(new Uint8Array(palette.flat()).buffer);
 
   let grid = emptyGrid();
   let seconds = 0;
   let image: ImageData;
+  let words: Uint32Array;
   let visible = false;
   let frameId = 0;
   let last = 0;
 
   const draw = () => {
     const pixels = render(grid.cols, seconds);
-    for (let i = 0; i < pixels.length; i++)
-      image.data.set(palette[pixels[i]], i * 4);
+    for (let i = 0; i < pixels.length; i++) words[i] = colours[pixels[i]];
     context.putImageData(image, 0, 0);
   };
   const resize = () => {
@@ -35,6 +36,7 @@ export function mountDitherCanvas(
     grid = next;
     sizeCanvas(canvas, grid);
     image = context.createImageData(grid.cols, grid.rows);
+    words = new Uint32Array(image.data.buffer);
     draw();
     figure.dataset.enhanced = "true";
   };

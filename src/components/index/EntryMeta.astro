@@ -1,63 +1,27 @@
 ---
 import type { Entry } from "../../lib/entries";
-import type { Place, Tier } from "../../lib/scatter";
 
 interface Props {
   entry: Entry;
-  tier: Tier;
-  place: Place;
+  slide?: string;
+  right: boolean;
 }
 
-const { entry, tier, place } = Astro.props;
+const { entry, slide, right } = Astro.props;
 const { date, keywords } = entry.data;
-const onInk =
-  "charcoal-halo [transition:color_0.3s_ease] in-data-active:text-paper";
-const small =
-  "pointer-events-auto ml-3 font-mono font-normal tracking-normal whitespace-nowrap text-muted normal-case";
-const underneath = [
-  "phone:top-0 phone:mt-[clamp(8px,calc(var(--fs)*0.16),16px)] phone:ml-0 phone:flex phone:flex-row phone:gap-3",
-  place.alignRight && "phone:justify-end",
-];
 ---
 
-{
-  tier === "poster" && (
-    <span
-      class:list={[
-        "pointer-events-auto relative top-[calc(var(--fs)*0.1)] z-1 ml-[clamp(12px,1.2vw,24px)] inline-flex flex-col gap-0.5 text-left align-top font-mono text-[13px]/[1.45] font-normal tracking-normal text-muted normal-case",
-        underneath,
-        onInk,
-      ]}
-    >
-      <time datetime={date}>{date}</time>
-      {keywords.map((keyword, i) => (
-        <span class:list={[i > 0 && "phone:hidden"]}>
-          {keyword.toLowerCase()}
-        </span>
-      ))}
-    </span>
-  )
-}
-{
-  tier === "title" && (
-    <span class:list={[small, "text-[13px]/none", underneath, onInk]}>
-      <time datetime={date}>{date}</time>
-      {keywords.map((keyword, i) => (
-        <span class:list={[i > 0 && "phone:hidden"]}>
-          {" "}
-          {keyword.toLowerCase()}
-        </span>
-      ))}
-    </span>
-  )
-}
-{
-  tier === "scrap" && (
-    <time
-      class:list={[small, "text-[11px]/none", underneath, onInk]}
-      datetime={date}
-    >
-      {date}
-    </time>
-  )
-}
+<span
+  class:list={[
+    right ? "deck:justify-end deck:self-end" : "deck:self-start",
+    "pointer-events-auto relative top-[calc(var(--fs)*0.1)] z-1 ml-[clamp(12px,1.2vw,24px)] inline-flex flex-col gap-0.5 text-left align-top font-mono text-[13px]/[1.45] font-normal tracking-normal text-muted normal-case [transition:color_0.3s_ease] charcoal-halo in-data-active:text-paper deck:static deck:mt-[clamp(14px,0.3em,28px)] deck:ml-0 deck:flex deck:flex-row deck:gap-3",
+  ]}
+>
+  {slide && <span>{slide}</span>}
+  <time datetime={date}>{date}</time>
+  {
+    keywords.map((keyword, i) => (
+      <span class:list={[i > 0 && "deck:hidden"]}>{keyword.toLowerCase()}</span>
+    ))
+  }
+</span>

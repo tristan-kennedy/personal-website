@@ -3,6 +3,8 @@ import { getHistory } from "../../lib/history";
 import { now } from "../../lib/site";
 
 const log = getHistory().changes.slice(0, 160);
+const mist =
+  "relative before:pointer-events-none before:absolute before:-inset-x-[0.9em] before:-inset-y-[0.5em] before:-z-1 before:bg-paper/85 before:blur-[20px] before:content-[''] phone:before:hidden";
 const leadLine =
   "reveal block text-balance unrevealed:-translate-x-8 unrevealed:opacity-0";
 ---
@@ -58,7 +60,10 @@ const leadLine =
   </div>
   <div class="relative grid grid-cols-4 items-start phone:grid-cols-1">
     <p
-      class="col-[1/3] pr-(--col-inset) font-serif text-[clamp(28px,2.9vw,50px)]/[1.15] tracking-[-0.02em] paper-halo phone:col-[1] phone:px-0 phone:text-[9vw]"
+      class:list={[
+        mist,
+        "col-[1/3] pr-(--col-inset) font-serif text-[clamp(28px,2.9vw,50px)]/[1.15] tracking-[-0.02em] paper-halo phone:col-[1] phone:px-0 phone:text-[9vw]",
+      ]}
     >
       <span class:list={[leadLine, "[--delay:0.09s]"]}
         >I keep redoing this site.</span
@@ -68,7 +73,10 @@ const leadLine =
       >
     </p>
     <div
-      class="col-[3/5] pl-(--col-inset) reveal paper-halo [--delay:0.21s] phone:col-[1] phone:mt-5 phone:pl-0 unrevealed:translate-x-10 unrevealed:opacity-0 [&_p]:max-w-[62ch] [&_p]:text-body/[1.65] phone:[&_p]:text-[17px] [&_p+p]:mt-5"
+      class:list={[
+        mist,
+        "col-[3/5] pl-(--col-inset) reveal paper-halo [--delay:0.21s] phone:col-[1] phone:mt-5 phone:pl-0 unrevealed:translate-x-10 unrevealed:opacity-0 [&_p]:max-w-[62ch] [&_p]:text-body/[1.65] phone:[&_p]:text-[17px] [&_p+p]:mt-5",
+      ]}
     >
       <p>
         I’m Tristan. I live in {now.place}, and write code for a living, mostly

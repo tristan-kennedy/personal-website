@@ -7,64 +7,72 @@ interface Props {
   entry: Entry;
   tier: Tier;
   place: Place;
+  slide?: string;
 }
 
-const { entry, tier, place } = Astro.props;
+const { entry, tier, place, slide } = Astro.props;
 const { title, colour, accents } = entry.data;
 const style = [
-  "--size: " + place.size + "cqi",
   "--left: " + place.left + "cqi",
   "--right: " + place.right + "cqi",
-  "--phone-size: " + place.phone.size + "cqi",
-  "--phone-left: " + place.phone.left + "cqi",
-  "--phone-right: " + place.phone.right + "cqi",
-  "--air: " + place.phone.air,
+  "--deck: " + place.deck + "cqi",
+  "--deck-lines: " + place.deckLines,
   "--ink: " + (colour ?? "var(--color-dim)"),
 ].join("; ");
 const face = place.serif
   ? "font-serif tracking-[-0.03em]"
   : "font-display font-extrabold tracking-[-0.035em] uppercase";
 const poster = tier === "poster";
+const oneWord = !title.trim().includes(" ");
+const side = place.serif ? "deck:self-end deck:text-right" : "deck:self-start";
 ---
 
 <li
-  class="relative [@media(hover:hover)]:pointer-events-none"
+  class="relative deck:flex deck:snap-center deck:flex-col [@media(hover:hover)]:pointer-events-none"
   style={style}
   data-row
-  data-reveal={tier === "poster" ? "" : undefined}
+  data-reveal={poster ? "" : undefined}
 >
   <a
     class:list={[
-      "group relative z-1 block py-(--gap) text-(length:--fs) text-balance [--fs:max(18px,var(--size))] [--gap:clamp(20px,calc(var(--fs)*0.36),76px)] phone:[--fs:max(18px,var(--phone-size))] phone:[--gap:calc(clamp(20px,calc(var(--fs)*0.36),76px)*var(--air))]",
+      "group relative z-1 block py-(--gap) text-(length:--fs) [--fs:max(18px,var(--size))] [--gap:clamp(20px,calc(var(--fs)*0.36),76px)]",
       face,
-      "pr-(--right) pl-(--left) phone:pr-(--phone-right) phone:pl-(--phone-left)",
-      place.alignRight ? "text-right" : "text-left",
+      oneWord ? "list:whitespace-nowrap" : "text-balance",
+      "list:pr-(--right) list:pl-(--left)",
+      place.alignRight && "list:text-right",
       poster ? "leading-[0.92] reveal unrevealed:opacity-0" : "leading-[1.04]",
       poster &&
         (place.alignRight
           ? "unrevealed:translate-x-12"
           : "unrevealed:-translate-x-12"),
       tier === "scrap" && place.quiet && "text-muted",
+      "deck:flex deck:flex-col deck:py-[13svh] deck:leading-[0.86] deck:[--fs:min(var(--deck),calc(40svh/var(--deck-lines)))]",
     ]}
     href={entry.url}
     data-colour={colour}
     data-accents={colour && accents.length ? accents.join(" ") : undefined}
   >
     <span
-      class="pointer-events-none absolute inset-0 [translate:0.05em_0.06em] [padding:inherit] [will-change:transform,translate] [--delay:0s] [transition:translate_0.7s_var(--ease-soft)_var(--delay),transform_0.45s_var(--ease-soft)] in-data-active:[--color-dim:var(--ink)] motion-safe:in-data-active:[transform:translate(0.07em,0.08em)] unrevealed:[translate:0_0] revealing:[--delay:0.3s]"
+      class="pointer-events-none absolute inset-0 [translate:0.05em_0.06em] [padding:inherit] [will-change:transform,translate] [--delay:0s] [transition:translate_0.7s_var(--ease-soft)_var(--delay),transform_0.45s_var(--ease-soft)] in-data-active:[--color-dim:var(--ink)] motion-safe:in-data-active:[transform:translate(0.07em,0.08em)] deck:flex deck:flex-col unrevealed:[translate:0_0] revealing:[--delay:0.3s]"
       aria-hidden="true"
     >
-      <span class="dither-text [transition:color_0.3s_ease]">{title}</span>
+      <span class:list={["dither-text [transition:color_0.3s_ease]", side]}
+        >{title}</span
+      >
       <span class="invisible"
-        ><EntryMeta entry={entry} tier={tier} place={place} /></span
+        ><EntryMeta entry={entry} slide={slide} right={place.serif} /></span
       >
     </span>
     <h2
-      class="pointer-events-auto relative z-1 inline font-[inherit] text-[length:inherit]/[inherit] tracking-[inherit] [-webkit-text-stroke:0_var(--color-charcoal)] [paint-order:stroke_fill] [transition:color_0.3s_ease] in-data-dimmed:not-in-data-active:text-(--dimmed) in-[[data-index]:has([data-row]>canvas)]:[-webkit-text-stroke-width:0.05em]"
+      class:list={[
+        oneWord && "list:whitespace-nowrap",
+        side,
+        "pointer-events-auto relative z-1 inline font-[inherit] text-[length:inherit]/[inherit] tracking-[inherit] [-webkit-text-stroke:0_var(--color-charcoal)] [paint-order:stroke_fill] [transition:color_0.3s_ease] in-data-dimmed:not-in-data-active:text-(--dimmed) in-[[data-index]:has([data-row]>canvas)]:[-webkit-text-stroke-width:0.05em]",
+      ]}
       data-title
     >
       {title}
     </h2>
-    <EntryMeta entry={entry} tier={tier} place={place} />
+    <EntryMeta entry={entry} slide={slide} right={place.serif} />
   </a>
 </li>

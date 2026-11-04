@@ -12,12 +12,19 @@ import DitherFrame from "../DitherFrame.astro";
 
 <script>
   import { mountDitherCanvas } from "../../lib/dither/canvas";
-  import { renderApple, START_ANGLE } from "../../lib/dither/apple";
-  import { CHARCOAL, CLEAR, PAPER, opaque } from "../../lib/dither/palette";
+  import { castShadow, renderApple, START_ANGLE } from "../../lib/dither/apple";
+  import {
+    CHARCOAL,
+    CLEAR,
+    DIM,
+    PAPER,
+    opaque,
+  } from "../../lib/dither/palette";
 
   mountDitherCanvas(
     "[data-quote-apple]",
-    (size, seconds) => renderApple(size, START_ANGLE + seconds * 0.35),
-    [CLEAR, opaque(PAPER), opaque(CHARCOAL)],
+    (size, seconds) =>
+      castShadow(renderApple(size, START_ANGLE + seconds * 0.35), size),
+    [CLEAR, opaque(PAPER), opaque(CHARCOAL), opaque(DIM)],
   );
 </script>

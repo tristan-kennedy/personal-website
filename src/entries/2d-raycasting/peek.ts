@@ -11,6 +11,7 @@ const RADIUS = 70;
 const DRIFT = 11;
 const LIGHT_RADIUS = 3;
 const HOME = { across: 0.8, down: 0.5 };
+const DESIGNED_FOR = 120;
 const BARS = [
   [-30, -24, -9, -33],
   [24, -22, 33, 8],
@@ -19,22 +20,25 @@ const BARS = [
 ];
 
 export default {
-  reach: { top: 0.45, right: 0.5, bottom: 0.45, left: 0.3 },
+  reach: { top: 0.9, right: 1.2, bottom: 0.9, left: 0.4 },
   paint({ cols, rows, box, gate, colour }) {
     const ramp = [DIM, MID, packed(colour), HOT];
     const last = ramp.length - 1;
     const homeX = box.left + (box.right - box.left) * HOME.across;
     const homeY = box.top + (box.bottom - box.top) * HOME.down;
+    const scale = Math.max(1, (box.bottom - box.top) / DESIGNED_FOR);
+    const radius = RADIUS * scale;
+    const drift = DRIFT * scale;
     const walls = BARS.map(([x0, y0, x1, y1]) => [
-      homeX + x0,
-      homeY + y0,
-      homeX + x1,
-      homeY + y1,
+      homeX + x0 * scale,
+      homeY + y0 * scale,
+      homeX + x1 * scale,
+      homeY + y1 * scale,
     ]);
     const hits = new Float32Array(RAYS);
 
     const nearestHit = (x: number, y: number, dirX: number, dirY: number) => {
-      let nearest = RADIUS;
+      let nearest = radius;
       for (const [x0, y0, x1, y1] of walls) {
         const wallX = x1 - x0;
         const wallY = y1 - y0;
@@ -49,17 +53,17 @@ export default {
     };
 
     return (pixels, seconds, reveal) => {
-      const lightX = homeX + Math.sin(seconds * 0.7) * DRIFT;
-      const lightY = homeY + Math.sin(seconds * 1.1 + 1) * DRIFT * 0.7;
+      const lightX = homeX + Math.sin(seconds * 0.7) * drift;
+      const lightY = homeY + Math.sin(seconds * 1.1 + 1) * drift * 0.7;
       for (let i = 0; i < RAYS; i++) {
         const angle = (i / RAYS) * Math.PI * 2;
         hits[i] = nearestHit(lightX, lightY, Math.cos(angle), Math.sin(angle));
       }
 
-      const top = Math.max(0, Math.floor(lightY - RADIUS));
-      const bottom = Math.min(rows, Math.ceil(lightY + RADIUS));
-      const left = Math.max(0, Math.floor(lightX - RADIUS));
-      const right = Math.min(cols, Math.ceil(lightX + RADIUS));
+      const top = Math.max(0, Math.floor(lightY - radius));
+      const bottom = Math.min(rows, Math.ceil(lightY + radius));
+      const left = Math.max(0, Math.floor(lightX - radius));
+      const right = Math.min(cols, Math.ceil(lightX + radius));
       for (let y = top; y < bottom; y++)
         for (let x = left; x < right; x++) {
           const i = y * cols + x;
@@ -68,11 +72,11 @@ export default {
           const angle = Math.atan2(y - lightY, x - lightX) + Math.PI * 2;
           const ray = Math.floor((angle / (Math.PI * 2)) * RAYS) % RAYS;
           if (away > hits[ray]) continue;
-          if (away < LIGHT_RADIUS) {
+          if (away < LIGHT_RADIUS * scale) {
             pixels[i] = HOT;
             continue;
           }
-          const tone = (1 - away / RADIUS) ** 1.4 * (last + 1) - 0.4;
+          const tone = (1 - away / radius) ** 1.4 * (last + 1) - 0.4;
           if (tone < 0) continue;
           const low = Math.floor(tone);
           const step = tone - low > threshold(x, y) ? 1 : 0;

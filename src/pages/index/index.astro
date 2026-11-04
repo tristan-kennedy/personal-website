@@ -5,20 +5,29 @@ import Layout from "../../layouts/Layout.astro";
 import Reveal from "../../components/Reveal.astro";
 import SiteNav from "../../components/SiteNav.astro";
 import { getEntries } from "../../lib/entries";
-import { scatter, tierAt } from "../../lib/scatter";
+import { scatter, tierAt, TITLE_SIZE } from "../../lib/scatter";
 
 const entries = await getEntries();
+const counted = (n: number) =>
+  String(n).padStart(Math.max(2, String(entries.length).length), "0");
+const newestYear = entries[0]?.data.date.slice(0, 4);
+const oldestYear = entries.at(-1)?.data.date.slice(0, 4);
+const span =
+  newestYear === oldestYear ? newestYear : `${oldestYear}–${newestYear}`;
+const counts = `${entries.length} ${entries.length === 1 ? "entry" : "entries"}`;
+const line = "reveal unrevealed:-translate-x-4 unrevealed:opacity-0";
 const rows = entries.map((entry, i) => ({
   entry,
   tier: tierAt(i),
   place: scatter(entry, i, entries.length - 1 - i),
+  slide: `${counted(i + 1)} / ${counted(entries.length)}`,
 }));
 ---
 
 <Layout title="Index">
   <Reveal />
   <div
-    class="relative isolate overflow-clip bg-charcoal text-paper [--dimmed:var(--color-dim)] [@media(hover:none)]:[--dimmed:var(--muted)]"
+    class="relative isolate overflow-clip bg-charcoal text-paper [--dimmed:var(--color-dim)] deck:[--dimmed:var(--muted)] deck:[:root:has(&)]:snap-y deck:[:root:has(&)]:snap-proximity"
     data-index
   >
     <div class="px-(--gutter)">
@@ -37,7 +46,7 @@ const rows = entries.map((entry, i) => ({
           Index.
         </h1>
         <span
-          class="mb-[0.4vw] h-[clamp(6px,0.8vw,14px)] min-w-12 flex-auto bg-current reveal motion-safe:origin-right phone:hidden unrevealed:scale-x-0"
+          class="mb-[0.4vw] h-[clamp(6px,0.8vw,14px)] min-w-12 flex-auto bg-current reveal motion-safe:origin-right phone:-mr-(--gutter) phone:mb-0 phone:flex-none unrevealed:scale-x-0"
           aria-hidden="true"></span>
         <figure
           class="pointer-events-none absolute right-0 bottom-[calc(0.4vw+clamp(6px,0.8vw,14px))] w-[min(calc(100%-var(--gutter)-calc(23*var(--vw))*2.3),calc((100svh-200px)*1.03))] reveal [--delay:0.2s] phone:relative phone:right-auto phone:bottom-auto phone:order-first phone:-mr-(--gutter) phone:w-[82vw] phone:self-end unrevealed:translate-x-16 unrevealed:opacity-0"
@@ -47,6 +56,13 @@ const rows = entries.map((entry, i) => ({
           <DitherFrame src="/dither/hand.png" size={240} height={232} />
         </figure>
       </div>
+      {
+        entries.length > 0 && (
+          <p class="mt-[clamp(10px,1vw,16px)] px-(--gutter) text-right font-mono text-[13px]/[1.45] text-muted reveal [--delay:0.35s] unrevealed:opacity-0">
+            {counts}, {span}
+          </p>
+        )
+      }
     </header>
     {
       entries.length === 0 && (
@@ -60,14 +76,45 @@ const rows = entries.map((entry, i) => ({
       )
     }
     <ol
-      class="@container min-w-0 px-(--gutter) pt-(--section-space) pb-[calc(var(--section-space)*1.5)]"
+      class="@container min-w-0 px-(--gutter) pt-(--section-space)"
+      style={`--size: ${TITLE_SIZE}cqi`}
     >
       {
-        rows.map(({ entry, tier, place }) => (
-          <EntryRow entry={entry} tier={tier} place={place} />
+        rows.map(({ entry, tier, place, slide }) => (
+          <EntryRow entry={entry} tier={tier} place={place} slide={slide} />
         ))
       }
     </ol>
+    {
+      entries.length > 0 && (
+        <div
+          class="px-(--gutter) pt-(--section-space) pb-[calc(var(--section-space)*1.5)] font-mono text-[clamp(15px,1.35vw,24px)]/[2] text-[#b3b0a6]"
+          data-reveal
+        >
+          <p class:list={[line, "text-muted"]} aria-hidden="true">
+            $ ls ~/stuff | wc -l
+          </p>
+          <p class:list={[line, "[--delay:0.08s]"]}>
+            {counts}, the first from {entries.at(-1)?.data.date}
+          </p>
+          <p class:list={[line, "mt-[clamp(20px,2vw,40px)] [--delay:0.16s]"]}>
+            <a
+              class="text-paper hover:underline hover:underline-offset-[0.2em] focus-visible:underline focus-visible:underline-offset-[0.2em]"
+              href="/"
+            >
+              <span aria-hidden="true">$ </span>cd ~
+              <span class="text-muted">
+                (back home)
+                <span
+                  class="ml-[0.3em] inline-block h-[1.1em] w-[0.6em] bg-paper align-text-bottom motion-safe:animate-blink"
+                  aria-hidden="true"
+                />
+              </span>
+            </a>
+          </p>
+        </div>
+      )
+    }
     <script is:inline>
       {
         const from = document.referrer && new URL(document.referrer);

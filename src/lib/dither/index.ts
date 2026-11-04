@@ -15,7 +15,7 @@ export const threshold = (x: number, y: number) =>
   BAYER[y & 3][x & 3] * 0.85 + jitter(x, y) * 0.15;
 
 export const SUN = (() => {
-  const v = [0.6, 0.7, -0.6];
+  const v = [-0.75, 0.5, -0.6];
   const length = Math.hypot(...v);
   return v.map((c) => c / length) as [number, number, number];
 })();

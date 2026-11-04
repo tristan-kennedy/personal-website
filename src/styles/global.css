@@ -8,6 +8,12 @@
 
 @custom-variant hover (&:hover);
 @custom-variant phone (@media (max-width: 700px));
+@custom-variant deck {
+  @media (max-width: 1100px), (hover: none) {
+    @slot;
+  }
+}
+@custom-variant list (@media (min-width: 1101px) and (hover: hover));
 @custom-variant ready {
   @media (prefers-reduced-motion: no-preference) {
     [data-reveal="ready"] [data-reveal] & {

@@ -1,6 +1,7 @@
 import sharp from "sharp";
 import {
   CHARCOAL,
+  DIM,
   MUTED,
   PAPER,
   RULE_ON_PAPER,
@@ -35,12 +36,15 @@ async function globe(out = "public/dither/globe.png", size = 280) {
 }
 
 async function apple(out = "public/dither/apple.png", size = 240) {
-  const { renderApple, START_ANGLE, INK, OUTSIDE } =
+  const { renderApple, castShadow, START_ANGLE, INK, SHADOW, OUTSIDE } =
     await import("../src/lib/dither/apple.ts");
-  const frame = renderApple(Number(size), START_ANGLE);
+  const frame = castShadow(
+    renderApple(Number(size), START_ANGLE),
+    Number(size),
+  );
   const pixels = Buffer.alloc(size * size * 4);
   frame.forEach((v, i) => {
-    const [r, g, b] = v === INK ? CHARCOAL : PAPER;
+    const [r, g, b] = v === INK ? CHARCOAL : v === SHADOW ? DIM : PAPER;
     pixels.set([r, g, b, v === OUTSIDE ? 0 : 255], i * 4);
   });
   return sharp(pixels, { raw: { width: size, height: size, channels: 4 } })

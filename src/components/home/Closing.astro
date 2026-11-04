@@ -10,7 +10,7 @@ const markText =
 ---
 
 <section
-  class="relative z-1 overflow-clip px-(--gutter) py-(--section-space) paper [--apple:min(58vw,1100px)] [--box-line:clamp(2px,0.2vw,3px)] phone:[--apple:84vw]"
+  class="relative z-1 overflow-clip px-(--gutter) py-(--section-space) paper [--apple:min(44vw,820px)] [--box-line:clamp(2px,0.2vw,3px)] phone:[--apple:68vw]"
   data-reveal
   id="quote"
   aria-label="A quote by Walter Pater"
@@ -34,14 +34,14 @@ const markText =
       </p>
     </blockquote>
     <figcaption
-      class="relative z-2 col-[2/5] row-[3] flex items-baseline gap-2.5 justify-self-end px-[max(20px,calc(3*var(--vw)))] pt-[clamp(8px,1vw,16px)] pb-[max(32px,calc(4*var(--vw)))] text-right text-[13px]/[1.45] text-muted reveal [--delay:0.39s] phone:col-[1/5] phone:ml-auto phone:block phone:max-w-[56%] phone:px-4 phone:pt-1.5 phone:pb-6 phone:leading-[1.6] unrevealed:translate-x-12 unrevealed:opacity-0"
+      class="relative z-2 col-[2/5] row-[3] flex items-baseline gap-2.5 justify-self-end px-[max(20px,calc(3*var(--vw)))] pt-[clamp(8px,1vw,16px)] pb-[max(32px,calc(4*var(--vw)))] text-right font-serif text-[clamp(15px,1.1vw,18px)]/[1.45] text-ink-muted reveal [--delay:0.39s] phone:col-[1/5] phone:ml-auto phone:block phone:max-w-[56%] phone:px-4 phone:pt-1.5 phone:pb-6 phone:leading-[1.6] unrevealed:translate-x-12 unrevealed:opacity-0"
     >
       <span class="phone:hidden" aria-hidden="true">—</span>
       <span>
         <a
           class="inline-block min-h-11 py-2.5 link phone:inline phone:min-h-0 phone:p-0"
           href={source}>Walter Pater</a
-        >, <cite class="not-italic">The Renaissance</cite> (1873), Conclusion
+        >
       </span>
     </figcaption>
     <span

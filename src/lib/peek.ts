@@ -10,7 +10,7 @@ const READING_LINE = 0.4;
 const effects = import.meta.glob<{ default: Effect }>("../entries/*/peek.ts");
 
 export function mountPeeks(root: HTMLElement) {
-  const touch = matchMedia("(hover: none)");
+  const deck = matchMedia("(max-width: 1100px), (hover: none)");
   let active: HTMLElement | undefined;
   let waiting = 0;
   let opening = 0;
@@ -67,13 +67,13 @@ export function mountPeeks(root: HTMLElement) {
     (event.target as Element).closest<HTMLElement>("[data-row]") ?? undefined;
 
   root.addEventListener("mouseover", (event) => {
-    if (touch.matches) return;
+    if (deck.matches) return;
     const row = rowOf(event);
     if (row) soon(row, HOVER_DELAY);
     else if (active) soon(undefined, LINGER);
   });
   root.addEventListener("mouseleave", () => {
-    if (!touch.matches) soon(undefined, LINGER);
+    if (!deck.matches) soon(undefined, LINGER);
   });
   root.addEventListener("focusin", (event) => {
     const row = rowOf(event);
@@ -89,7 +89,7 @@ export function mountPeeks(root: HTMLElement) {
       for (const { target, isIntersecting } of changes)
         if (isIntersecting) crossing.add(target);
         else crossing.delete(target);
-      if (touch.matches)
+      if (deck.matches)
         soon([...crossing].at(-1) as HTMLElement | undefined, DWELL);
     },
     {
