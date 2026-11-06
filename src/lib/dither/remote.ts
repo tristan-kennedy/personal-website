@@ -23,18 +23,25 @@ function fetchImage(url: string) {
   return downloads.get(url)!;
 }
 
-async function dither(image: Buffer, width: number, height: number) {
+type Tone = { white?: number; gamma?: number };
+
+async function dither(
+  image: Buffer,
+  width: number,
+  height: number,
+  { white = 99, gamma = 1 }: Tone,
+) {
   const data = await sharp(image)
     .resize(width, height, { fit: "cover" })
     .greyscale()
-    .normalise()
+    .normalise({ upper: white })
     .raw()
     .toBuffer();
   const pixels = Buffer.alloc(width * height * 4);
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const i = y * width + x;
-      if (data[i] / 255 > threshold(x, y)) pixels.set(INK, i * 4);
+      if ((data[i] / 255) ** gamma > threshold(x, y)) pixels.set(INK, i * 4);
     }
   }
   const png = await sharp(pixels, { raw: { width, height, channels: 4 } })
@@ -58,13 +65,13 @@ export async function ditherRemote(
   url: string,
   width: number,
   height: number,
-  { withSource = false } = {},
+  { withSource = false, ...tone }: { withSource?: boolean } & Tone = {},
 ) {
   height = Math.round(height);
   const image = await fetchImage(url);
   if (!image) return undefined;
   return {
-    src: await dither(image, width, height),
+    src: await dither(image, width, height, tone),
     source: withSource ? await greyscale(image, width, height) : undefined,
     width,
     height,

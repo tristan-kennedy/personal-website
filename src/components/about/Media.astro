@@ -8,12 +8,16 @@ import { about, links, now } from "../../lib/site";
 
 const films = await getFilms();
 const listening = now.listening;
-const sleeve = await ditherRemote(listening.artwork, 100, 100).catch(
+const sleeveTone = { white: 90, gamma: 1.3 };
+const sleeve = await ditherRemote(listening.artwork, 100, 100, sleeveTone).catch(
   () => undefined,
 );
-const smallSleeve = await ditherRemote(listening.artwork, 80, 80).catch(
-  () => undefined,
-);
+const smallSleeve = await ditherRemote(
+  listening.artwork,
+  80,
+  80,
+  sleeveTone,
+).catch(() => undefined);
 const profile = links.profiles.find((item) => item.label === "Letterboxd");
 const stars = (rating: number) =>
   "★".repeat(Math.floor(rating)) + (rating % 1 ? "½" : "");
@@ -54,7 +58,7 @@ const formatWatched = (date: string) =>
                 <a class="group block" href={film.href}>
                   {film.poster && (
                     <figure
-                      class="relative aspect-[2/3] overflow-hidden outline-2 outline-offset-(--dot) outline-muted"
+                      class="relative aspect-[2/3] overflow-hidden"
                       data-poster
                       data-source={film.poster.source}
                     >
@@ -168,7 +172,7 @@ const formatWatched = (date: string) =>
             <source media="(max-width: 479px)" srcset={smallSleeve.src} />
           )}
           <img
-            class="relative block size-[calc(var(--sleeve)*var(--dot))] bg-charcoal [outline:var(--dot)_solid_var(--color-charcoal)] [image-rendering:pixelated]"
+            class="relative block size-[calc(var(--sleeve)*var(--dot))] bg-charcoal [image-rendering:pixelated]"
             src={sleeve.src}
             alt=""
             width={sleeve.width}

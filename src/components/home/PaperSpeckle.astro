@@ -1,0 +1,53 @@
+<canvas
+  class="pointer-events-none absolute top-0 left-0 [image-rendering:pixelated]"
+  aria-hidden="true"
+  data-paper-speckle></canvas>
+
+<script>
+  import { readDot } from "../../lib/dither/fit";
+  import { threshold } from "../../lib/dither/index";
+  import { noise } from "../../lib/dither/splotch";
+  import { RULE_ON_PAPER } from "../../lib/dither/palette";
+
+  const START = 0.25;
+  const PEAK = 0.24;
+
+  const canvas = document.querySelector<HTMLCanvasElement>(
+    "[data-paper-speckle]",
+  );
+  const section = canvas?.parentElement;
+  const context = canvas?.getContext("2d");
+
+  if (canvas && section && context) {
+    const [r, g, b] = RULE_ON_PAPER;
+    const ink = new Uint32Array(new Uint8Array([r, g, b, 255]).buffer)[0];
+    let size = "";
+
+    const draw = () => {
+      const dot = readDot(section);
+      const cols = Math.ceil(section.clientWidth / dot);
+      const rows = Math.ceil(section.clientHeight / dot);
+      if (!cols || !rows || `${cols}x${rows}` === size) return;
+      size = `${cols}x${rows}`;
+      canvas.width = cols;
+      canvas.height = rows;
+      canvas.style.width = `${cols * dot}px`;
+      canvas.style.height = `${rows * dot}px`;
+      const image = context.createImageData(cols, rows);
+      const words = new Uint32Array(image.data.buffer);
+      for (let y = 0; y < rows; y++) {
+        const depth = Math.max(0, (y / rows - START) / (1 - START));
+        const fade = depth * depth * PEAK;
+        for (let x = 0; x < cols; x++) {
+          const wear = noise(x / 22, y / 14, 7) * 1.4 - 0.2;
+          const grit = noise(x / 3, y / 3, 19);
+          if (fade * wear * (0.4 + grit * 1.2) > threshold(x, y))
+            words[y * cols + x] = ink;
+        }
+      }
+      context.putImageData(image, 0, 0);
+    };
+
+    new ResizeObserver(draw).observe(section);
+  }
+</script>

@@ -1,10 +1,11 @@
 ---
 import DitherApple from "./DitherApple.astro";
+import PaperSpeckle from "./PaperSpeckle.astro";
 
 const source =
   "https://www.victorianweb.org/authors/pater/renaissance/conclusion.html";
 const mark =
-  "relative z-2 col-[1/5] justify-self-center bg-paper px-3 font-mono text-[13px]/none tracking-[0.14em] whitespace-nowrap text-ink-muted uppercase";
+  "relative z-2 col-[1/5] justify-self-center bg-paper px-3 font-mono text-[11px]/none tracking-[0.14em] whitespace-nowrap text-charcoal uppercase [text-box:trim-both_cap_alphabetic]";
 const markText =
   "block reveal [--delay:0.5s] motion-safe:[clip-path:inset(-50%_0_-50%_0)] unrevealed:[clip-path:inset(-50%_100%_-50%_0)]";
 ---
@@ -15,6 +16,7 @@ const markText =
   id="quote"
   aria-label="A quote by Walter Pater"
 >
+  <PaperSpeckle />
   <figure
     class="relative grid grid-cols-4 grid-rows-[1fr_auto_auto_1fr] before:col-[1/5] before:row-[1/5] before:border-(length:--box-line) before:border-charcoal before:content-[''] phone:grid-rows-[auto_auto_auto_auto] ready:before:[transition:var(--reveal-transition)] unrevealed:before:opacity-0"
   >
@@ -26,11 +28,9 @@ const markText =
       <p
         class="ml-auto max-w-[28ch] leading-[1.25] text-pretty paper-outline-[0.14em] phone:text-balance"
       >
-        “Not the fruit of experience, but <em
-          class="font-display text-[1.14em]/none font-extrabold tracking-[-0.01em] uppercase not-italic"
-          >experience itself</em
-        >, is the end. A counted number of pulses only is given to us of a
-        variegated, dramatic life.”
+        “Not the fruit of experience, but experience itself, is the end. A
+        counted number of pulses only is given to us of a variegated, dramatic
+        life.”
       </p>
     </blockquote>
     <figcaption
@@ -47,14 +47,14 @@ const markText =
     <span
       class:list={[
         mark,
-        "row-[1] [translate:0_calc(-50%-var(--box-line)/2)] self-start",
+        "row-[1] [translate:0_calc(-50%+var(--box-line)/2)] self-start",
       ]}
       aria-hidden="true"><span class={markText}>What is the end</span></span
     >
     <span
       class:list={[
         mark,
-        "row-[4] [translate:0_calc(50%+var(--box-line)/2)] rotate-180 self-end phone:mr-5 phone:justify-self-end",
+        "row-[4] [translate:0_calc(50%-var(--box-line)/2)] rotate-180 self-end phone:mr-5 phone:justify-self-end",
       ]}
       aria-hidden="true"><span class={markText}>Who am I</span></span
     >
